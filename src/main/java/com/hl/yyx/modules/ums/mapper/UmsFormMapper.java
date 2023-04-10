@@ -5,11 +5,11 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
  * <p>
- * Mapper 接口
+ * 表单配置表 Mapper 接口
  * </p>
  *
  * @author hl243695czyn
- * @since 2022-11-16
+ * @since 2023-04-10
  */
 public interface UmsFormMapper extends BaseMapper<UmsForm> {
 
