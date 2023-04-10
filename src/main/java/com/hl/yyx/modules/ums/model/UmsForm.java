@@ -1,38 +1,48 @@
 package com.hl.yyx.modules.ums.model;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.util.Date;
-import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hl.yyx.common.aop.TableDataUnique;
+import com.hl.yyx.common.vo.BaseModelDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import javax.validation.constraints.NotBlank;
+
 /**
  * <p>
- * 表单配置表
+ *
  * </p>
  *
  * @author hl243695czyn
- * @since 2023-04-10
+ * @since 2022-11-16
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @TableName("ums_form")
-@ApiModel(value="UmsForm对象", description="表单配置表")
-public class UmsForm implements Serializable {
+@ApiModel(value = "UmsForm对象", description = "")
+public class UmsForm extends BaseModelDTO implements Serializable {
 
-    private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     @ApiModelProperty(value = "表单名称")
+    @NotBlank(message = "表单名称不能为空")
+    @TableField("`name`")
     private String name;
 
     @ApiModelProperty(value = "表单key")
+    @NotBlank(message = "表单key不能为空")
+    @TableDataUnique(table = "ums_form", column = "form_key", message = "表单key已存在")
     private String formKey;
 
     @ApiModelProperty(value = "表单备注")
@@ -40,15 +50,5 @@ public class UmsForm implements Serializable {
 
     @ApiModelProperty(value = "表单配置")
     private String config;
-
-    @ApiModelProperty(value = "创建时间")
-    private Date addTime;
-
-    @ApiModelProperty(value = "更新时间")
-    private Date updateTime;
-
-    @ApiModelProperty(value = "逻辑删除")
-    private Boolean deleted;
-
 
 }
