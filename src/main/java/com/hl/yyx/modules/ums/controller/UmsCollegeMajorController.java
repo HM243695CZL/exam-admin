@@ -47,7 +47,7 @@ import org.springframework.web.bind.annotation.RestController;
     // 获取全部
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public CommonResult list(){
-        return CommonResult.success(umsCollegeMajorService.list());
+        return CommonResult.success(umsCollegeMajorService.getNodeList());
     }
 
     // 查看

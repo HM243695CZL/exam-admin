@@ -6,6 +6,9 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.util.Date;
 import java.io.Serializable;
+import java.util.List;
+
+import com.hl.yyx.common.vo.BaseModelDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -23,7 +26,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 @TableName("ums_college_major")
 @ApiModel(value="UmsCollegeMajor对象", description="学院/专业表")
-public class UmsCollegeMajor implements Serializable {
+public class UmsCollegeMajor extends BaseModelDTO implements Serializable {
 
     private static final long serialVersionUID=1L;
 
@@ -41,4 +44,7 @@ public class UmsCollegeMajor implements Serializable {
     @TableField("`type`")
     private Boolean type;
 
+    @ApiModelProperty(value = "子节点")
+    @TableField(exist = false)
+    private List<UmsCollegeMajor> children;
 }
