@@ -1,11 +1,13 @@
 package com.hl.yyx.modules.ums.model;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.util.Date;
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.hl.yyx.common.vo.BaseModelDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -32,6 +34,7 @@ public class UmsStudent extends BaseModelDTO implements Serializable {
     private Integer id;
 
     @ApiModelProperty(value = "姓名")
+    @TableField("`name`")
     private String name;
 
     @ApiModelProperty(value = "学号")
@@ -49,6 +52,7 @@ public class UmsStudent extends BaseModelDTO implements Serializable {
     @ApiModelProperty(value = "头像")
     private String avatar;
 
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @ApiModelProperty(value = "出生日期")
     private Date birthday;
 
