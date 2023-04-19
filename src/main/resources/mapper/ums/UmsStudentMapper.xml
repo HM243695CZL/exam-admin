@@ -9,7 +9,7 @@
         <result column="number" property="number" />
         <result column="college" property="college" />
         <result column="major" property="major" />
-        <result column="class_name" property="className" />
+        <result column="class_id" property="classId" />
         <result column="avatar" property="avatar" />
         <result column="birthday" property="birthday" />
         <result column="phone" property="phone" />

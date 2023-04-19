@@ -70,6 +70,8 @@ import org.springframework.web.bind.annotation.RestController;
         return CommonResult.success(umsStudentService.list());
     }
 
+    //
+
     // 查看
     @ApiOperation("查看学生")
     @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)

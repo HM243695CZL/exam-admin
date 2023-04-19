@@ -45,4 +45,12 @@ public class UmsClass extends BaseModelDTO implements Serializable {
     @ApiModelProperty(value = "备注")
     private String remark;
 
+    @ApiModelProperty(value = "学院名称")
+    @TableField(exist = false)
+    private String collegeName;
+
+    @ApiModelProperty(value = "专业名称")
+    @TableField(exist = false)
+    private String majorName;
+
 }

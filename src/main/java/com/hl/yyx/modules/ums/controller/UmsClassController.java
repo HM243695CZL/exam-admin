@@ -69,9 +69,9 @@ import org.springframework.web.bind.annotation.RestController;
     // 获取全部
     @LogAnnotation()
     @ApiOperation("获取全部班级")
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public CommonResult list(){
-        return CommonResult.success(umsClassService.list());
+    @RequestMapping(value = "/list", method = RequestMethod.POST)
+    public CommonResult list(@RequestBody ClassPageDTO params){
+        return CommonResult.success(umsClassService.list(params));
     }
 
     // 查看

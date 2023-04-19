@@ -5,6 +5,8 @@ import com.hl.yyx.modules.ums.dto.ClassPageDTO;
 import com.hl.yyx.modules.ums.model.UmsClass;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  * 班级表 服务类
@@ -16,4 +18,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface UmsClassService extends IService<UmsClass> {
 
     Page<UmsClass> pageList(ClassPageDTO paramsDTO);
+
+    List<UmsClass> list(ClassPageDTO paramsDTO);
 }

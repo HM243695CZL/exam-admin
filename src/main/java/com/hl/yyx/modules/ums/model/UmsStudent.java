@@ -47,7 +47,7 @@ public class UmsStudent extends BaseModelDTO implements Serializable {
     private String major;
 
     @ApiModelProperty(value = "班级")
-    private String className;
+    private String classId;
 
     @ApiModelProperty(value = "头像")
     private String avatar;
@@ -67,5 +67,17 @@ public class UmsStudent extends BaseModelDTO implements Serializable {
 
     @ApiModelProperty(value = "wxopenid")
     private String wxOpenId;
+
+    @ApiModelProperty(value = "学院名称")
+    @TableField(exist = false)
+    private String collegeName;
+
+    @ApiModelProperty(value = "专业名称")
+    @TableField(exist = false)
+    private String majorName;
+
+    @ApiModelProperty(value = "班级名称")
+    @TableField(exist = false)
+    private String className;
 
 }
