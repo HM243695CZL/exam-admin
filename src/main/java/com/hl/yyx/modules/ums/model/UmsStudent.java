@@ -30,8 +30,8 @@ public class UmsStudent extends BaseModelDTO implements Serializable {
 
     private static final long serialVersionUID=1L;
 
-    @TableId(value = "id", type = IdType.AUTO)
-    private Integer id;
+    @TableId(value = "id", type = IdType.ASSIGN_UUID)
+    private String id;
 
     @ApiModelProperty(value = "姓名")
     @TableField("`name`")
@@ -41,13 +41,13 @@ public class UmsStudent extends BaseModelDTO implements Serializable {
     private String number;
 
     @ApiModelProperty(value = "学院")
-    private String college;
+    private Integer college;
 
     @ApiModelProperty(value = "专业")
-    private String major;
+    private Integer major;
 
     @ApiModelProperty(value = "班级")
-    private String classId;
+    private Integer classId;
 
     @ApiModelProperty(value = "头像")
     private String avatar;
