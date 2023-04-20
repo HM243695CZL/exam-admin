@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hl.yyx.modules.exam.mapper.ExamQuestionRelationItemMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.hl.yyx.modules.exam.model.ExamQuestionRelationItem">
+        <id column="id" property="id" />
+        <result column="q_id" property="qId" />
+        <result column="i_id" property="iId" />
+    </resultMap>
+
+</mapper>
