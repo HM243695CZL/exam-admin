@@ -44,7 +44,7 @@ public class ExamQuestion extends BaseModelDTO implements Serializable {
     private String questionTypeName;
 
     @ApiModelProperty(value = "分数")
-    private String score;
+    private Integer score;
 
     @ApiModelProperty(value = "难度 1 简单  2 一般   3 困难")
     private Integer difficulty;

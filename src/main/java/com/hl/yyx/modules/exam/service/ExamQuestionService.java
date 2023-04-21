@@ -22,4 +22,6 @@ public interface ExamQuestionService extends IService<ExamQuestion> {
     ExamQuestion view(String id);
 
     Boolean updateQuestion(ExamQuestion examQuestion);
+
+    Boolean delete(String id);
 }

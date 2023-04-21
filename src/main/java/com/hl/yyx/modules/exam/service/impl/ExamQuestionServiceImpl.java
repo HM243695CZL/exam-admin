@@ -130,6 +130,21 @@ public class ExamQuestionServiceImpl extends ServiceImpl<ExamQuestionMapper, Exa
         return update;
     }
 
+    @Override
+    @Transactional
+    public Boolean delete(String id) {
+        boolean b = removeById(id);
+        // 根据试题id获取选项id
+        List<String> itemIds = relationItemService.list(new QueryWrapper<ExamQuestionRelationItem>()
+                .eq("q_id", id).select("i_id")).stream()
+                .map(ExamQuestionRelationItem::getIId).collect(Collectors.toList());
+        questionItemService.removeByIds(itemIds);
+        QueryWrapper<ExamQuestionRelationItem> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(ExamQuestionRelationItem::getQId, id);
+        relationItemService.remove(queryWrapper);
+        return b;
+    }
+
     public void saveQuestionItem(ExamQuestionItem questionItem, String questionId) {
         questionItemService.save(questionItem);
         ExamQuestionRelationItem relationItem = new ExamQuestionRelationItem();

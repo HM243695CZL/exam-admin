@@ -63,7 +63,7 @@ import org.springframework.web.bind.annotation.RestController;
     @ApiOperation("删除试题")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
     public CommonResult delete(@PathVariable String id){
-        return CommonResult.success( examQuestionService.removeById(id));
+        return CommonResult.success( examQuestionService.delete(id));
     }
 
     // 获取全部
