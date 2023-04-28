@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 20/04/2023 19:28:11
+ Date: 28/04/2023 16:20:48
 */
 
 SET NAMES utf8mb4;
@@ -46,9 +46,9 @@ CREATE TABLE `exam_question`  (
   `question_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '试题分类',
   `score` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '分数',
   `difficulty` tinyint(10) NULL DEFAULT NULL COMMENT '难度 1 简单  2 一般   3 困难',
-  `question` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '题目',
+  `question` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '题目',
   `analysis` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '解析',
-  `answer` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '答案',
+  `answer` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '答案',
   `add_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
@@ -58,7 +58,8 @@ CREATE TABLE `exam_question`  (
 -- ----------------------------
 -- Records of exam_question
 -- ----------------------------
-INSERT INTO `exam_question` VALUES ('05b4a79f9f45721f71844153ef28f821', 1, 'c187b7c3f61b283117b3bc702908d57f', '5', NULL, 'test', 'e', 'A', '2023-04-20 17:12:48', '2023-04-20 17:12:48', 1);
+INSERT INTO `exam_question` VALUES ('faac4b8b1befa28c4ff480460e19da58', 1, 'c187b7c3f61b283117b3bc702908d57f', '5', 1, '<p>单选题？</p>', '<p>选C</p>', 'C', '2023-04-28 15:33:03', '2023-04-28 15:33:03', 1);
+INSERT INTO `exam_question` VALUES ('aa95541e36638de896f079bfcfa2baf7', 2, 'c187b7c3f61b283117b3bc702908d57f', '5', 1, '<p>多选题？</p>', '<p>选B和C</p>', 'B,C', '2023-04-28 16:07:14', '2023-04-28 16:07:14', 1);
 
 -- ----------------------------
 -- Table structure for exam_question_item
@@ -67,6 +68,7 @@ DROP TABLE IF EXISTS `exam_question_item`;
 CREATE TABLE `exam_question_item`  (
   `id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '选项名称',
+  `sort_index` int(255) NULL DEFAULT NULL COMMENT '排序字段',
   `add_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
@@ -76,8 +78,14 @@ CREATE TABLE `exam_question_item`  (
 -- ----------------------------
 -- Records of exam_question_item
 -- ----------------------------
-INSERT INTO `exam_question_item` VALUES ('4557ea1956b5abac2679e7ac5f8eae08', 'qqq', '2023-04-20 17:12:51', '2023-04-20 17:12:51', 1);
-INSERT INTO `exam_question_item` VALUES ('55cc2ba0c02944391462f51d17292984', 'wwww', '2023-04-20 17:12:51', '2023-04-20 17:12:51', 1);
+INSERT INTO `exam_question_item` VALUES ('ace5cd43facf7ded1b91059d70eb8f7f', '22222222', 2, '2023-04-28 15:33:03', '2023-04-28 15:33:03', 1);
+INSERT INTO `exam_question_item` VALUES ('3168fd256a1a9cce680325372bef7941', '1111111', 1, '2023-04-28 15:33:03', '2023-04-28 15:33:03', 1);
+INSERT INTO `exam_question_item` VALUES ('ea1ddd6637f652fb0c2639cdc4ed584c', '33333333', 3, '2023-04-28 15:33:03', '2023-04-28 15:33:03', 1);
+INSERT INTO `exam_question_item` VALUES ('25d7b8e444b8c114c0c1b69c8f497d08', '44444', 4, '2023-04-28 15:33:03', '2023-04-28 15:33:03', 1);
+INSERT INTO `exam_question_item` VALUES ('12b933e74ba9daa633fcdaa50ac7463f', 'QQQQQ', 1, '2023-04-28 16:07:14', '2023-04-28 16:07:14', 1);
+INSERT INTO `exam_question_item` VALUES ('fb09a8bf730e32b8eb75810ba135478b', 'WWWW', 2, '2023-04-28 16:07:14', '2023-04-28 16:07:14', 1);
+INSERT INTO `exam_question_item` VALUES ('dc9febab16f4030aec841e4c458b1502', 'EEEEE', 3, '2023-04-28 16:07:14', '2023-04-28 16:07:14', 1);
+INSERT INTO `exam_question_item` VALUES ('a81dd5f8806b5106676cc8c1d152a3de', 'RRRRR', 4, '2023-04-28 16:07:14', '2023-04-28 16:07:14', 1);
 
 -- ----------------------------
 -- Table structure for exam_question_relation_item
@@ -93,8 +101,14 @@ CREATE TABLE `exam_question_relation_item`  (
 -- ----------------------------
 -- Records of exam_question_relation_item
 -- ----------------------------
-INSERT INTO `exam_question_relation_item` VALUES ('5d6e9fe8476ac3d38affb65cfe406592', '05b4a79f9f45721f71844153ef28f821', '4557ea1956b5abac2679e7ac5f8eae08');
-INSERT INTO `exam_question_relation_item` VALUES ('0cb7e67cc62ebe7950ebe4cdec54dd9c', '05b4a79f9f45721f71844153ef28f821', '55cc2ba0c02944391462f51d17292984');
+INSERT INTO `exam_question_relation_item` VALUES ('a6bc1fe6013f54079246b6391bf7b089', 'aa95541e36638de896f079bfcfa2baf7', 'fb09a8bf730e32b8eb75810ba135478b');
+INSERT INTO `exam_question_relation_item` VALUES ('354078f66c6e946af6d3c257573f5f13', 'faac4b8b1befa28c4ff480460e19da58', 'ea1ddd6637f652fb0c2639cdc4ed584c');
+INSERT INTO `exam_question_relation_item` VALUES ('fda3ade777a207834621c82f0a3b1c66', 'faac4b8b1befa28c4ff480460e19da58', '25d7b8e444b8c114c0c1b69c8f497d08');
+INSERT INTO `exam_question_relation_item` VALUES ('ecf3ed539246741e59dc00a3294ebf10', 'aa95541e36638de896f079bfcfa2baf7', '12b933e74ba9daa633fcdaa50ac7463f');
+INSERT INTO `exam_question_relation_item` VALUES ('f2e0e56656c0ee561d59f5112a3254a5', 'faac4b8b1befa28c4ff480460e19da58', 'ace5cd43facf7ded1b91059d70eb8f7f');
+INSERT INTO `exam_question_relation_item` VALUES ('ea56d8eb5710b8ebe6faf415a0744af3', 'faac4b8b1befa28c4ff480460e19da58', '3168fd256a1a9cce680325372bef7941');
+INSERT INTO `exam_question_relation_item` VALUES ('6b720bf1fcc03f6f00750d8232342cbe', 'aa95541e36638de896f079bfcfa2baf7', 'dc9febab16f4030aec841e4c458b1502');
+INSERT INTO `exam_question_relation_item` VALUES ('851f9bcbdfae244c4390486425399439', 'aa95541e36638de896f079bfcfa2baf7', 'a81dd5f8806b5106676cc8c1d152a3de');
 
 -- ----------------------------
 -- Table structure for ums_admin
@@ -116,7 +130,7 @@ CREATE TABLE `ums_admin`  (
 -- ----------------------------
 -- Records of ums_admin
 -- ----------------------------
-INSERT INTO `ums_admin` VALUES (3, 'admin', '123456', '0:0:0:0:0:0:0:1', '2023-04-20 14:47:09', 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220620/lihezong.webp', '2022-06-20 16:11:43', '2022-06-20 16:11:43', 1);
+INSERT INTO `ums_admin` VALUES (3, 'admin', '123456', '0:0:0:0:0:0:0:1', '2023-04-28 09:54:23', 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220620/lihezong.webp', '2022-06-20 16:11:43', '2022-06-20 16:11:43', 1);
 
 -- ----------------------------
 -- Table structure for ums_admin_role

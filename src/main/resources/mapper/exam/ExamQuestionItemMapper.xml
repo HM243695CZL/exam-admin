@@ -6,6 +6,7 @@
     <resultMap id="BaseResultMap" type="com.hl.yyx.modules.exam.model.ExamQuestionItem">
         <id column="id" property="id" />
         <result column="name" property="name" />
+        <result column="sort_index" property="sortIndex" />
         <result column="add_time" property="addTime" />
         <result column="update_time" property="updateTime" />
         <result column="deleted" property="deleted" />

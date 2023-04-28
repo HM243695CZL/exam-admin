@@ -21,6 +21,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -87,8 +89,10 @@ public class ExamQuestionServiceImpl extends ServiceImpl<ExamQuestionMapper, Exa
     @Transactional
     public Boolean create(ExamQuestion examQuestion) {
         boolean save = save(examQuestion);
+        Integer index = 0;
         for (ExamQuestionItem item: examQuestion.getQuestionItemList()) {
-            saveQuestionItem(item, examQuestion.getId());
+            index ++;
+            saveQuestionItem(item, examQuestion.getId(), index);
         }
         return save;
     }
@@ -105,7 +109,9 @@ public class ExamQuestionServiceImpl extends ServiceImpl<ExamQuestionMapper, Exa
         for (String itemId: itemIds) {
             itemList.add(questionItemService.getById(itemId));
         }
-        examQuestion.setQuestionItemList(itemList);
+        // 根据sort_index字段排序
+        List<ExamQuestionItem> sortItemList = itemList.stream().sorted(Comparator.comparing(ExamQuestionItem::getSortIndex)).collect(Collectors.toList());
+        examQuestion.setQuestionItemList(sortItemList);
         return examQuestion;
     }
 
@@ -113,24 +119,40 @@ public class ExamQuestionServiceImpl extends ServiceImpl<ExamQuestionMapper, Exa
     @Transactional
     public Boolean updateQuestion(ExamQuestion examQuestion) {
         boolean update = updateById(examQuestion);
+        // 根据试题id获取选项id
+        List<String> itemIds = relationItemService.list(new QueryWrapper<ExamQuestionRelationItem>()
+                .eq("q_id", examQuestion.getId()).select("i_id")).stream()
+                .map(ExamQuestionRelationItem::getIId).collect(Collectors.toList());
+        questionItemService.removeByIds(itemIds);
+        Integer index = 1;
         for (ExamQuestionItem item: examQuestion.getQuestionItemList()) {
-            // 先删除再添加
-            // 根据试题id获取选项id
-            List<String> itemIds = relationItemService.list(new QueryWrapper<ExamQuestionRelationItem>()
-                    .eq("q_id", examQuestion.getId()).select("i_id")).stream()
-                    .map(ExamQuestionRelationItem::getIId).collect(Collectors.toList());
-            questionItemService.removeByIds(itemIds);
-
             QueryWrapper<ExamQuestionRelationItem> queryWrapper = new QueryWrapper<>();
             queryWrapper.lambda().eq(ExamQuestionRelationItem::getQId, examQuestion.getId());
+            queryWrapper.lambda().eq(ExamQuestionRelationItem::getIId, item.getId());
             relationItemService.remove(queryWrapper);
 
-            saveQuestionItem(item, examQuestion.getId());
+            index ++;
+            saveQuestionItem(item, examQuestion.getId(), index);
         }
         return update;
     }
 
-    public void saveQuestionItem(ExamQuestionItem questionItem, String questionId) {
+    @Override
+    public Boolean delete(String id) {
+        boolean b = removeById(id);
+        List<String> itemIds = relationItemService.list(new QueryWrapper<ExamQuestionRelationItem>()
+                .eq("q_id", id).select("i_id")).stream()
+                .map(ExamQuestionRelationItem::getIId).collect(Collectors.toList());
+        questionItemService.removeByIds(itemIds);
+
+        QueryWrapper<ExamQuestionRelationItem> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(ExamQuestionRelationItem::getQId, id);
+        relationItemService.remove(queryWrapper);
+        return b;
+    }
+
+    public void saveQuestionItem(ExamQuestionItem questionItem, String questionId, Integer index) {
+        questionItem.setSortIndex(index);
         questionItemService.save(questionItem);
         ExamQuestionRelationItem relationItem = new ExamQuestionRelationItem();
         relationItem.setQId(questionId);

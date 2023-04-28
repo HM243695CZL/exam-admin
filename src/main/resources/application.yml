@@ -12,7 +12,7 @@ mybatis-plus:
   global-config:
     db-config:
       id-type: auto
-      update-strategy: ignored
+      update-strategy: not_null
   configuration:
     auto-mapping-behavior: partial
     map-underscore-to-camel-case: true

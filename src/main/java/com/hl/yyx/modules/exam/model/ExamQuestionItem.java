@@ -34,4 +34,7 @@ public class ExamQuestionItem extends BaseModelDTO implements Serializable {
     @ApiModelProperty(value = "选项名称")
     private String name;
 
+    @ApiModelProperty(value = "排序字段")
+    private Integer sortIndex;
+
 }
