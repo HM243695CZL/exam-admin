@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.util.Date;
 import java.io.Serializable;
-import java.util.List;
 
 import com.hl.yyx.common.vo.BaseModelDTO;
 import io.swagger.annotations.ApiModel;
@@ -16,32 +15,37 @@ import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 试题分类表
+ * 试卷库
  * </p>
  *
  * @author hl243695czyn
- * @since 2023-04-19
+ * @since 2023-04-28
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("exam_question_type")
-@ApiModel(value="ExamPaperType对象", description="试题分类表")
-public class ExamPaperType extends BaseModelDTO implements Serializable {
+@TableName("exam_paper")
+@ApiModel(value="ExamPaper对象", description="试卷库")
+public class ExamPaper extends BaseModelDTO implements Serializable {
 
     private static final long serialVersionUID=1L;
 
     @TableId(value = "id", type = IdType.ASSIGN_UUID)
     private String id;
 
-    @ApiModelProperty(value = "试题分类")
+    @ApiModelProperty(value = "试卷名称")
     @TableField("`name`")
     private String name;
 
-    @ApiModelProperty(value = "父级分类")
-    private String parentId;
+    @ApiModelProperty(value = "试卷总分")
+    private Integer score;
 
-    @ApiModelProperty(value = "子分类")
-    @TableField(exist = false)
-    private List<ExamPaperType> children;
+    @ApiModelProperty(value = "试题总数")
+    private Integer questionCount;
+
+    @ApiModelProperty(value = "答题时间")
+    private String questionDuration;
+
+    @ApiModelProperty(value = "是否限时  1 不限时  2 限时")
+    private Integer timeLimit;
 
 }
