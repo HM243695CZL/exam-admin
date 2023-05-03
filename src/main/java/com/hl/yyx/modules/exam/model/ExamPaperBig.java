@@ -16,45 +16,39 @@ import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 试卷库
+ * 试卷大题表
  * </p>
  *
  * @author hl243695czyn
- * @since 2023-04-28
+ * @since 2023-05-03
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("exam_paper")
-@ApiModel(value="ExamPaper对象", description="试卷库")
-public class ExamPaper extends BaseModelDTO implements Serializable {
+@TableName("exam_paper_big")
+@ApiModel(value="ExamPaperBig对象", description="试卷大题表")
+public class ExamPaperBig extends BaseModelDTO implements Serializable {
 
     private static final long serialVersionUID=1L;
 
     @TableId(value = "id", type = IdType.ASSIGN_UUID)
     private String id;
 
-    @ApiModelProperty(value = "试卷名称")
+    @ApiModelProperty(value = "试卷id")
+    private String paperId;
+
+    @ApiModelProperty(value = "大题名称")
     @TableField("`name`")
     private String name;
 
-    @ApiModelProperty(value = "试卷总分")
-    private Integer score;
+    @ApiModelProperty(value = "大题总分")
+    private String questionScore;
 
-    @ApiModelProperty(value = "试题总数")
-    private Integer questionCount;
+    @ApiModelProperty(value = "大题类型  1 单选题  2 多选题  3 判断题")
+    private String type;
 
-    @ApiModelProperty(value = "答题时间")
-    private String questionDuration;
-
-    @ApiModelProperty(value = "是否限时  1 不限时  2 限时")
-    private Integer timeLimit;
-
-    @ApiModelProperty(value = "试题信息")
+    @ApiModelProperty(value = "试题列表")
     @TableField(exist = false)
-    private String questionInfo;
+    private List<ExamPaperBigRelation> questionList;
 
-    @ApiModelProperty(value = "大题")
-    @TableField(exist = false)
-    private List<ExamPaperBig> questionBigType;
 
 }

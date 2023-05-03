@@ -4,9 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hl.yyx.modules.exam.dto.QuestionPageDTO;
-import com.hl.yyx.modules.exam.mapper.ExamQuestionItemMapper;
-import com.hl.yyx.modules.exam.mapper.ExamQuestionRelationItemMapper;
-import com.hl.yyx.modules.exam.model.ExamPaperType;
+import com.hl.yyx.modules.exam.model.ExamQuestionType;
 import com.hl.yyx.modules.exam.model.ExamQuestion;
 import com.hl.yyx.modules.exam.mapper.ExamQuestionMapper;
 import com.hl.yyx.modules.exam.model.ExamQuestionItem;
@@ -21,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -68,7 +65,7 @@ public class ExamQuestionServiceImpl extends ServiceImpl<ExamQuestionMapper, Exa
         Page<ExamQuestion> pageList = page(page, queryWrapper);
         pageList.getRecords().stream().forEach(item -> {
             // 设置试题类型名称
-            ExamPaperType paperType = paperTypeService.getById(item.getQuestionType());
+            ExamQuestionType paperType = paperTypeService.getById(item.getQuestionType());
             item.setQuestionTypeName(paperType.getName());
 
             // 根据试题id获取选项id

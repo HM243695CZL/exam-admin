@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.*;
 
 import com.hl.yyx.modules.exam.service.ExamPaperTypeService;
-import com.hl.yyx.modules.exam.model.ExamPaperType;
+import com.hl.yyx.modules.exam.model.ExamQuestionType;
 
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,16 +34,16 @@ import org.springframework.web.bind.annotation.RestController;
     @LogAnnotation()
     @ApiOperation("新增试题分类")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public CommonResult save(@RequestBody ExamPaperType examPaperType){
-        return CommonResult.success(examPaperTypeService.save(examPaperType));
+    public CommonResult save(@RequestBody ExamQuestionType examQuestionType){
+        return CommonResult.success(examPaperTypeService.save(examQuestionType));
     }
 
     // 更新
     @LogAnnotation()
     @ApiOperation("更新试题分类")
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public CommonResult update(@RequestBody ExamPaperType examPaperType){
-        return CommonResult.success(examPaperTypeService.updateById(examPaperType));
+    public CommonResult update(@RequestBody ExamQuestionType examQuestionType){
+        return CommonResult.success(examPaperTypeService.updateById(examQuestionType));
     }
 
     // 删除

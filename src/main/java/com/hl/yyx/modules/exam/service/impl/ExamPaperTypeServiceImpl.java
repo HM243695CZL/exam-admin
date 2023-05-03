@@ -1,7 +1,7 @@
 package com.hl.yyx.modules.exam.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
-import com.hl.yyx.modules.exam.model.ExamPaperType;
+import com.hl.yyx.modules.exam.model.ExamQuestionType;
 import com.hl.yyx.modules.exam.mapper.ExamPaperTypeMapper;
 import com.hl.yyx.modules.exam.service.ExamPaperTypeService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -19,19 +19,19 @@ import java.util.List;
  * @since 2023-04-19
  */
 @Service
-public class ExamPaperTypeServiceImpl extends ServiceImpl<ExamPaperTypeMapper, ExamPaperType> implements ExamPaperTypeService {
+public class ExamPaperTypeServiceImpl extends ServiceImpl<ExamPaperTypeMapper, ExamQuestionType> implements ExamPaperTypeService {
 
     @Override
-    public List<ExamPaperType> getList() {
-        List<ExamPaperType> list = list();
-        ArrayList<ExamPaperType> dataList = new ArrayList<>();
-        for (ExamPaperType paper: list) {
+    public List<ExamQuestionType> getList() {
+        List<ExamQuestionType> list = list();
+        ArrayList<ExamQuestionType> dataList = new ArrayList<>();
+        for (ExamQuestionType paper: list) {
             if (ObjectUtil.isEmpty(paper.getParentId())) {
                 paper.setChildren(new ArrayList<>());
                 dataList.add(paper);
             }
         }
-        for (ExamPaperType paper: dataList) {
+        for (ExamQuestionType paper: dataList) {
             paper.getChildren().add(findPaperChildren(paper, list));
         }
         return dataList;
@@ -41,9 +41,9 @@ public class ExamPaperTypeServiceImpl extends ServiceImpl<ExamPaperTypeMapper, E
      * 递归试题分类
      * @return
      */
-    private ExamPaperType findPaperChildren(ExamPaperType paper, List<ExamPaperType> list) {
+    private ExamQuestionType findPaperChildren(ExamQuestionType paper, List<ExamQuestionType> list) {
         paper.setChildren(new ArrayList<>());
-        for (ExamPaperType item: list) {
+        for (ExamQuestionType item: list) {
             if (paper.getId().equals(item.getParentId())) {
                 paper.getChildren().add(findPaperChildren(item, list));
             }

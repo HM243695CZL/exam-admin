@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.util.Date;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -26,7 +26,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 @TableName("exam_question_type")
 @ApiModel(value="ExamPaperType对象", description="试题分类表")
-public class ExamPaperType extends BaseModelDTO implements Serializable {
+public class ExamQuestionType extends BaseModelDTO implements Serializable {
 
     private static final long serialVersionUID=1L;
 
@@ -42,6 +42,6 @@ public class ExamPaperType extends BaseModelDTO implements Serializable {
 
     @ApiModelProperty(value = "子分类")
     @TableField(exist = false)
-    private List<ExamPaperType> children;
+    private List<ExamQuestionType> children;
 
 }

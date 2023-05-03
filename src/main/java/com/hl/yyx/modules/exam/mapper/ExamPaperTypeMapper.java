@@ -1,6 +1,6 @@
 package com.hl.yyx.modules.exam.mapper;
 
-import com.hl.yyx.modules.exam.model.ExamPaperType;
+import com.hl.yyx.modules.exam.model.ExamQuestionType;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author hl243695czyn
  * @since 2023-04-19
  */
-public interface ExamPaperTypeMapper extends BaseMapper<ExamPaperType> {
+public interface ExamPaperTypeMapper extends BaseMapper<ExamQuestionType> {
 
 }

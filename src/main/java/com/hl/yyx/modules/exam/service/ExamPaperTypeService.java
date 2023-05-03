@@ -1,6 +1,6 @@
 package com.hl.yyx.modules.exam.service;
 
-import com.hl.yyx.modules.exam.model.ExamPaperType;
+import com.hl.yyx.modules.exam.model.ExamQuestionType;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.List;
  * @author hl243695czyn
  * @since 2023-04-19
  */
-public interface ExamPaperTypeService extends IService<ExamPaperType> {
+public interface ExamPaperTypeService extends IService<ExamQuestionType> {
 
-    List<ExamPaperType> getList();
+    List<ExamQuestionType> getList();
 }

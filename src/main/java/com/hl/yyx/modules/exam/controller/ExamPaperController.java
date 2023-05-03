@@ -47,7 +47,7 @@ import org.springframework.web.bind.annotation.RestController;
     @LogAnnotation()
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public CommonResult save(@RequestBody ExamPaper examPaper){
-        return CommonResult.success(examPaperService.save(examPaper));
+        return CommonResult.success(examPaperService.create(examPaper));
     }
 
     // 更新

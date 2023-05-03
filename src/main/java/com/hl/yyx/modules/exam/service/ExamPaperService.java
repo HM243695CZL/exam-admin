@@ -16,4 +16,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface ExamPaperService extends IService<ExamPaper> {
 
     Page<ExamPaper> pageList(PaperPageDTO params);
+
+    Boolean create(ExamPaper examPaper);
 }
