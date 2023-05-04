@@ -55,7 +55,7 @@ import org.springframework.web.bind.annotation.RestController;
     @LogAnnotation()
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public CommonResult update(@RequestBody ExamPaper examPaper){
-        return CommonResult.success(examPaperService.updateById(examPaper));
+        return CommonResult.success(examPaperService.updatePaper(examPaper));
     }
 
     // 删除
@@ -79,7 +79,7 @@ import org.springframework.web.bind.annotation.RestController;
     @LogAnnotation()
     @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
     public CommonResult findOne(@PathVariable String id){
-        return CommonResult.success(examPaperService.getById(id));
+        return CommonResult.success(examPaperService.view(id));
     }
 
 }

@@ -1,6 +1,7 @@
 package com.hl.yyx.modules.exam.model;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
@@ -35,7 +36,11 @@ public class ExamPaperBigRelation implements Serializable {
     private String questionId;
 
     @ApiModelProperty(value = "当前题的分数")
-    private String score;
+    private Integer score;
+
+    @ApiModelProperty(value = "试题信息")
+    @TableField(exist = false)
+    private Object questionInfo;
 
 
 }

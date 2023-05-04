@@ -18,4 +18,8 @@ public interface ExamPaperService extends IService<ExamPaper> {
     Page<ExamPaper> pageList(PaperPageDTO params);
 
     Boolean create(ExamPaper examPaper);
+
+    Object view(String id);
+
+    Boolean updatePaper(ExamPaper examPaper);
 }
