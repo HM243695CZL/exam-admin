@@ -63,7 +63,7 @@ import org.springframework.web.bind.annotation.RestController;
     @LogAnnotation()
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
     public CommonResult delete(@PathVariable String id){
-        return CommonResult.success( examPaperService.removeById(id));
+        return CommonResult.success( examPaperService.delete(id));
     }
 
     // 获取全部

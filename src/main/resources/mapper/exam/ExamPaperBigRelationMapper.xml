@@ -7,7 +7,9 @@
         <id column="id" property="id" />
         <result column="big_id" property="bigId" />
         <result column="question_id" property="questionId" />
+        <result column="paper_id" property="paperId" />
         <result column="score" property="score" />
+        <result column="sort_index" property="sortIndex" />
     </resultMap>
 
 </mapper>

@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hl.yyx.modules.exam.dto.BigQuestionDTO;
 import com.hl.yyx.modules.exam.dto.PaperPageDTO;
+import com.hl.yyx.modules.exam.dto.QuestionMapDTO;
 import com.hl.yyx.modules.exam.dto.ViewPaperDTO;
 import com.hl.yyx.modules.exam.model.*;
 import com.hl.yyx.modules.exam.mapper.ExamPaperMapper;
@@ -83,20 +84,7 @@ public class ExamPaperServiceImpl extends ServiceImpl<ExamPaperMapper, ExamPaper
         // 保存试卷
         boolean b = save(examPaper);
         // 保存大题
-        for (ExamPaperBig examPaperBig : examPaper.getQuestionBigType()) {
-            ExamPaperBig paperBig = new ExamPaperBig();
-            BeanUtil.copyProperties(examPaperBig, paperBig);
-            paperBig.setPaperId(examPaper.getId());
-            paperBigService.save(paperBig);
-            // 保存大题中的题目
-            for (ExamPaperBigRelation bigRelation : examPaperBig.getQuestionList()) {
-                ExamPaperBigRelation relation = new ExamPaperBigRelation();
-                relation.setBigId(paperBig.getId());
-                relation.setQuestionId(bigRelation.getId());
-                relation.setScore(bigRelation.getScore());
-                relationService.save(relation);
-            }
-        }
+        setBigQuestion(examPaper);
         return b;
     }
 
@@ -125,17 +113,18 @@ public class ExamPaperServiceImpl extends ServiceImpl<ExamPaperMapper, ExamPaper
                 QueryWrapper<ExamPaperBigRelation> queryWrapper = new QueryWrapper<>();
                 queryWrapper.lambda().eq(ExamPaperBigRelation::getBigId, paperBig.getId());
                 List<ExamPaperBigRelation> list = relationService.list(queryWrapper);
-                ArrayList<Object> questionList = new ArrayList<>();
+                ArrayList<QuestionMapDTO> questionList = new ArrayList<>();
                 for (ExamPaperBigRelation relation : list) {
                     // 获取试题名称
                     ExamQuestion questionInfo = questionService.getById(relation.getQuestionId());
 
-                    Map<String, Object> questionMap = new HashMap<>();
-                    questionMap.put("id", questionInfo.getId());
-                    questionMap.put("question", questionInfo.getQuestion());
-                    questionMap.put("score", relation.getScore());
-                    questionMap.put("answer", questionInfo.getAnswer());
-                    questionMap.put("analysis", questionInfo.getAnalysis());
+                    QuestionMapDTO questionMap = new QuestionMapDTO();
+                    questionMap.setId(questionInfo.getId());
+                    questionMap.setQuestion(questionInfo.getQuestion());
+                    questionMap.setScore(relation.getScore());
+                    questionMap.setAnswer(questionInfo.getAnswer());
+                    questionMap.setAnalysis(questionInfo.getAnalysis());
+                    questionMap.setSortIndex(relation.getSortIndex());
                     // 根据试题id获取选项id
                     List<String> itemIds = relationItemService.list(new QueryWrapper<ExamQuestionRelationItem>()
                             .eq("q_id", relation.getQuestionId()).select("i_id")).stream()
@@ -147,10 +136,12 @@ public class ExamPaperServiceImpl extends ServiceImpl<ExamPaperMapper, ExamPaper
                     }
                     // 根据sort_index字段排序
                     List<ExamQuestionItem> sortItemList = itemList.stream().sorted(Comparator.comparing(ExamQuestionItem::getSortIndex)).collect(Collectors.toList());
-                    questionMap.put("questionItemList", sortItemList);
+                    questionMap.setQuestionItemList(sortItemList);
                     questionList.add(questionMap);
                 }
-                bigQuestion.setQuestionList(questionList);
+                // 排序
+                List<QuestionMapDTO> sortQuestionList = questionList.stream().sorted(Comparator.comparing(QuestionMapDTO::getSortIndex)).collect(Collectors.toList());
+                bigQuestion.setQuestionList(sortQuestionList);
             }
             bigQuestionList.add(bigQuestion);
         }
@@ -162,29 +153,54 @@ public class ExamPaperServiceImpl extends ServiceImpl<ExamPaperMapper, ExamPaper
     @Override
     public Boolean updatePaper(ExamPaper examPaper) {
         boolean update = updateById(examPaper);
+        // 更新大题， 先删除，再添加
+        QueryWrapper<ExamPaperBig> wrapper = new QueryWrapper<>();
+        wrapper.lambda().eq(ExamPaperBig::getPaperId, examPaper.getId());
+        paperBigService.remove(wrapper);
+
+        QueryWrapper<ExamPaperBigRelation> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(ExamPaperBigRelation::getPaperId, examPaper.getId());
+        relationService.remove(queryWrapper);
+        setBigQuestion(examPaper);
+        return update;
+    }
+
+    private void setBigQuestion(ExamPaper examPaper) {
         for (ExamPaperBig examPaperBig : examPaper.getQuestionBigType()) {
-            // 更新大题， 先删除，再添加
-            QueryWrapper<ExamPaperBig> wrapper = new QueryWrapper<>();
-            wrapper.lambda().eq(ExamPaperBig::getPaperId, examPaper.getId());
-            paperBigService.remove(wrapper);
             ExamPaperBig paperBig = new ExamPaperBig();
             BeanUtil.copyProperties(examPaperBig, paperBig);
             paperBig.setPaperId(examPaper.getId());
             paperBigService.save(paperBig);
-
             // 更新大题中的题目
-            for (ExamPaperBigRelation bigRelation : examPaperBig.getQuestionList()) {
-                QueryWrapper<ExamPaperBigRelation> queryWrapper = new QueryWrapper<>();
-                queryWrapper.lambda().eq(ExamPaperBigRelation::getBigId, bigRelation.getBigId());
-                relationService.remove(queryWrapper);
-
-                ExamPaperBigRelation relation = new ExamPaperBigRelation();
-                relation.setBigId(paperBig.getId());
-                relation.setQuestionId(bigRelation.getId());
-                relation.setScore(bigRelation.getScore());
-                relationService.save(relation);
-            }
+            saveQuestionOption(examPaper, examPaperBig, paperBig);
         }
-        return update;
+    }
+
+    private void saveQuestionOption(ExamPaper examPaper, ExamPaperBig examPaperBig, ExamPaperBig paperBig) {
+        Integer index = 0;
+        for (ExamPaperBigRelation bigRelation : examPaperBig.getQuestionList()) {
+            ExamPaperBigRelation relation = new ExamPaperBigRelation();
+            relation.setBigId(paperBig.getId());
+            relation.setQuestionId(bigRelation.getId());
+            relation.setScore(bigRelation.getScore());
+            relation.setPaperId(examPaper.getId());
+            index ++;
+            relation.setSortIndex(index);
+            relationService.save(relation);
+        }
+    }
+
+    @Transactional
+    @Override
+    public Boolean delete(String id) {
+        boolean b = removeById(id);
+        QueryWrapper<ExamPaperBig> wrapper = new QueryWrapper<>();
+        wrapper.lambda().eq(ExamPaperBig::getPaperId, id);
+        paperBigService.remove(wrapper);
+
+        QueryWrapper<ExamPaperBigRelation> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(ExamPaperBigRelation::getPaperId, id);
+        relationService.remove(queryWrapper);
+        return b;
     }
 }

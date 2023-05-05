@@ -22,4 +22,6 @@ public interface ExamPaperService extends IService<ExamPaper> {
     Object view(String id);
 
     Boolean updatePaper(ExamPaper examPaper);
+
+    Boolean delete(String id);
 }

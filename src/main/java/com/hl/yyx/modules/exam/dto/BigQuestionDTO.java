@@ -24,5 +24,5 @@ public class BigQuestionDTO {
     private String questionScore;
 
     @ApiModelProperty(value = "试题列表")
-    private List<Object> questionList;
+    private List<QuestionMapDTO> questionList;
 }

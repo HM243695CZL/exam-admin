@@ -35,8 +35,14 @@ public class ExamPaperBigRelation implements Serializable {
     @ApiModelProperty(value = "题目id")
     private String questionId;
 
+    @ApiModelProperty(value = "试卷id")
+    private String paperId;
+
     @ApiModelProperty(value = "当前题的分数")
     private Integer score;
+
+    @ApiModelProperty(value = "排序字段")
+    private Integer sortIndex;
 
     @ApiModelProperty(value = "试题信息")
     @TableField(exist = false)
