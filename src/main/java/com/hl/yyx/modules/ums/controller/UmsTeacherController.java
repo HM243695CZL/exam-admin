@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
  * @author hl243695czyn
  * @since 2023-04-19
  */
-@Api(value = "教师管理", description = "教师挂你")
+@Api(tags = "教师管理", description = "教师管理")
 @RestController
 @RequestMapping("/admin/teacher")
     public class UmsTeacherController {

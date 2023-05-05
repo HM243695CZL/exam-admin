@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author hl243695czyn
  * @since 2023-04-19
  */
-@Api(value = "试题分类管理", description = "试题分类管理")
+@Api(tags = "试题分类管理", description = "试题分类管理")
 @RestController
 @RequestMapping("/admin/exam/paper-type")
     public class ExamPaperTypeController {

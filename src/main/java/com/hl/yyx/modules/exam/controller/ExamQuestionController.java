@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author hl243695czyn
  * @since 2023-04-20
  */
-@Api(value = "试题管理", description = "试题管理")
+@Api(tags = "试题管理", description = "试题管理")
 @RestController
 @RequestMapping("/admin/exam/question")
     public class ExamQuestionController {

@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author hl243695czyn
  * @since 2023-04-19
  */
-@Api(value = "部门管理", description = "部门管理")
+@Api(tags = "部门管理", description = "部门管理")
 @RestController
 @RequestMapping("/admin/dept")
     public class UmsDeptController {
