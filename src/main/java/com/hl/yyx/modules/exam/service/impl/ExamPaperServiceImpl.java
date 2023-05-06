@@ -89,7 +89,7 @@ public class ExamPaperServiceImpl extends ServiceImpl<ExamPaperMapper, ExamPaper
     }
 
     @Override
-    public Object view(String id) {
+    public Object view(String id, Boolean isPreview) {
         ViewPaperDTO viewPaper = new ViewPaperDTO();
         ExamPaper paper = getById(id);
 
@@ -122,8 +122,10 @@ public class ExamPaperServiceImpl extends ServiceImpl<ExamPaperMapper, ExamPaper
                     questionMap.setId(questionInfo.getId());
                     questionMap.setQuestion(questionInfo.getQuestion());
                     questionMap.setScore(relation.getScore());
-                    questionMap.setAnswer(questionInfo.getAnswer());
-                    questionMap.setAnalysis(questionInfo.getAnalysis());
+                    if (!isPreview) {
+                        questionMap.setAnswer(questionInfo.getAnswer());
+                        questionMap.setAnalysis(questionInfo.getAnalysis());
+                    }
                     questionMap.setSortIndex(relation.getSortIndex());
                     // 根据试题id获取选项id
                     List<String> itemIds = relationItemService.list(new QueryWrapper<ExamQuestionRelationItem>()

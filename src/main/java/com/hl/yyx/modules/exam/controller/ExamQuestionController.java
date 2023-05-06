@@ -17,6 +17,8 @@ import com.hl.yyx.modules.exam.model.ExamQuestion;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * <p>
  * 试题表 前端控制器
@@ -64,6 +66,14 @@ import org.springframework.web.bind.annotation.RestController;
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
     public CommonResult delete(@PathVariable String id){
         return CommonResult.success( examQuestionService.delete(id));
+    }
+
+    // 批量删除
+    @LogAnnotation()
+    @ApiOperation("批量删除")
+    @RequestMapping(value = "/deleteBatch", method = RequestMethod.POST)
+    public CommonResult deleteBatch(@RequestBody List<String> ids) {
+        return CommonResult.success(examQuestionService.removeByIds(ids));
     }
 
     // 获取全部

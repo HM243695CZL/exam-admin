@@ -19,7 +19,7 @@ public interface ExamPaperService extends IService<ExamPaper> {
 
     Boolean create(ExamPaper examPaper);
 
-    Object view(String id);
+    Object view(String id, Boolean isPreview);
 
     Boolean updatePaper(ExamPaper examPaper);
 

@@ -79,7 +79,15 @@ import org.springframework.web.bind.annotation.RestController;
     @LogAnnotation()
     @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
     public CommonResult findOne(@PathVariable String id){
-        return CommonResult.success(examPaperService.view(id));
+        return CommonResult.success(examPaperService.view(id, false));
+    }
+
+    // 预览试卷
+    @ApiOperation("预览试卷")
+    @LogAnnotation()
+    @RequestMapping(value = "/preview/{id}", method = RequestMethod.GET)
+    public CommonResult preview(@PathVariable String id) {
+        return CommonResult.success(examPaperService.view(id, true));
     }
 
 }

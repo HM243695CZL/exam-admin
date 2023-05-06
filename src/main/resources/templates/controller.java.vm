@@ -63,6 +63,12 @@ class ${table.controllerName}#if(${superControllerClass}) : ${superControllerCla
         return CommonResult.success( ${table.entityPath}Service.removeById(id));
     }
 
+    // 批量删除
+    @RequestMapping(value = "/batchDelete", method = RequestMethod.POST)
+    public CommonResult delete(@RequestBody List<String> ids){
+        return CommonResult.success( ${table.entityPath}Service.removeByIds(ids));
+    }
+
     // 获取全部
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public CommonResult list(){
