@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 03/05/2023 22:42:45
+ Date: 06/05/2023 11:24:08
 */
 
 SET NAMES utf8mb4;
@@ -37,9 +37,7 @@ CREATE TABLE `exam_paper`  (
 -- ----------------------------
 -- Records of exam_paper
 -- ----------------------------
-INSERT INTO `exam_paper` VALUES ('7bf23a5a1e881c768c6483b68df8e884', '考公试卷', '8', '2', NULL, '1', '2023-05-03 17:06:54', '2023-05-03 17:06:54', 1);
-INSERT INTO `exam_paper` VALUES ('928a3dd0f74de0c73d21af18efafb77a', '测试试卷', '6', '1', NULL, '1', '2023-05-03 17:20:44', '2023-05-03 17:20:44', 1);
-INSERT INTO `exam_paper` VALUES ('fc94a9dba6610cc72af465ffdc3e29e9', '两个大题', '10', '2', NULL, '1', '2023-05-03 17:21:58', '2023-05-03 17:21:58', 1);
+INSERT INTO `exam_paper` VALUES ('115dc574769211a7bcef1574e30d4483', '测试试卷', '20', '4', NULL, '1', '2023-05-05 16:46:44', '2023-05-05 16:47:14', 1);
 
 -- ----------------------------
 -- Table structure for exam_paper_big
@@ -60,10 +58,8 @@ CREATE TABLE `exam_paper_big`  (
 -- ----------------------------
 -- Records of exam_paper_big
 -- ----------------------------
-INSERT INTO `exam_paper_big` VALUES ('e6b1a592366d3fe662f92d119bd942de', '7bf23a5a1e881c768c6483b68df8e884', '一、单选题', '8', '1', '2023-05-03 17:06:54', '2023-05-03 17:06:54', 1);
-INSERT INTO `exam_paper_big` VALUES ('57e2f2a359182836a7ce6954c9c422b5', '928a3dd0f74de0c73d21af18efafb77a', '一、单选题', '6', '1', '2023-05-03 17:20:44', '2023-05-03 17:20:44', 1);
-INSERT INTO `exam_paper_big` VALUES ('ab00fb60db1d44460d53b16d069f2385', 'fc94a9dba6610cc72af465ffdc3e29e9', '一、单选题', '5', '1', '2023-05-03 17:21:58', '2023-05-03 17:21:58', 1);
-INSERT INTO `exam_paper_big` VALUES ('2d538bfcbc050427323b0a16acff51a4', 'fc94a9dba6610cc72af465ffdc3e29e9', '二、单选题', '5', '1', '2023-05-03 17:21:58', '2023-05-03 17:21:58', 1);
+INSERT INTO `exam_paper_big` VALUES ('79e646a299d939ac1ee29169e302089a', '115dc574769211a7bcef1574e30d4483', '一、单选题12', '10', '1', '2023-05-05 16:47:14', '2023-05-05 16:47:14', 1);
+INSERT INTO `exam_paper_big` VALUES ('e8118e659adb79bf3723e032e3c668ea', '115dc574769211a7bcef1574e30d4483', '二、单选题34', '10', '1', '2023-05-05 16:47:14', '2023-05-05 16:47:14', 1);
 
 -- ----------------------------
 -- Table structure for exam_paper_big_relation
@@ -72,19 +68,20 @@ DROP TABLE IF EXISTS `exam_paper_big_relation`;
 CREATE TABLE `exam_paper_big_relation`  (
   `id` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `big_id` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '大题id',
+  `paper_id` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '试卷id',
   `question_id` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '试题id',
   `score` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '当前题的分数',
+  `sort_index` int(255) NULL DEFAULT NULL COMMENT '排序',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '试题分数关系表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of exam_paper_big_relation
 -- ----------------------------
-INSERT INTO `exam_paper_big_relation` VALUES ('9370c392b002a5d6fabed1e15fe54987', 'e6b1a592366d3fe662f92d119bd942de', 'faac4b8b1befa28c4ff480460e19da58', '4');
-INSERT INTO `exam_paper_big_relation` VALUES ('2dfade7292c8a173601af929df639338', 'e6b1a592366d3fe662f92d119bd942de', '64f536a224147ccd76afdfcb7ecbdebc', '4');
-INSERT INTO `exam_paper_big_relation` VALUES ('da5f33036657b0a9f3f064316bcbe637', '57e2f2a359182836a7ce6954c9c422b5', '3be2836222c1a0e6c5b9a658f681199a', '6');
-INSERT INTO `exam_paper_big_relation` VALUES ('9fc3147a0b69f6da077a9de862dfc5d7', 'ab00fb60db1d44460d53b16d069f2385', 'faac4b8b1befa28c4ff480460e19da58', '5');
-INSERT INTO `exam_paper_big_relation` VALUES ('a7f3fdff43e53fb07470bafd50fad9e7', '2d538bfcbc050427323b0a16acff51a4', '64f536a224147ccd76afdfcb7ecbdebc', '5');
+INSERT INTO `exam_paper_big_relation` VALUES ('46cd810a8e1bb314e7848372a1b251e6', 'e8118e659adb79bf3723e032e3c668ea', '115dc574769211a7bcef1574e30d4483', '7609b937bd7f089ab40ef3227240878b', '5', 2);
+INSERT INTO `exam_paper_big_relation` VALUES ('b039343af01b42cba4ffec528e0fec0e', '79e646a299d939ac1ee29169e302089a', '115dc574769211a7bcef1574e30d4483', '3709038f4182a0557a4f052cd6fb752f', '5', 1);
+INSERT INTO `exam_paper_big_relation` VALUES ('df14cffbdb6fcf9b24b0dfd2e7b609fd', '79e646a299d939ac1ee29169e302089a', '115dc574769211a7bcef1574e30d4483', '5458c1ff422a15fbb1d1f0aa91e5585f', '5', 2);
+INSERT INTO `exam_paper_big_relation` VALUES ('35e8accf9796f0e7a5d3d001d4474592', 'e8118e659adb79bf3723e032e3c668ea', '115dc574769211a7bcef1574e30d4483', 'be256ac75c1678276eeca146daf68312', '5', 1);
 
 -- ----------------------------
 -- Table structure for exam_question
@@ -108,10 +105,10 @@ CREATE TABLE `exam_question`  (
 -- ----------------------------
 -- Records of exam_question
 -- ----------------------------
-INSERT INTO `exam_question` VALUES ('faac4b8b1befa28c4ff480460e19da58', 1, 'c187b7c3f61b283117b3bc702908d57f', '5', 1, '<p>单选题？</p>', '<p>选C</p>', 'C', '2023-04-28 15:33:03', '2023-04-28 15:33:03', 1);
-INSERT INTO `exam_question` VALUES ('aa95541e36638de896f079bfcfa2baf7', 2, 'c187b7c3f61b283117b3bc702908d57f', '5', 1, '<p>多选题？</p>', '<p>选B和C</p>', 'B,C', '2023-04-28 16:07:14', '2023-04-28 16:07:14', 1);
-INSERT INTO `exam_question` VALUES ('64f536a224147ccd76afdfcb7ecbdebc', 1, 'c187b7c3f61b283117b3bc702908d57f', '5', 1, '<p>单选题1？</p>', '<p>选B</p>', 'B', '2023-04-30 23:39:37', '2023-04-30 23:39:37', 1);
-INSERT INTO `exam_question` VALUES ('3be2836222c1a0e6c5b9a658f681199a', 1, 'c187b7c3f61b283117b3bc702908d57f', '5', 2, '<p>测试试题?</p>', '<p>选D</p>', 'D', '2023-05-03 17:19:51', '2023-05-03 17:19:51', 1);
+INSERT INTO `exam_question` VALUES ('5458c1ff422a15fbb1d1f0aa91e5585f', 1, 'c187b7c3f61b283117b3bc702908d57f', '5', 1, '<p>单选题22222？</p>', '<p>A</p>', 'A', '2023-05-05 14:05:09', '2023-05-05 14:05:09', 1);
+INSERT INTO `exam_question` VALUES ('be256ac75c1678276eeca146daf68312', 1, 'c187b7c3f61b283117b3bc702908d57f', '5', 1, '<p>单选题33333？</p>', '<p>C</p>', 'C', '2023-05-05 14:05:53', '2023-05-05 14:05:53', 1);
+INSERT INTO `exam_question` VALUES ('7609b937bd7f089ab40ef3227240878b', 1, 'c187b7c3f61b283117b3bc702908d57f', '5', 1, '<p>单选题44444？</p>', '<p>A</p>', 'A', '2023-05-05 14:06:27', '2023-05-05 14:06:27', 1);
+INSERT INTO `exam_question` VALUES ('3709038f4182a0557a4f052cd6fb752f', 1, 'c187b7c3f61b283117b3bc702908d57f', '5', 1, '<p>单选题1111111？</p>', '<p>B</p>', 'B', '2023-05-05 14:04:23', '2023-05-05 14:04:23', 1);
 
 -- ----------------------------
 -- Table structure for exam_question_item
@@ -130,22 +127,22 @@ CREATE TABLE `exam_question_item`  (
 -- ----------------------------
 -- Records of exam_question_item
 -- ----------------------------
-INSERT INTO `exam_question_item` VALUES ('ace5cd43facf7ded1b91059d70eb8f7f', '22222222', 2, '2023-04-28 15:33:03', '2023-04-28 15:33:03', 1);
-INSERT INTO `exam_question_item` VALUES ('3168fd256a1a9cce680325372bef7941', '1111111', 1, '2023-04-28 15:33:03', '2023-04-28 15:33:03', 1);
-INSERT INTO `exam_question_item` VALUES ('ea1ddd6637f652fb0c2639cdc4ed584c', '33333333', 3, '2023-04-28 15:33:03', '2023-04-28 15:33:03', 1);
-INSERT INTO `exam_question_item` VALUES ('25d7b8e444b8c114c0c1b69c8f497d08', '44444', 4, '2023-04-28 15:33:03', '2023-04-28 15:33:03', 1);
-INSERT INTO `exam_question_item` VALUES ('12b933e74ba9daa633fcdaa50ac7463f', 'QQQQQ', 1, '2023-04-28 16:07:14', '2023-04-28 16:07:14', 1);
-INSERT INTO `exam_question_item` VALUES ('fb09a8bf730e32b8eb75810ba135478b', 'WWWW', 2, '2023-04-28 16:07:14', '2023-04-28 16:07:14', 1);
-INSERT INTO `exam_question_item` VALUES ('dc9febab16f4030aec841e4c458b1502', 'EEEEE', 3, '2023-04-28 16:07:14', '2023-04-28 16:07:14', 1);
-INSERT INTO `exam_question_item` VALUES ('a81dd5f8806b5106676cc8c1d152a3de', 'RRRRR', 4, '2023-04-28 16:07:14', '2023-04-28 16:07:14', 1);
-INSERT INTO `exam_question_item` VALUES ('e887b999f12ff282de322937428a5501', 'aaa', 1, '2023-04-30 23:39:37', '2023-04-30 23:39:37', 1);
-INSERT INTO `exam_question_item` VALUES ('4b608213531f31ff22b67a721d5c6bb9', 'bbb', 2, '2023-04-30 23:39:37', '2023-04-30 23:39:37', 1);
-INSERT INTO `exam_question_item` VALUES ('36a3b8d5a27418f282cbe1dc7bcbfdad', 'ccc', 3, '2023-04-30 23:39:37', '2023-04-30 23:39:37', 1);
-INSERT INTO `exam_question_item` VALUES ('55e215a1ecf29bf36f503e35c6484d3f', 'ddd', 4, '2023-04-30 23:39:37', '2023-04-30 23:39:37', 1);
-INSERT INTO `exam_question_item` VALUES ('72205b51dd5fe9c75a162f063226bc51', '1111', 1, '2023-05-03 17:19:51', '2023-05-03 17:19:51', 1);
-INSERT INTO `exam_question_item` VALUES ('7755a2bd24cb644751737d24adafcfee', '2222222223', 2, '2023-05-03 17:19:51', '2023-05-03 17:19:51', 1);
-INSERT INTO `exam_question_item` VALUES ('6091a1b8fb331fb6971b0c77c85a4ee5', '3333333', 3, '2023-05-03 17:19:51', '2023-05-03 17:19:51', 1);
-INSERT INTO `exam_question_item` VALUES ('28b7e5e5e96edc343366ee5ededb1b72', '44444', 4, '2023-05-03 17:19:51', '2023-05-03 17:19:51', 1);
+INSERT INTO `exam_question_item` VALUES ('a133420c97ad053d28aee3981454f9bd', 'xxxx', 2, '2023-05-05 14:05:53', '2023-05-05 14:05:53', 1);
+INSERT INTO `exam_question_item` VALUES ('9e7eba7c61e94eef02abab80b9216676', 'zzzz', 1, '2023-05-05 14:05:53', '2023-05-05 14:05:53', 1);
+INSERT INTO `exam_question_item` VALUES ('8aa944b92c5480cf4a360a8f74bf4780', 'ffff', 4, '2023-05-05 14:05:09', '2023-05-05 14:05:09', 1);
+INSERT INTO `exam_question_item` VALUES ('1ad58028f41fc777d7cdfa4a3ce9f634', 'aaaa', 1, '2023-05-05 14:05:09', '2023-05-05 14:05:09', 1);
+INSERT INTO `exam_question_item` VALUES ('03edeabf538db100ae2b098a63227b3f', 'ssss', 2, '2023-05-05 14:05:09', '2023-05-05 14:05:09', 1);
+INSERT INTO `exam_question_item` VALUES ('77688893f183e6ded9d2d1e89ac7fb81', 'dddd', 3, '2023-05-05 14:05:09', '2023-05-05 14:05:09', 1);
+INSERT INTO `exam_question_item` VALUES ('e5a736fa638214e0db5716d10bd62e0f', 'cccc', 3, '2023-05-05 14:05:53', '2023-05-05 14:05:53', 1);
+INSERT INTO `exam_question_item` VALUES ('a07f62694c989496158778bc2d974b2d', 'vvvv', 4, '2023-05-05 14:05:53', '2023-05-05 14:05:53', 1);
+INSERT INTO `exam_question_item` VALUES ('b36bcd90f49ac6d7488dee3d4696a4c1', 'bbbb', 1, '2023-05-05 14:06:27', '2023-05-05 14:06:27', 1);
+INSERT INTO `exam_question_item` VALUES ('91f39d6e9f0a1353e0d3be6999b58c7a', 'nnnn', 2, '2023-05-05 14:06:27', '2023-05-05 14:06:27', 1);
+INSERT INTO `exam_question_item` VALUES ('c0c403a505c8bb076c600ab906f8b84b', 'rrrr', 4, '2023-05-05 14:04:23', '2023-05-05 14:04:23', 1);
+INSERT INTO `exam_question_item` VALUES ('1b523714d14dc27f862d1434d056e663', 'eeee', 3, '2023-05-05 14:04:23', '2023-05-05 14:04:23', 1);
+INSERT INTO `exam_question_item` VALUES ('0f3bd18a4bc54b351b1daf9589373e5c', 'wwww', 2, '2023-05-05 14:04:23', '2023-05-05 14:04:23', 1);
+INSERT INTO `exam_question_item` VALUES ('d84d1a0aee194ac742a551e1894d33e9', 'qqqq', 1, '2023-05-05 14:04:23', '2023-05-05 14:04:23', 1);
+INSERT INTO `exam_question_item` VALUES ('8aefd9d2bd84ac4f734f13c984c34800', 'mmmm', 3, '2023-05-05 14:06:27', '2023-05-05 14:06:27', 1);
+INSERT INTO `exam_question_item` VALUES ('9ab7506e545aa6614d71d98b93e297c3', 'llll', 4, '2023-05-05 14:06:27', '2023-05-05 14:06:27', 1);
 
 -- ----------------------------
 -- Table structure for exam_question_relation_item
@@ -161,22 +158,22 @@ CREATE TABLE `exam_question_relation_item`  (
 -- ----------------------------
 -- Records of exam_question_relation_item
 -- ----------------------------
-INSERT INTO `exam_question_relation_item` VALUES ('a6bc1fe6013f54079246b6391bf7b089', 'aa95541e36638de896f079bfcfa2baf7', 'fb09a8bf730e32b8eb75810ba135478b');
-INSERT INTO `exam_question_relation_item` VALUES ('354078f66c6e946af6d3c257573f5f13', 'faac4b8b1befa28c4ff480460e19da58', 'ea1ddd6637f652fb0c2639cdc4ed584c');
-INSERT INTO `exam_question_relation_item` VALUES ('fda3ade777a207834621c82f0a3b1c66', 'faac4b8b1befa28c4ff480460e19da58', '25d7b8e444b8c114c0c1b69c8f497d08');
-INSERT INTO `exam_question_relation_item` VALUES ('ecf3ed539246741e59dc00a3294ebf10', 'aa95541e36638de896f079bfcfa2baf7', '12b933e74ba9daa633fcdaa50ac7463f');
-INSERT INTO `exam_question_relation_item` VALUES ('f2e0e56656c0ee561d59f5112a3254a5', 'faac4b8b1befa28c4ff480460e19da58', 'ace5cd43facf7ded1b91059d70eb8f7f');
-INSERT INTO `exam_question_relation_item` VALUES ('ea56d8eb5710b8ebe6faf415a0744af3', 'faac4b8b1befa28c4ff480460e19da58', '3168fd256a1a9cce680325372bef7941');
-INSERT INTO `exam_question_relation_item` VALUES ('6b720bf1fcc03f6f00750d8232342cbe', 'aa95541e36638de896f079bfcfa2baf7', 'dc9febab16f4030aec841e4c458b1502');
-INSERT INTO `exam_question_relation_item` VALUES ('851f9bcbdfae244c4390486425399439', 'aa95541e36638de896f079bfcfa2baf7', 'a81dd5f8806b5106676cc8c1d152a3de');
-INSERT INTO `exam_question_relation_item` VALUES ('7f33bfe49562012ff8351e17677e271d', '64f536a224147ccd76afdfcb7ecbdebc', 'e887b999f12ff282de322937428a5501');
-INSERT INTO `exam_question_relation_item` VALUES ('f54f2d82c936aac4972cda0e00fbc038', '64f536a224147ccd76afdfcb7ecbdebc', '4b608213531f31ff22b67a721d5c6bb9');
-INSERT INTO `exam_question_relation_item` VALUES ('63a0d4e09390eec3292e0c61802502ab', '64f536a224147ccd76afdfcb7ecbdebc', '36a3b8d5a27418f282cbe1dc7bcbfdad');
-INSERT INTO `exam_question_relation_item` VALUES ('0ce2ac6952aebd40d3adaf464915f396', '64f536a224147ccd76afdfcb7ecbdebc', '55e215a1ecf29bf36f503e35c6484d3f');
-INSERT INTO `exam_question_relation_item` VALUES ('fc9e6927f4935f8469fadbd38fa1d756', '3be2836222c1a0e6c5b9a658f681199a', '72205b51dd5fe9c75a162f063226bc51');
-INSERT INTO `exam_question_relation_item` VALUES ('340369975a718269e602a85d9088df34', '3be2836222c1a0e6c5b9a658f681199a', '7755a2bd24cb644751737d24adafcfee');
-INSERT INTO `exam_question_relation_item` VALUES ('7144a9d623b7d6b83827e72df3812205', '3be2836222c1a0e6c5b9a658f681199a', '6091a1b8fb331fb6971b0c77c85a4ee5');
-INSERT INTO `exam_question_relation_item` VALUES ('22b25e9ae67c6f5fd4bf8f719a6e7ad3', '3be2836222c1a0e6c5b9a658f681199a', '28b7e5e5e96edc343366ee5ededb1b72');
+INSERT INTO `exam_question_relation_item` VALUES ('c4a58114d036a068f81b3b05b3d8ef6b', '7609b937bd7f089ab40ef3227240878b', '8aefd9d2bd84ac4f734f13c984c34800');
+INSERT INTO `exam_question_relation_item` VALUES ('c8c29c1cfdc7704437cdb9d4559fdd30', '7609b937bd7f089ab40ef3227240878b', '91f39d6e9f0a1353e0d3be6999b58c7a');
+INSERT INTO `exam_question_relation_item` VALUES ('c0343d630684d012f98fea9bf47c72c7', 'be256ac75c1678276eeca146daf68312', 'a07f62694c989496158778bc2d974b2d');
+INSERT INTO `exam_question_relation_item` VALUES ('6e9a91b7a8b702b82dd034ce0baa314d', '7609b937bd7f089ab40ef3227240878b', 'b36bcd90f49ac6d7488dee3d4696a4c1');
+INSERT INTO `exam_question_relation_item` VALUES ('e3d46369ca2356ef747d9f84e2898359', 'be256ac75c1678276eeca146daf68312', 'e5a736fa638214e0db5716d10bd62e0f');
+INSERT INTO `exam_question_relation_item` VALUES ('56eefec8ae15237d2c2bb50e1c6f6aea', '5458c1ff422a15fbb1d1f0aa91e5585f', '1ad58028f41fc777d7cdfa4a3ce9f634');
+INSERT INTO `exam_question_relation_item` VALUES ('a9c0adcbaebf6df73d273c6efa0496ed', '5458c1ff422a15fbb1d1f0aa91e5585f', '03edeabf538db100ae2b098a63227b3f');
+INSERT INTO `exam_question_relation_item` VALUES ('52953384042ff4b317106aebfe9aea5f', '5458c1ff422a15fbb1d1f0aa91e5585f', '77688893f183e6ded9d2d1e89ac7fb81');
+INSERT INTO `exam_question_relation_item` VALUES ('8160bbadd16252e304fb14e70c5254f1', '5458c1ff422a15fbb1d1f0aa91e5585f', '8aa944b92c5480cf4a360a8f74bf4780');
+INSERT INTO `exam_question_relation_item` VALUES ('5013352d90685fa56b568a798d676172', 'be256ac75c1678276eeca146daf68312', '9e7eba7c61e94eef02abab80b9216676');
+INSERT INTO `exam_question_relation_item` VALUES ('6b10430de610b079956937a53b3f1fb0', 'be256ac75c1678276eeca146daf68312', 'a133420c97ad053d28aee3981454f9bd');
+INSERT INTO `exam_question_relation_item` VALUES ('ab3856e2a9f2dda6b73d2d60890c55f7', '3709038f4182a0557a4f052cd6fb752f', 'c0c403a505c8bb076c600ab906f8b84b');
+INSERT INTO `exam_question_relation_item` VALUES ('cda2d5727a9eb1a1ddd4a8b51bcec711', '3709038f4182a0557a4f052cd6fb752f', '1b523714d14dc27f862d1434d056e663');
+INSERT INTO `exam_question_relation_item` VALUES ('8cb0be606bddd0f94ad8f53258ec7517', '3709038f4182a0557a4f052cd6fb752f', '0f3bd18a4bc54b351b1daf9589373e5c');
+INSERT INTO `exam_question_relation_item` VALUES ('f23651f90a5ebb1f223b8247f4721567', '3709038f4182a0557a4f052cd6fb752f', 'd84d1a0aee194ac742a551e1894d33e9');
+INSERT INTO `exam_question_relation_item` VALUES ('01673a2e797adbbb88d3563e2fe6036a', '7609b937bd7f089ab40ef3227240878b', '9ab7506e545aa6614d71d98b93e297c3');
 
 -- ----------------------------
 -- Table structure for exam_question_type
@@ -217,7 +214,7 @@ CREATE TABLE `ums_admin`  (
 -- ----------------------------
 -- Records of ums_admin
 -- ----------------------------
-INSERT INTO `ums_admin` VALUES (3, 'admin', '123456', '0:0:0:0:0:0:0:1', '2023-04-28 21:53:50', 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220620/lihezong.webp', '2022-06-20 16:11:43', '2022-06-20 16:11:43', 1);
+INSERT INTO `ums_admin` VALUES (3, 'admin', '123456', '0:0:0:0:0:0:0:1', '2023-05-06 10:18:26', 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220620/lihezong.webp', '2022-06-20 16:11:43', '2022-06-20 16:11:43', 1);
 
 -- ----------------------------
 -- Table structure for ums_admin_role
@@ -348,7 +345,7 @@ CREATE TABLE `ums_menu`  (
   `icon` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '菜单图标',
   `sort` int(10) NULL DEFAULT NULL COMMENT '排序',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 15 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '菜单表' ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 16 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '菜单表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of ums_menu
@@ -397,23 +394,23 @@ CREATE TABLE `ums_role_menu`  (
   `role_id` int(20) NULL DEFAULT NULL COMMENT '角色id',
   `menu_id` int(20) NULL DEFAULT NULL COMMENT '菜单id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 121 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色和菜单关系表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 133 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色和菜单关系表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of ums_role_menu
 -- ----------------------------
-INSERT INTO `ums_role_menu` VALUES (109, 10, 1);
-INSERT INTO `ums_role_menu` VALUES (110, 10, 2);
-INSERT INTO `ums_role_menu` VALUES (111, 10, 4);
-INSERT INTO `ums_role_menu` VALUES (112, 10, 5);
-INSERT INTO `ums_role_menu` VALUES (113, 10, 6);
-INSERT INTO `ums_role_menu` VALUES (114, 10, 9);
-INSERT INTO `ums_role_menu` VALUES (115, 10, 8);
-INSERT INTO `ums_role_menu` VALUES (116, 10, 10);
-INSERT INTO `ums_role_menu` VALUES (117, 10, 11);
-INSERT INTO `ums_role_menu` VALUES (118, 10, 12);
-INSERT INTO `ums_role_menu` VALUES (119, 10, 14);
-INSERT INTO `ums_role_menu` VALUES (120, 10, 13);
+INSERT INTO `ums_role_menu` VALUES (121, 10, 1);
+INSERT INTO `ums_role_menu` VALUES (122, 10, 2);
+INSERT INTO `ums_role_menu` VALUES (123, 10, 4);
+INSERT INTO `ums_role_menu` VALUES (124, 10, 5);
+INSERT INTO `ums_role_menu` VALUES (125, 10, 6);
+INSERT INTO `ums_role_menu` VALUES (126, 10, 9);
+INSERT INTO `ums_role_menu` VALUES (127, 10, 8);
+INSERT INTO `ums_role_menu` VALUES (128, 10, 10);
+INSERT INTO `ums_role_menu` VALUES (129, 10, 11);
+INSERT INTO `ums_role_menu` VALUES (130, 10, 12);
+INSERT INTO `ums_role_menu` VALUES (131, 10, 14);
+INSERT INTO `ums_role_menu` VALUES (132, 10, 13);
 
 -- ----------------------------
 -- Table structure for ums_student
