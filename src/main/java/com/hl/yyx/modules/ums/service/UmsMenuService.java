@@ -23,5 +23,5 @@ public interface UmsMenuService extends IService<UmsMenu> {
     boolean delete(String id);
 
     // 根据用户id获取用户菜单
-    List<InitMenuDTO> getMenuListByUserId(Integer userId);
+    List<InitMenuDTO> getMenuListByUserId(String userId);
 }

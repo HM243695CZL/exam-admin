@@ -116,7 +116,7 @@ public class UmsMenuServiceImpl extends ServiceImpl<UmsMenuMapper, UmsMenu> impl
      * @return
      */
     @Override
-    public List<InitMenuDTO> getMenuListByUserId(Integer userId) {
+    public List<InitMenuDTO> getMenuListByUserId(String userId) {
         ArrayList<InitMenuDTO> dataList = new ArrayList<>();
         List<InitMenuDTO> menus = new ArrayList<>();
         // 获取用户对应的角色id

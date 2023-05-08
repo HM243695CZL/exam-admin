@@ -30,11 +30,11 @@ public class UmsCollegeMajor extends BaseModelDTO implements Serializable {
 
     private static final long serialVersionUID=1L;
 
-    @TableId(value = "id", type = IdType.AUTO)
-    private Integer id;
+    @TableId(value = "id", type = IdType.ASSIGN_UUID)
+    private String id;
 
     @ApiModelProperty(value = "父id")
-    private Integer parentId;
+    private String parentId;
 
     @ApiModelProperty(value = "学院/专业名称")
     @TableField("`name`")

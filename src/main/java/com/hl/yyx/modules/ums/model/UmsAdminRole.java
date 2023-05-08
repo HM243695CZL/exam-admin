@@ -31,7 +31,7 @@ public class UmsAdminRole implements Serializable {
     private Integer id;
 
     @ApiModelProperty(value = "管理员id")
-    private Integer adminId;
+    private String adminId;
 
     @ApiModelProperty(value = "角色id")
     private Integer roleId;

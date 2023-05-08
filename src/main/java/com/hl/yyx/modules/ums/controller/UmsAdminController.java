@@ -52,7 +52,7 @@ public class UmsAdminController {
     public CommonResult login(@RequestBody UmsAdminLoginParam loginParam, HttpServletRequest request) {
         String token = umsAdminService.login(loginParam.getUsername(), loginParam.getPassword(), request);
         // 根据当前用户获取对应的菜单
-        Integer userId = umsAdminService.getCurrentAdmin().getId();
+        String userId = umsAdminService.getCurrentAdmin().getId();
         UmsAdmin userInfo = umsAdminService.getCurrentAdmin();
         List<InitMenuDTO> menuList = menuService.getMenuListByUserId(userId);
         HashMap<String, Object> tokenMap = new HashMap<>();

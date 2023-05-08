@@ -17,12 +17,8 @@ import com.hl.yyx.domain.AdminUserDetails;
 import com.hl.yyx.modules.ums.dto.AdminPageDTO;
 import com.hl.yyx.modules.ums.dto.UpdatePassDTO;
 import com.hl.yyx.modules.ums.mapper.UmsAdminMapper;
-import com.hl.yyx.modules.ums.model.UmsAdmin;
-import com.hl.yyx.modules.ums.model.UmsAdminRole;
-import com.hl.yyx.modules.ums.model.UmsRole;
-import com.hl.yyx.modules.ums.service.UmsAdminRoleService;
-import com.hl.yyx.modules.ums.service.UmsAdminService;
-import com.hl.yyx.modules.ums.service.UmsRoleService;
+import com.hl.yyx.modules.ums.model.*;
+import com.hl.yyx.modules.ums.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +56,15 @@ public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper, UmsAdmin> i
     @Autowired
     UmsRoleService roleService;
 
+    @Autowired
+    UmsDeptService deptService;
+
+    @Autowired
+    UmsCollegeMajorService collegeMajorService;
+
+    @Autowired
+    private UmsClassService classService;
+
     /**
      * 分页查询
      *
@@ -73,10 +78,38 @@ public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper, UmsAdmin> i
         if (StrUtil.isNotEmpty(paramsDTO.getUsername())) {
             queryWrapper.lambda().like(UmsAdmin::getUsername, paramsDTO.getUsername());
         }
+        if (paramsDTO.getUserType() != null) {
+            queryWrapper.lambda().eq(UmsAdmin::getUserType, paramsDTO.getUserType());
+        }
         // 根据分页查询用户
         Page<UmsAdmin> pageList = page(page, queryWrapper);
         // 根据用户id获取角色id
-        page.getRecords().stream().forEach(this::setUserRoles);
+        page.getRecords().forEach(this::setUserRoles);
+        for (UmsAdmin item : pageList.getRecords()) {
+            if (StrUtil.isNotEmpty(item.getDeptId())) {
+                UmsDept dept = deptService.getById(item.getDeptId());
+                item.setDeptName(dept.getName());
+            }
+            if (StrUtil.isNotEmpty(item.getCollegeId())) {
+                // 获取学院名称
+                QueryWrapper<UmsCollegeMajor> wrapper = new QueryWrapper<>();
+                wrapper.lambda().eq(UmsCollegeMajor::getType, 0);
+                wrapper.lambda().eq(UmsCollegeMajor::getId, item.getCollegeId());
+                UmsCollegeMajor college = collegeMajorService.getOne(wrapper);
+                item.setCollegeName(college.getName());
+
+                // 获取专业名称
+                QueryWrapper<UmsCollegeMajor> wrapperMajor = new QueryWrapper<>();
+                wrapperMajor.lambda().eq(UmsCollegeMajor::getType, 1);
+                wrapperMajor.lambda().eq(UmsCollegeMajor::getId, item.getMajorId());
+                UmsCollegeMajor major = collegeMajorService.getOne(wrapperMajor);
+                item.setMajorName(major.getName());
+
+                // 获取班级名称
+                UmsClass umsClass = classService.getById(item.getClassId());
+                item.setClassName(umsClass.getName());
+            }
+        }
         return pageList;
     }
 
@@ -222,7 +255,7 @@ public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper, UmsAdmin> i
      * @param userId   用户id
      * @return
      */
-    public List<UmsAdminRole> setAdminAndRole(List<Integer> roleList, Integer userId) {
+    public List<UmsAdminRole> setAdminAndRole(List<Integer> roleList, String userId) {
         List<UmsAdminRole> adminRoleList = new ArrayList<>();
         for (Integer roleId : roleList) {
             UmsAdminRole adminRole = new UmsAdminRole();

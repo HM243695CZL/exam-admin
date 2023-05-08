@@ -12,4 +12,7 @@ public class AdminPageDTO extends PageParamsDTO {
 
     @ApiModelProperty(value = "用户名")
     private String username;
+
+    @ApiModelProperty(value = "用户类型")
+    private Integer userType;
 }
