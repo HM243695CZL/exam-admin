@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 06/05/2023 17:22:24
+ Date: 08/05/2023 11:27:50
 */
 
 SET NAMES utf8mb4;
@@ -84,6 +84,22 @@ INSERT INTO `exam_paper_big_relation` VALUES ('002942f16b286f660cd2320fb75e9c87'
 INSERT INTO `exam_paper_big_relation` VALUES ('727519d9da17c90d2ac66138d7a744b9', 'bcbb1c811c99e49bf73a3dc349c09a1f', 'fab2804b0df71cc5f36314a55ffd9aee', '49bf31e8a379b3a5a278777ad55aed7d', '5', 1);
 INSERT INTO `exam_paper_big_relation` VALUES ('014f7dbbd367f5ccd49962bd1adb67ac', 'bcbb1c811c99e49bf73a3dc349c09a1f', 'fab2804b0df71cc5f36314a55ffd9aee', 'a2aa279b8da232262198038397ca2bbb', '5', 6);
 INSERT INTO `exam_paper_big_relation` VALUES ('ed35d3ae03b1fa1cb0a544435a78031a', 'bcbb1c811c99e49bf73a3dc349c09a1f', 'fab2804b0df71cc5f36314a55ffd9aee', '0b04d2714ea9549c562a9ff67dbdd7f5', '5', 7);
+
+-- ----------------------------
+-- Table structure for exam_paper_publish
+-- ----------------------------
+DROP TABLE IF EXISTS `exam_paper_publish`;
+CREATE TABLE `exam_paper_publish`  (
+  `id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `paper_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '试卷id',
+  `class_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '班级id',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = MyISAM CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '发布考试表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of exam_paper_publish
+-- ----------------------------
+INSERT INTO `exam_paper_publish` VALUES ('752ad1a98e4a91dbac2534a2a790fd2a', 'fab2804b0df71cc5f36314a55ffd9aee', '4');
 
 -- ----------------------------
 -- Table structure for exam_paper_type
@@ -465,7 +481,7 @@ CREATE TABLE `ums_admin`  (
 -- ----------------------------
 -- Records of ums_admin
 -- ----------------------------
-INSERT INTO `ums_admin` VALUES (3, 'admin', '123456', '0:0:0:0:0:0:0:1', '2023-05-06 14:19:37', 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220620/lihezong.webp', '2022-06-20 16:11:43', '2022-06-20 16:11:43', 1);
+INSERT INTO `ums_admin` VALUES (3, 'admin', '123456', '0:0:0:0:0:0:0:1', '2023-05-08 10:27:25', 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220620/lihezong.webp', '2022-06-20 16:11:43', '2022-06-20 16:11:43', 1);
 
 -- ----------------------------
 -- Table structure for ums_admin_role

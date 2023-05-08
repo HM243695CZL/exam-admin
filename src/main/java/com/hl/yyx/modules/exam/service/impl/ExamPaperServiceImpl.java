@@ -5,14 +5,12 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.hl.yyx.modules.exam.dto.BigQuestionDTO;
-import com.hl.yyx.modules.exam.dto.PaperPageDTO;
-import com.hl.yyx.modules.exam.dto.QuestionMapDTO;
-import com.hl.yyx.modules.exam.dto.ViewPaperDTO;
+import com.hl.yyx.modules.exam.dto.*;
 import com.hl.yyx.modules.exam.model.*;
 import com.hl.yyx.modules.exam.mapper.ExamPaperMapper;
 import com.hl.yyx.modules.exam.service.*;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,6 +43,9 @@ public class ExamPaperServiceImpl extends ServiceImpl<ExamPaperMapper, ExamPaper
 
     @Autowired
     private ExamQuestionRelationItemService relationItemService;
+
+    @Autowired
+    private ExamPaperPublishService publishService;
 
 
     @Override
@@ -204,5 +205,44 @@ public class ExamPaperServiceImpl extends ServiceImpl<ExamPaperMapper, ExamPaper
         queryWrapper.lambda().eq(ExamPaperBigRelation::getPaperId, id);
         relationService.remove(queryWrapper);
         return b;
+    }
+
+    /**
+     * 发布考试
+     * @param examDTO
+     * @return
+     */
+    @Transactional
+    @Override
+    public Boolean publishExam(PublishExamDTO examDTO) {
+        // 先删除已发布班级
+        QueryWrapper<ExamPaperPublish> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(ExamPaperPublish::getPaperId, examDTO.getPaperId());
+        publishService.remove(queryWrapper);
+
+        for (Integer classId : examDTO.getClassId()) {
+            ExamPaperPublish paperPublish = new ExamPaperPublish();
+            paperPublish.setPaperId(examDTO.getPaperId());
+            paperPublish.setClassId(classId);
+            publishService.save(paperPublish);
+        }
+        return true;
+    }
+
+    /**
+     * 获取已发布班级
+     * @param id
+     * @return
+     */
+    @Override
+    public List<Integer> getPublishClass(String id) {
+        QueryWrapper<ExamPaperPublish> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(ExamPaperPublish::getPaperId, id);
+        List<ExamPaperPublish> list = publishService.list(queryWrapper);
+        ArrayList<Integer> publishList = new ArrayList<>();
+        for (ExamPaperPublish publish : list) {
+            publishList.add(publish.getClassId());
+        }
+        return publishList;
     }
 }
