@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 08/05/2023 11:27:50
+ Date: 08/05/2023 15:53:32
 */
 
 SET NAMES utf8mb4;
@@ -99,7 +99,7 @@ CREATE TABLE `exam_paper_publish`  (
 -- ----------------------------
 -- Records of exam_paper_publish
 -- ----------------------------
-INSERT INTO `exam_paper_publish` VALUES ('752ad1a98e4a91dbac2534a2a790fd2a', 'fab2804b0df71cc5f36314a55ffd9aee', '4');
+INSERT INTO `exam_paper_publish` VALUES ('94991210c27740fae72b1aa4ee2d12b9', 'fab2804b0df71cc5f36314a55ffd9aee', '1');
 
 -- ----------------------------
 -- Table structure for exam_paper_type
@@ -466,9 +466,17 @@ INSERT INTO `exam_question_type` VALUES ('317e751103f654a1631725d6e00355bd', '�
 -- ----------------------------
 DROP TABLE IF EXISTS `ums_admin`;
 CREATE TABLE `ums_admin`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `username` varchar(63) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '管理员名称',
+  `user_type` tinyint(255) NULL DEFAULT NULL COMMENT '1：教师    2：学生',
   `password` varchar(63) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '管理员密码',
+  `number` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '学号',
+  `college_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '学院id',
+  `major_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '专业id',
+  `class_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '班级id',
+  `dept_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '部门id',
+  `sex` tinyint(10) NULL DEFAULT NULL COMMENT '0：男 1：女',
+  `wx_open_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'wxopenid',
   `last_login_ip` varchar(63) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '最近一次登录IP地址',
   `last_login_time` datetime(0) NULL DEFAULT NULL COMMENT '最近一次登录时间',
   `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '\'' COMMENT '头像图片',
@@ -476,12 +484,14 @@ CREATE TABLE `ums_admin`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '管理员表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '管理员表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ums_admin
 -- ----------------------------
-INSERT INTO `ums_admin` VALUES (3, 'admin', '123456', '0:0:0:0:0:0:0:1', '2023-05-08 10:27:25', 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20220620/lihezong.webp', '2022-06-20 16:11:43', '2022-06-20 16:11:43', 1);
+INSERT INTO `ums_admin` VALUES ('0965c32d75268459f76ee34a734fb461', 'admin', 1, '123456', 'admin', '', '', '', 'a31d3b275416230b334f481ef04ce957', 0, NULL, '0:0:0:0:0:0:0:1', '2023-05-08 15:04:14', 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20230508/lihezong.webp', '2023-05-08 14:52:41', '2023-05-08 14:52:41', 1);
+INSERT INTO `ums_admin` VALUES ('48eaba1fe0744f1ba7b656538b37bc8f', '陆老师', 1, '123456', '20230508', '', '', '', 'a31d3b275416230b334f481ef04ce957', 1, NULL, '0:0:0:0:0:0:0:1', '2023-05-08 13:41:41', 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20230508/2.png', '2023-05-08 13:38:58', '2023-05-08 13:38:58', 1);
+INSERT INTO `ums_admin` VALUES ('89fbb441cd41555aa86359c17219e4c3', '黄学生', 2, '123456', '20230509', '12', '13', '1', '', 0, NULL, '', NULL, 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20230508/hw-logo.png', '2023-05-08 13:40:35', '2023-05-08 13:40:35', 1);
 
 -- ----------------------------
 -- Table structure for ums_admin_role
@@ -489,23 +499,24 @@ INSERT INTO `ums_admin` VALUES (3, 'admin', '123456', '0:0:0:0:0:0:0:1', '2023-0
 DROP TABLE IF EXISTS `ums_admin_role`;
 CREATE TABLE `ums_admin_role`  (
   `id` int(20) NOT NULL AUTO_INCREMENT,
-  `admin_id` int(20) NULL DEFAULT NULL COMMENT '管理员id',
+  `admin_id` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '管理员id',
   `role_id` int(20) NULL DEFAULT NULL COMMENT '角色id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 45 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '后台用户和角色关系表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 47 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '后台用户和角色关系表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ums_admin_role
 -- ----------------------------
-INSERT INTO `ums_admin_role` VALUES (41, 3, 10);
-INSERT INTO `ums_admin_role` VALUES (44, 5, 10);
+INSERT INTO `ums_admin_role` VALUES (44, '5', 10);
+INSERT INTO `ums_admin_role` VALUES (45, '48eaba1fe0744f1ba7b656538b37bc8f', 10);
+INSERT INTO `ums_admin_role` VALUES (46, '0965c32d75268459f76ee34a734fb461', 10);
 
 -- ----------------------------
 -- Table structure for ums_class
 -- ----------------------------
 DROP TABLE IF EXISTS `ums_class`;
 CREATE TABLE `ums_class`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '班级名称',
   `college_id` int(11) NULL DEFAULT NULL COMMENT '学院id',
   `major_id` int(11) NULL DEFAULT NULL COMMENT '专业id',
@@ -514,43 +525,43 @@ CREATE TABLE `ums_class`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(255) NULL DEFAULT 1 COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '班级表' ROW_FORMAT = DYNAMIC;
+) ENGINE = MyISAM CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '班级表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ums_class
 -- ----------------------------
-INSERT INTO `ums_class` VALUES (1, '141', 12, 13, '', '2023-04-13 09:52:01', '2023-04-13 09:52:01', 1);
-INSERT INTO `ums_class` VALUES (2, '142', 12, 13, '', '2023-04-13 09:52:50', '2023-04-13 09:52:50', 1);
-INSERT INTO `ums_class` VALUES (3, '美声141', 16, 17, '', '2023-04-13 09:53:13', '2023-04-13 09:53:13', 1);
-INSERT INTO `ums_class` VALUES (4, '乐器141', 16, 18, '', '2023-04-13 09:53:28', '2023-04-13 09:53:28', 1);
-INSERT INTO `ums_class` VALUES (5, '舞蹈141', 16, 19, '', '2023-04-13 09:53:38', '2023-04-13 09:53:38', 1);
+INSERT INTO `ums_class` VALUES ('1', '141', 12, 13, '', '2023-04-13 09:52:01', '2023-04-13 09:52:01', 1);
+INSERT INTO `ums_class` VALUES ('2', '142', 12, 13, '', '2023-04-13 09:52:50', '2023-04-13 09:52:50', 1);
+INSERT INTO `ums_class` VALUES ('3', '美声141', 16, 17, '', '2023-04-13 09:53:13', '2023-04-13 09:53:13', 1);
+INSERT INTO `ums_class` VALUES ('4', '乐器141', 16, 18, '', '2023-04-13 09:53:28', '2023-04-13 09:53:28', 1);
+INSERT INTO `ums_class` VALUES ('5', '舞蹈141', 16, 19, '', '2023-04-13 09:53:38', '2023-04-13 09:53:38', 1);
 
 -- ----------------------------
 -- Table structure for ums_college_major
 -- ----------------------------
 DROP TABLE IF EXISTS `ums_college_major`;
 CREATE TABLE `ums_college_major`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `parent_id` int(11) NULL DEFAULT NULL COMMENT '父id',
+  `id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `parent_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '父id',
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '学院/专业名称',
   `type` tinyint(1) NULL DEFAULT NULL COMMENT '0：学院   1：专业',
   `add_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 22 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '学院/专业表' ROW_FORMAT = DYNAMIC;
+) ENGINE = MyISAM CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '学院/专业表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ums_college_major
 -- ----------------------------
-INSERT INTO `ums_college_major` VALUES (13, 12, '电子信息工程', 1, '2023-04-11 14:11:48', '2023-04-11 14:11:48', 1);
-INSERT INTO `ums_college_major` VALUES (14, 12, '通信工程', 1, '2023-04-11 19:16:16', '2023-04-11 19:16:16', 1);
-INSERT INTO `ums_college_major` VALUES (12, NULL, '电气信息工程学院', 0, '2023-04-11 14:11:39', '2023-04-11 14:11:39', 1);
-INSERT INTO `ums_college_major` VALUES (15, 12, '自动化', 1, '2023-04-11 19:16:39', '2023-04-11 19:16:39', 1);
-INSERT INTO `ums_college_major` VALUES (16, NULL, '音乐舞蹈学院', 0, '2023-04-11 19:16:52', '2023-04-11 19:16:52', 1);
-INSERT INTO `ums_college_major` VALUES (17, 16, '美声', 1, '2023-04-11 19:17:10', '2023-04-11 19:17:10', 1);
-INSERT INTO `ums_college_major` VALUES (18, 16, '乐器', 1, '2023-04-11 19:17:16', '2023-04-11 19:17:16', 1);
-INSERT INTO `ums_college_major` VALUES (19, 16, '舞蹈', 1, '2023-04-11 19:17:20', '2023-04-11 19:17:20', 1);
+INSERT INTO `ums_college_major` VALUES ('13', '12', '电子信息工程', 1, '2023-04-11 14:11:48', '2023-04-11 14:11:48', 1);
+INSERT INTO `ums_college_major` VALUES ('14', '12', '通信工程', 1, '2023-04-11 19:16:16', '2023-04-11 19:16:16', 1);
+INSERT INTO `ums_college_major` VALUES ('12', NULL, '电气信息工程学院', 0, '2023-04-11 14:11:39', '2023-04-11 14:11:39', 1);
+INSERT INTO `ums_college_major` VALUES ('15', '12', '自动化', 1, '2023-04-11 19:16:39', '2023-04-11 19:16:39', 1);
+INSERT INTO `ums_college_major` VALUES ('16', NULL, '音乐舞蹈学院', 0, '2023-04-11 19:16:52', '2023-04-11 19:16:52', 1);
+INSERT INTO `ums_college_major` VALUES ('17', '16', '美声', 1, '2023-04-11 19:17:10', '2023-04-11 19:17:10', 1);
+INSERT INTO `ums_college_major` VALUES ('18', '16', '乐器', 1, '2023-04-11 19:17:16', '2023-04-11 19:17:16', 1);
+INSERT INTO `ums_college_major` VALUES ('19', '16', '舞蹈', 1, '2023-04-11 19:17:20', '2023-04-11 19:17:20', 1);
 
 -- ----------------------------
 -- Table structure for ums_dept
@@ -626,10 +637,8 @@ INSERT INTO `ums_menu` VALUES (2, 1, '/system/meun', 'systemMenu', '/system/menu
 INSERT INTO `ums_menu` VALUES (4, 1, '/system/user', 'systemUser', '/system/user', '用户管理', '', 0, 1, 0, 0, 'ele-Avatar', 2);
 INSERT INTO `ums_menu` VALUES (5, 1, '/system/role', 'systemRole', '/system/role', '角色管理', '', 0, 1, 0, 0, 'ele-Briefcase', 3);
 INSERT INTO `ums_menu` VALUES (6, 1, '/system/form-designer', 'form-designer', '/system/form-designer', '表单设计', NULL, 0, 1, 0, NULL, 'fa fa-microchip', 4);
-INSERT INTO `ums_menu` VALUES (8, 1, '/system/student', 'student', '/system/student', '学生管理', NULL, 0, 1, 0, NULL, 'iconfont icon-dongtai', 6);
 INSERT INTO `ums_menu` VALUES (9, 1, '/system/class-mng', 'class-mng', '/system/class-mng', '班级管理', NULL, 0, 1, 0, NULL, 'iconfont icon-zhongduancanshuchaxun', 5);
 INSERT INTO `ums_menu` VALUES (10, 1, '/system/dept', 'dept', '/system/dept', '部门管理', NULL, 0, 1, 0, NULL, 'iconfont icon-putong', 7);
-INSERT INTO `ums_menu` VALUES (11, 1, '/system/teacher', 'teacher', '/system/teacher', '教师管理', NULL, 0, 1, 0, NULL, 'iconfont icon-zhongduancanshuchaxun', 8);
 INSERT INTO `ums_menu` VALUES (12, NULL, '/exam', 'exam', 'layout', '考试管理', NULL, 0, 1, 0, NULL, 'iconfont icon-zhongduancanshuchaxun', 1);
 INSERT INTO `ums_menu` VALUES (13, 12, '/exam/paper', 'paper', '/exam/paper', '试卷库', NULL, 0, 1, 0, NULL, 'iconfont icon-shouye_dongtaihui', 2);
 INSERT INTO `ums_menu` VALUES (14, 12, '/exam/question', 'question', '/exam/question', '试题库', NULL, 0, 1, 0, NULL, 'iconfont icon-putong', 1);
@@ -676,63 +685,9 @@ INSERT INTO `ums_role_menu` VALUES (123, 10, 4);
 INSERT INTO `ums_role_menu` VALUES (124, 10, 5);
 INSERT INTO `ums_role_menu` VALUES (125, 10, 6);
 INSERT INTO `ums_role_menu` VALUES (126, 10, 9);
-INSERT INTO `ums_role_menu` VALUES (127, 10, 8);
 INSERT INTO `ums_role_menu` VALUES (128, 10, 10);
-INSERT INTO `ums_role_menu` VALUES (129, 10, 11);
 INSERT INTO `ums_role_menu` VALUES (130, 10, 12);
 INSERT INTO `ums_role_menu` VALUES (131, 10, 14);
 INSERT INTO `ums_role_menu` VALUES (132, 10, 13);
-
--- ----------------------------
--- Table structure for ums_student
--- ----------------------------
-DROP TABLE IF EXISTS `ums_student`;
-CREATE TABLE `ums_student`  (
-  `id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '姓名',
-  `number` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '学号',
-  `college` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '学院',
-  `major` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '专业',
-  `class_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '班级',
-  `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '头像',
-  `birthday` date NULL DEFAULT NULL COMMENT '出生日期',
-  `phone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '手机号',
-  `sex` int(255) NULL DEFAULT NULL COMMENT '0：男 1：女',
-  `status` int(255) NULL DEFAULT NULL COMMENT '0：禁用 1：启用',
-  `wx_open_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'wxopenid',
-  `add_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
-  `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
-  `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '学生表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of ums_student
--- ----------------------------
-INSERT INTO `ums_student` VALUES ('38bd2100d22419811b6ffd596d372619', '陆某某', '20230419', '16', '18', '4', 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20230419/2018e9ac91ec37d9aaf437a1fd5d7070.png', '2023-04-18', '19865315987', 0, 1, NULL, '2023-04-19 11:01:45', '2023-04-19 11:01:45', 1);
-
--- ----------------------------
--- Table structure for ums_teacher
--- ----------------------------
-DROP TABLE IF EXISTS `ums_teacher`;
-CREATE TABLE `ums_teacher`  (
-  `id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '姓名',
-  `number` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '工号',
-  `dept_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '部门id',
-  `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '头像',
-  `sex` tinyint(10) NULL DEFAULT NULL COMMENT '0: 男 1：女',
-  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '邮箱',
-  `phone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '电话',
-  `add_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
-  `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
-  `deleted` tinyint(255) NULL DEFAULT 1 COMMENT '逻辑删除',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '教师表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of ums_teacher
--- ----------------------------
-INSERT INTO `ums_teacher` VALUES ('8daa621c57a934669b9609bf83e0e5ff', '黄老师', '20230416', '637bfb9a8fab4117c09e946afcacf6ae', 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20230419/000.png', 0, '1224311695@qq.com', '18756492368', '2023-04-19 14:30:18', '2023-04-19 14:30:18', 1);
 
 SET FOREIGN_KEY_CHECKS = 1;
