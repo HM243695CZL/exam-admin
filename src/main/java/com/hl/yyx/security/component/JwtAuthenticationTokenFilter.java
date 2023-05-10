@@ -1,7 +1,11 @@
 package com.hl.yyx.security.component;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.hl.yyx.common.util.JwtTokenUtil;
+import com.hl.yyx.common.util.UserThreadLocalUtil;
+import com.hl.yyx.modules.ums.model.UmsAdmin;
+import com.hl.yyx.modules.ums.service.UmsAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,6 +28,9 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
     @Autowired
     private UserDetailsService userDetailsService;
+
+    @Autowired
+    private UmsAdminService adminService;
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
@@ -53,6 +60,8 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                     authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                    UmsAdmin admin = adminService.getCurrentAdmin();
+                    UserThreadLocalUtil.put(admin);
                 }
             }
         }

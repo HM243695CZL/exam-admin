@@ -10,9 +10,33 @@
         <result column="question_count" property="questionCount" />
         <result column="question_duration" property="questionDuration" />
         <result column="time_limit" property="timeLimit" />
+        <result column="publish_time" property="publishTime" />
         <result column="add_time" property="addTime" />
         <result column="update_time" property="updateTime" />
         <result column="deleted" property="deleted" />
     </resultMap>
+    <select id="getMyExamPageList" resultType="com.hl.yyx.modules.exam.model.ExamPaper">
+        SELECT
+            ep.id id,
+            ep.name name,
+            ep.score score,
+            ep.question_count question_count,
+            ep.question_count question_duration,
+            ep.time_limit time_limit,
+            uc.NAME className,
+            ep.publish_time publish_time,
+            ep.add_time add_time,
+            ep.update_time update_time
+        FROM
+            exam_paper ep
+            LEFT JOIN exam_paper_publish epp ON ep.id = epp.paper_id
+            LEFT JOIN ums_class uc ON uc.id = epp.class_id
+        <where>
+            <if test="pageDTO.name != '' and pageDTO.name != null">
+                ep.name like concat('%' + #{pageDTO.name} + '%')
+            </if>
+            AND epp.class_id = #{currentUserClassId}
+        </where>
+    </select>
 
 </mapper>

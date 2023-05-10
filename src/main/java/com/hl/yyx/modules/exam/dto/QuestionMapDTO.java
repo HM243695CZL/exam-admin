@@ -16,6 +16,8 @@ public class QuestionMapDTO {
 
     private String answer;
 
+    private String currentUserAnswer;
+
     private String analysis;
 
     private Integer sortIndex;

@@ -1,9 +1,6 @@
 package com.hl.yyx.modules.ums.model;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serializable;
 import java.util.List;
@@ -35,6 +32,7 @@ public class UmsMenu implements Serializable {
     private Integer id;
 
     @ApiModelProperty(value = "父级id")
+    @TableField(updateStrategy = FieldStrategy.IGNORED)
     private Integer pid;
 
     @ApiModelProperty(value = "菜单地址")

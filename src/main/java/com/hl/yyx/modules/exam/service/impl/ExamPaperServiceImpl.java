@@ -5,11 +5,13 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hl.yyx.common.util.UserThreadLocalUtil;
 import com.hl.yyx.modules.exam.dto.*;
 import com.hl.yyx.modules.exam.model.*;
 import com.hl.yyx.modules.exam.mapper.ExamPaperMapper;
 import com.hl.yyx.modules.exam.service.*;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.hl.yyx.modules.ums.model.UmsAdmin;
 import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,7 @@ import java.util.stream.Collectors;
  * @author hl243695czyn
  * @since 2023-04-28
  */
+@SuppressWarnings("all")
 @Service
 public class ExamPaperServiceImpl extends ServiceImpl<ExamPaperMapper, ExamPaper> implements ExamPaperService {
 
@@ -47,6 +50,15 @@ public class ExamPaperServiceImpl extends ServiceImpl<ExamPaperMapper, ExamPaper
     @Autowired
     private ExamPaperPublishService publishService;
 
+    @Autowired
+    private ExamPaperMapper paperMapper;
+
+    @Autowired
+    private ExamRecordService recordService;
+
+    @Autowired
+    private ExamSubAnswerRelationService answerRelationService;
+
 
     @Override
     public Page<ExamPaper> pageList(PaperPageDTO params) {
@@ -56,6 +68,11 @@ public class ExamPaperServiceImpl extends ServiceImpl<ExamPaperMapper, ExamPaper
             wrapper.lambda().like(ExamPaper::getName, params.getName());
         }
         Page<ExamPaper> paperPage = page(page, wrapper);
+        getPaperQuestionInfo(paperPage);
+        return  paperPage;
+    }
+
+    public void getPaperQuestionInfo(Page<ExamPaper> paperPage) {
         for (ExamPaper record : paperPage.getRecords()) {
             QueryWrapper<ExamPaperBig> queryWrapper = new QueryWrapper<>();
             queryWrapper.lambda().eq(ExamPaperBig::getPaperId, record.getId());
@@ -76,7 +93,6 @@ public class ExamPaperServiceImpl extends ServiceImpl<ExamPaperMapper, ExamPaper
             }
             record.setQuestionInfo(paperInfo);
         }
-        return  paperPage;
     }
 
     @Transactional
@@ -93,13 +109,23 @@ public class ExamPaperServiceImpl extends ServiceImpl<ExamPaperMapper, ExamPaper
     public Object view(String id, Boolean isPreview) {
         ViewPaperDTO viewPaper = new ViewPaperDTO();
         ExamPaper paper = getById(id);
-
         viewPaper.setPaper(paper);
+        List<BigQuestionDTO> bigQuestionList = getBigQuestionList(id, isPreview);
+        viewPaper.setQuestionBigList(bigQuestionList);
+        return viewPaper;
+    }
 
+
+    /**
+     * 获取试卷的大题
+     * @param paperId
+     * @return
+     */
+    public List<BigQuestionDTO> getBigQuestionList(String paperId, Boolean isPreview) {
         ArrayList<BigQuestionDTO> bigQuestionList = new ArrayList<>();
         // 获取大题
         QueryWrapper<ExamPaperBig> wrapper = new QueryWrapper<>();
-        wrapper.lambda().eq(ExamPaperBig::getPaperId, id);
+        wrapper.lambda().eq(ExamPaperBig::getPaperId, paperId);
         List<ExamPaperBig> bigList = paperBigService.list(wrapper);
         for (ExamPaperBig paperBig : bigList) {
             BigQuestionDTO bigQuestion = new BigQuestionDTO();
@@ -126,6 +152,14 @@ public class ExamPaperServiceImpl extends ServiceImpl<ExamPaperMapper, ExamPaper
                     if (!isPreview) {
                         questionMap.setAnswer(questionInfo.getAnswer());
                         questionMap.setAnalysis(questionInfo.getAnalysis());
+                        // 获取当前用户的答案
+                        UmsAdmin admin = UserThreadLocalUtil.get();
+                        QueryWrapper<ExamSubAnswerRelation> currentAnswerQuery = new QueryWrapper<>();
+                        currentAnswerQuery.lambda().eq(ExamSubAnswerRelation::getUserId, admin.getId());
+                        currentAnswerQuery.lambda().eq(ExamSubAnswerRelation::getPaperId, paperId);
+                        currentAnswerQuery.lambda().eq(ExamSubAnswerRelation::getQuestionId, questionInfo.getId());
+                        ExamSubAnswerRelation answerRelation = answerRelationService.getOne(currentAnswerQuery);
+                        questionMap.setCurrentUserAnswer(answerRelation.getAnswer());
                     }
                     questionMap.setSortIndex(relation.getSortIndex());
                     // 根据试题id获取选项id
@@ -148,8 +182,7 @@ public class ExamPaperServiceImpl extends ServiceImpl<ExamPaperMapper, ExamPaper
             }
             bigQuestionList.add(bigQuestion);
         }
-        viewPaper.setQuestionBigList(bigQuestionList);
-        return viewPaper;
+        return bigQuestionList;
     }
 
     @Transactional
@@ -215,12 +248,16 @@ public class ExamPaperServiceImpl extends ServiceImpl<ExamPaperMapper, ExamPaper
     @Transactional
     @Override
     public Boolean publishExam(PublishExamDTO examDTO) {
+        // 更新发布时间
+        ExamPaper paper = getById(examDTO.getPaperId());
+        paper.setPublishTime(new Date());
+        updateById(paper);
+
         // 先删除已发布班级
         QueryWrapper<ExamPaperPublish> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(ExamPaperPublish::getPaperId, examDTO.getPaperId());
         publishService.remove(queryWrapper);
-
-        for (Integer classId : examDTO.getClassId()) {
+        for (String classId : examDTO.getClassId()) {
             ExamPaperPublish paperPublish = new ExamPaperPublish();
             paperPublish.setPaperId(examDTO.getPaperId());
             paperPublish.setClassId(classId);
@@ -235,14 +272,72 @@ public class ExamPaperServiceImpl extends ServiceImpl<ExamPaperMapper, ExamPaper
      * @return
      */
     @Override
-    public List<Integer> getPublishClass(String id) {
+    public List<String> getPublishClass(String id) {
         QueryWrapper<ExamPaperPublish> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(ExamPaperPublish::getPaperId, id);
         List<ExamPaperPublish> list = publishService.list(queryWrapper);
-        ArrayList<Integer> publishList = new ArrayList<>();
+        ArrayList<String> publishList = new ArrayList<>();
         for (ExamPaperPublish publish : list) {
             publishList.add(publish.getClassId());
         }
         return publishList;
+    }
+
+    /**
+     * 获取我的考试
+     * @param pageDTO
+     * @return
+     */
+    @Override
+    public Page<ExamPaper> getMyExam(PaperPageDTO pageDTO) {
+        UmsAdmin currentUser = UserThreadLocalUtil.get();
+        // 获取当前用户所在班级的考试
+        Page<ExamPaper> page = new Page<>(pageDTO.getPageIndex(), pageDTO.getPageSize());
+        Page<ExamPaper> paperPage = paperMapper.getMyExamPageList(page, pageDTO, currentUser.getClassId());
+        getPaperQuestionInfo(paperPage);
+        return paperPage;
+    }
+
+    @Transactional
+    @Override
+    public Boolean submitPaper(SubmitPaperDTO params) {
+        UmsAdmin currentUser = UserThreadLocalUtil.get();
+
+        ExamRecord record = new ExamRecord();
+        record.setPaperId(params.getPaperId());
+        record.setRecordStatus(1);
+        record.setUserId(currentUser.getId());
+        record.setSubmitTime(new Date());
+
+        // 计算试卷得分
+        Integer totalScore = 0;
+        // 获取试卷信息
+        ExamPaper paperInfo = getById(params.getPaperId());
+        for (BigQuestionDTO bigQuestionDTO : getBigQuestionList(params.getPaperId(), true)) {
+            for (QuestionMapDTO mapDTO : bigQuestionDTO.getQuestionList()) {
+                ExamQuestion question = questionService.getById(mapDTO.getId());
+                String answer = params.getAnswerMap().get(mapDTO.getId());
+                if (question.getAnswer().equals(answer)) {
+                    // 获取本题得分
+                    QueryWrapper<ExamPaperBigRelation> wrapper = new QueryWrapper<>();
+                    wrapper.lambda().eq(ExamPaperBigRelation::getBigId, bigQuestionDTO.getBigId());
+                    wrapper.lambda().eq(ExamPaperBigRelation::getPaperId, params.getPaperId());
+                    wrapper.lambda().eq(ExamPaperBigRelation::getQuestionId, mapDTO.getId());
+                    ExamPaperBigRelation bigRelation = relationService.getOne(wrapper);
+                    totalScore += bigRelation.getScore();
+                }
+            }
+        }
+        record.setScore(totalScore);
+        boolean save = recordService.save(record);
+        for (String questionId: params.getAnswerMap().keySet()) {
+            ExamSubAnswerRelation relation = new ExamSubAnswerRelation();
+            relation.setPaperId(params.getPaperId());
+            relation.setUserId(currentUser.getId());
+            relation.setQuestionId(questionId);
+            relation.setAnswer(params.getAnswerMap().get(questionId));
+            answerRelationService.save(relation);
+        }
+        return save;
     }
 }

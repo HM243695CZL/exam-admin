@@ -93,14 +93,14 @@ public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper, UmsAdmin> i
             if (StrUtil.isNotEmpty(item.getCollegeId())) {
                 // 获取学院名称
                 QueryWrapper<UmsCollegeMajor> wrapper = new QueryWrapper<>();
-                wrapper.lambda().eq(UmsCollegeMajor::getType, 0);
+                wrapper.lambda().eq(UmsCollegeMajor::getType, 1);
                 wrapper.lambda().eq(UmsCollegeMajor::getId, item.getCollegeId());
                 UmsCollegeMajor college = collegeMajorService.getOne(wrapper);
                 item.setCollegeName(college.getName());
 
                 // 获取专业名称
                 QueryWrapper<UmsCollegeMajor> wrapperMajor = new QueryWrapper<>();
-                wrapperMajor.lambda().eq(UmsCollegeMajor::getType, 1);
+                wrapperMajor.lambda().eq(UmsCollegeMajor::getType, 0);
                 wrapperMajor.lambda().eq(UmsCollegeMajor::getId, item.getMajorId());
                 UmsCollegeMajor major = collegeMajorService.getOne(wrapperMajor);
                 item.setMajorName(major.getName());

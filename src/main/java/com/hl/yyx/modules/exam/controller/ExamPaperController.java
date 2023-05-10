@@ -6,6 +6,7 @@ import com.hl.yyx.common.api.CommonResult;
 import com.hl.yyx.common.log.LogAnnotation;
 import com.hl.yyx.modules.exam.dto.PaperPageDTO;
 import com.hl.yyx.modules.exam.dto.PublishExamDTO;
+import com.hl.yyx.modules.exam.dto.SubmitPaperDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,6 +106,22 @@ import org.springframework.web.bind.annotation.RestController;
     @RequestMapping(value = "/getPublishClass/{id}", method = RequestMethod.GET)
     public CommonResult getPublishClass(@PathVariable String id) {
         return CommonResult.success(examPaperService.getPublishClass(id));
+    }
+
+    // 获取我的考试
+    @ApiOperation("获取我的考试")
+    @LogAnnotation()
+    @RequestMapping(value = "/getMyExam", method = RequestMethod.POST)
+    public CommonResult getMyExam(@RequestBody PaperPageDTO pageDTO) {
+        return CommonResult.success(CommonPage.restPage(examPaperService.getMyExam(pageDTO)));
+    }
+
+    // 交卷
+    @ApiOperation("交卷")
+    @LogAnnotation()
+    @RequestMapping(value = "/submitPaper", method = RequestMethod.POST)
+    public CommonResult submitPaper(@RequestBody SubmitPaperDTO params) {
+        return CommonResult.success(examPaperService.submitPaper(params));
     }
 
 }

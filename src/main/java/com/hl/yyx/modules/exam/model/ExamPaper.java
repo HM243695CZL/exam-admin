@@ -8,6 +8,7 @@ import java.util.Date;
 import java.io.Serializable;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.hl.yyx.common.vo.BaseModelDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -45,6 +46,10 @@ public class ExamPaper extends BaseModelDTO implements Serializable {
 
     @ApiModelProperty(value = "答题时间")
     private String questionDuration;
+
+    @ApiModelProperty(value = "发布时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date publishTime;
 
     @ApiModelProperty(value = "是否限时  1 不限时  2 限时")
     private Integer timeLimit;

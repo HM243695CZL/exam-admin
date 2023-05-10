@@ -37,10 +37,10 @@ public class UmsClass extends BaseModelDTO implements Serializable {
     private String name;
 
     @ApiModelProperty(value = "学院id")
-    private Integer collegeId;
+    private String collegeId;
 
     @ApiModelProperty(value = "专业id")
-    private Integer majorId;
+    private String majorId;
 
     @ApiModelProperty(value = "备注")
     private String remark;

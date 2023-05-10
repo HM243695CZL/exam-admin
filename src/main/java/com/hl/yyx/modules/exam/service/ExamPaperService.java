@@ -3,6 +3,7 @@ package com.hl.yyx.modules.exam.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hl.yyx.modules.exam.dto.PaperPageDTO;
 import com.hl.yyx.modules.exam.dto.PublishExamDTO;
+import com.hl.yyx.modules.exam.dto.SubmitPaperDTO;
 import com.hl.yyx.modules.exam.model.ExamPaper;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -40,5 +41,9 @@ public interface ExamPaperService extends IService<ExamPaper> {
      * @param id
      * @return
      */
-    List<Integer> getPublishClass(String id);
+    List<String> getPublishClass(String id);
+
+    Page<ExamPaper> getMyExam(PaperPageDTO pageDTO);
+
+    Boolean submitPaper(SubmitPaperDTO params);
 }

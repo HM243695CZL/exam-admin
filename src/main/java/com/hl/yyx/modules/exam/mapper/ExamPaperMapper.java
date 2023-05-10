@@ -1,7 +1,10 @@
 package com.hl.yyx.modules.exam.mapper;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hl.yyx.modules.exam.dto.PaperPageDTO;
 import com.hl.yyx.modules.exam.model.ExamPaper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
@@ -13,4 +16,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface ExamPaperMapper extends BaseMapper<ExamPaper> {
 
+    Page<ExamPaper> getMyExamPageList(Page<ExamPaper> page,
+                                      @Param("pageDTO") PaperPageDTO pageDTO,
+                                      @Param("currentUserClassId") String currentUserClassId
+    );
 }
