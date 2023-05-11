@@ -29,18 +29,4 @@ public class ExamRecordServiceImpl extends ServiceImpl<ExamRecordMapper, ExamRec
     @Autowired
     private ExamPaperService paperService;
 
-    @Override
-    public Page<ExamRecord> pageList(PaperPageDTO params) {
-        UmsAdmin admin = UserThreadLocalUtil.get();
-        Page<ExamRecord> page = new Page<>(params.getPageIndex(), params.getPageSize());
-        QueryWrapper<ExamRecord> wrapper = new QueryWrapper<>();
-        wrapper.lambda().eq(ExamRecord::getUserId, admin.getId());
-        Page<ExamRecord> pageList = page(page, wrapper);
-        for (ExamRecord record : pageList.getRecords()) {
-            ExamPaper paper = paperService.getById(record.getPaperId());
-            record.setPaperName(paper.getName());
-            record.setTotalScore(paper.getScore());
-        }
-        return pageList;
-    }
 }

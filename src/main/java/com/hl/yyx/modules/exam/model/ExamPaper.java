@@ -47,6 +47,15 @@ public class ExamPaper extends BaseModelDTO implements Serializable {
     @ApiModelProperty(value = "答题时间")
     private String questionDuration;
 
+    @ApiModelProperty(value = "考试得分")
+    @TableField(exist = false)
+    private Integer examScore;
+
+    @ApiModelProperty(value = "交卷时间")
+    @TableField(exist = false)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date submitTime;
+
     @ApiModelProperty(value = "发布时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date publishTime;

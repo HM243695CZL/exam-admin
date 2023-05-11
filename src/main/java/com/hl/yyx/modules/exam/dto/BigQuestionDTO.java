@@ -1,5 +1,7 @@
 package com.hl.yyx.modules.exam.dto;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.hl.yyx.modules.exam.model.ExamRecord;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 

@@ -59,6 +59,9 @@ public class ExamPaperServiceImpl extends ServiceImpl<ExamPaperMapper, ExamPaper
     @Autowired
     private ExamSubAnswerRelationService answerRelationService;
 
+    @Autowired
+    private ExamWrongBookService wrongBookService;
+
 
     @Override
     public Page<ExamPaper> pageList(PaperPageDTO params) {
@@ -91,6 +94,16 @@ public class ExamPaperServiceImpl extends ServiceImpl<ExamPaperMapper, ExamPaper
             if (!singleCount.equals(0)) {
                 paperInfo = "单选题(" + singleCount + ")";
             }
+            // 是否已有考试记录
+            UmsAdmin admin = UserThreadLocalUtil.get();
+            QueryWrapper<ExamRecord> wrapper = new QueryWrapper<>();
+            wrapper.lambda().eq(ExamRecord::getUserId, admin.getId());
+            wrapper.lambda().eq(ExamRecord::getPaperId, record.getId());
+            ExamRecord examRecord = recordService.getOne(wrapper);
+            if (examRecord != null) {
+                record.setExamScore(examRecord.getScore());
+                record.setSubmitTime(examRecord.getSubmitTime());
+            }
             record.setQuestionInfo(paperInfo);
         }
     }
@@ -112,6 +125,15 @@ public class ExamPaperServiceImpl extends ServiceImpl<ExamPaperMapper, ExamPaper
         viewPaper.setPaper(paper);
         List<BigQuestionDTO> bigQuestionList = getBigQuestionList(id, isPreview);
         viewPaper.setQuestionBigList(bigQuestionList);
+        if (!isPreview) {
+            // 获取用户答题记录
+            UmsAdmin admin = UserThreadLocalUtil.get();
+            QueryWrapper<ExamRecord> recordQueryWrapper = new QueryWrapper<>();
+            recordQueryWrapper.lambda().eq(ExamRecord::getUserId, admin.getId());
+            recordQueryWrapper.lambda().eq(ExamRecord::getPaperId, id);
+            ExamRecord examRecord = recordService.getOne(recordQueryWrapper);
+            viewPaper.setAnswerRecordInfo(examRecord);
+        }
         return viewPaper;
     }
 
@@ -122,6 +144,7 @@ public class ExamPaperServiceImpl extends ServiceImpl<ExamPaperMapper, ExamPaper
      * @return
      */
     public List<BigQuestionDTO> getBigQuestionList(String paperId, Boolean isPreview) {
+        UmsAdmin admin = UserThreadLocalUtil.get();
         ArrayList<BigQuestionDTO> bigQuestionList = new ArrayList<>();
         // 获取大题
         QueryWrapper<ExamPaperBig> wrapper = new QueryWrapper<>();
@@ -153,7 +176,6 @@ public class ExamPaperServiceImpl extends ServiceImpl<ExamPaperMapper, ExamPaper
                         questionMap.setAnswer(questionInfo.getAnswer());
                         questionMap.setAnalysis(questionInfo.getAnalysis());
                         // 获取当前用户的答案
-                        UmsAdmin admin = UserThreadLocalUtil.get();
                         QueryWrapper<ExamSubAnswerRelation> currentAnswerQuery = new QueryWrapper<>();
                         currentAnswerQuery.lambda().eq(ExamSubAnswerRelation::getUserId, admin.getId());
                         currentAnswerQuery.lambda().eq(ExamSubAnswerRelation::getPaperId, paperId);
@@ -325,6 +347,23 @@ public class ExamPaperServiceImpl extends ServiceImpl<ExamPaperMapper, ExamPaper
                     wrapper.lambda().eq(ExamPaperBigRelation::getQuestionId, mapDTO.getId());
                     ExamPaperBigRelation bigRelation = relationService.getOne(wrapper);
                     totalScore += bigRelation.getScore();
+                } else {
+                    // 添加到错题本， 如果当前用户已错过，则增加做错次数
+                    QueryWrapper<ExamWrongBook> wrapper = new QueryWrapper<>();
+                    wrapper.lambda().eq(ExamWrongBook::getUserId, currentUser.getId());
+                    wrapper.lambda().eq(ExamWrongBook::getQuestionId, mapDTO.getId());
+                    ExamWrongBook wrongQuestion = wrongBookService.getOne(wrapper);
+                    if (wrongQuestion != null) {
+                        wrongQuestion.setWrongCount(wrongQuestion.getWrongCount() + 1);
+                        wrongBookService.updateById(wrongQuestion);
+                    } else {
+                        ExamWrongBook wrongBook = new ExamWrongBook();
+                        wrongBook.setQuestionId(mapDTO.getId());
+                        wrongBook.setUserId(currentUser.getId());
+                        wrongBook.setCorrectAnswerId(question.getAnswer());
+                        wrongBook.setSelfAnswerId(answer);
+                        wrongBookService.save(wrongBook);
+                    }
                 }
             }
         }

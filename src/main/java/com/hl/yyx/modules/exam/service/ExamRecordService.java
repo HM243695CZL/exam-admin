@@ -15,5 +15,4 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ExamRecordService extends IService<ExamRecord> {
 
-    Page<ExamRecord> pageList(PaperPageDTO params);
 }

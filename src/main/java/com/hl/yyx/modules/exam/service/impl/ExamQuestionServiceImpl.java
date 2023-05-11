@@ -85,13 +85,34 @@ public class ExamQuestionServiceImpl extends ServiceImpl<ExamQuestionMapper, Exa
     @Override
     @Transactional
     public Boolean create(ExamQuestion examQuestion) {
-        boolean save = save(examQuestion);
+        save(examQuestion);
         Integer index = 0;
-        for (ExamQuestionItem item: examQuestion.getQuestionItemList()) {
+        List<ExamQuestionItem> questionItemList = examQuestion.getQuestionItemList();
+        for (ExamQuestionItem item: questionItemList) {
             index ++;
             saveQuestionItem(item, examQuestion.getId(), index);
         }
-        return save;
+        // 更新试题答案
+        examQuestion.setAnswer(updateQuestionAnswer(examQuestion));
+        return updateById(examQuestion);
+    }
+
+    /**
+     * 更新试题答案
+     * @param examQuestion
+     * @return
+     */
+    public String updateQuestionAnswer(ExamQuestion examQuestion) {
+        String answerId = "";
+        // 更新试题答案
+        String[] itemArr = new String[]{"A", "B", "C", "D", "E", "F"};
+        for (int i = 0; i < itemArr.length; i++) {
+            if (examQuestion.getAnswer().equals(itemArr[i])) {
+                answerId = examQuestion.getQuestionItemList().get(i).getId();
+                break;
+            }
+        }
+        return answerId;
     }
 
     @Override
@@ -115,6 +136,7 @@ public class ExamQuestionServiceImpl extends ServiceImpl<ExamQuestionMapper, Exa
     @Override
     @Transactional
     public Boolean updateQuestion(ExamQuestion examQuestion) {
+        examQuestion.setAnswer(updateQuestionAnswer(examQuestion));
         boolean update = updateById(examQuestion);
         // 根据试题id获取选项id
         List<String> itemIds = relationItemService.list(new QueryWrapper<ExamQuestionRelationItem>()

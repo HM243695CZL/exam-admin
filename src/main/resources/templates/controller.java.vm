@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import ${package.Service}.${table.serviceName};
 import ${package.Entity}.${entity};
 
+import java.util.List;
+
 #if(${restControllerStyle})
 import org.springframework.web.bind.annotation.RestController;
 #else
