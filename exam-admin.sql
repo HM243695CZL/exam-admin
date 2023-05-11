@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 11/05/2023 16:27:14
+ Date: 11/05/2023 16:43:02
 */
 
 SET NAMES utf8mb4;
@@ -190,6 +190,16 @@ INSERT INTO `exam_question` VALUES ('bbc861a67f1afaf4008fac7eb1eb8099', 1, '317e
 INSERT INTO `exam_question` VALUES ('9b7e5babc8b120cca7df281a3336fbb0', 1, '317e751103f654a1631725d6e00355bd', '5', 1, '<p>近年来，3D打印技术开始应用于食品、建筑、医疗卫生、航空航天等多个领域。随着3D打印技术在金属零部件制造上取得较大进展，各国开始探讨其在武器装备制造与维修中的应用。研究表明，3D打印对军用武器及设施维修效果显著，能直接在战场上把需要的零部件“打印”出来，及时、精准完成受损装备的维修，快速恢复其作战能力。然而，这种方式制造的军用设备有着不可避免的缺陷，对装备材料要求极高的军用设备来说，除了尺寸受限，其强度和质量也令人担忧。受技术、成本的限制，3D打印技术难以取代大规模流水线生产。</p><p><br></p><p>这段文字主要介绍了3D打印技术：</p>', '<p>在军事领域的应用情况</p>', 'e136867b2c1470aa755209d320527290', '2023-05-11 16:23:07', '2023-05-11 16:23:07', 1);
 INSERT INTO `exam_question` VALUES ('80f28faf4772364901b164664e411ddf', 1, '317e751103f654a1631725d6e00355bd', '5', 1, '<p>艺术博物馆经过近200年的发展，已经从最初的“艺术家的机构”演变为今天“公众的艺术机构”。艺术博物馆的馆长、总监、策展人发现，他们现在面临的最大问题不是和捐赠人、收藏家、同行打交道，而是如何把没有受过艺术教育、缺乏艺术体验的普通人吸引到艺术博物馆里来。潜在的观众群不进博物馆是因为他们不懂艺术史，缺乏相关的艺术体验，一直认为博物馆不欢迎他们，里面没有让他们感兴趣的东西。消除“不舒服感”需要淡化艺术博物馆的精英色彩。艺术并不只关乎大人物，更关乎普通人。从社会学角度讲，后者更重要。</p><p><br></p><p>这段文字主要说明：</p>', '<p>艺术博物馆应该主动贴近普通大众</p>', '8f7a4162c84d116e16620029770f3c26', '2023-05-11 16:24:04', '2023-05-11 16:24:04', 1);
 INSERT INTO `exam_question` VALUES ('427a75e275b21672c2821619b7672770', 1, '317e751103f654a1631725d6e00355bd', '5', 1, '<p>现代信息技术与高等教育教学的融合，衍生出大规模在线开放课程，打破了传统教育的时空界限和学校围墙。六年来，中国慕课从无到有，从小到大，在实践中总在向一个共识靠近，那就是高等教育作为高层次人才的主要供给者，知识创新的主要推动者，要回应时代需求，就必须创新发展，把慕课建设作为加快中国教育现代化、发展“互联网+教育”“智能+教育”的战略先手棋，推进这场深度融合信息技术与教育教学的课堂革命向纵深发展。这就意味着，慕课的建设与发展必然离不开高校的参与和支持、学校与社会的共同协力。</p><p><br></p><p>这段文字意在：</p>', '<p>强调高校应在慕课发展中发挥重要作用</p>', 'ad01f84973766164441eec1e008b0e58', '2023-05-11 16:25:24', '2023-05-11 16:25:24', 1);
+INSERT INTO `exam_question` VALUES ('525e951501ff24f1b79f4b552d4519fc', 1, '317e751103f654a1631725d6e00355bd', '5', 1, '<p>在现代化进程中，城的比重上升，乡的比重下降，是客观规律，但在我国拥有近14亿人口的国情下，不管工业化、城镇化进展到哪一步，农业都要发展，乡村都不会消亡，城乡将长期共生并存，这也是客观规律。即便我国城镇化率达到70%，农村仍将有4亿多人口。如果在现代化进程中把农村4亿多人落下，到头来“一边是繁荣的城市、一边是凋敝的农村”，这不符合我们党的执政宗旨，也不符合社会主义的本质要求。这样的现代化是不可能取得成功的!40年前，我们通过农村改革拉开了改革开放大幕。40年后的今天，我们应该通过振兴乡村，开启城乡融合发展和现代化建设新局面。</p><p><br></p><p>这段文字主要谈的是：</p>', '<p>乡村振兴战略</p>', '8d288d1cb9494f37da73d0da803f46d2', '2023-05-11 16:32:23', '2023-05-11 16:32:23', 1);
+INSERT INTO `exam_question` VALUES ('d3cad9a438a93b6b7943734a6fe274bc', 1, '317e751103f654a1631725d6e00355bd', '5', 1, '<p>罗尔斯曾有一段关于如何读书的自白，颇足发人深省。他说：“我读前人的著作，如休谟或康德，有一个视为当然的假定，即这些作者比我聪明得多。如果不然，我又何必浪费自己和学生的时间去研读他们的著作呢?如果我偶尔在他们的论证中见到了一点错误，我的第一个反应是：他们自己一定早已见到了这个错误，并且处理过了。总之，他们的著作中绝没有简单的一般错误，也没有关系重大的错误。”</p><p><br></p><p>这段文字意在表明：</p>', '<p>读书须持谦逊态度</p>', '32e598ea84699359837594ff1788b33d', '2023-05-11 16:33:27', '2023-05-11 16:33:27', 1);
+INSERT INTO `exam_question` VALUES ('45cfb0e1d88384c0d59046035d9573ff', 1, '317e751103f654a1631725d6e00355bd', '5', 1, '<p>过去100多年来，围绕达尔文进化论是否正确的争论从未停歇。不断涌现的科学事实在弥补达尔文当年未曾发现的“缺失环节”的同时，也在检验着达尔文进化论的预测能力。例如，2004年在加拿大发现的“提克塔利克鱼”化石揭示了从鱼类(鳍)到陆生动物(腿)之间的过渡状态，被公认是“种系渐变论”的一个极好例证。当然，达尔文进化论并非完美无缺，它确实存在“可证伪”之处。以自然选择理论为例，它在孟德尔遗传学建立之初就受到了强烈挑战，但各种不能用自然选择理论简单解释的新证据最终还是拓展了人们对进化动力和机制的认识，而不是摒弃该理论。</p><p><br></p><p>这段文字以自然选择理论受到孟德尔遗传学挑战为例，目的是：</p>', '<p>说明达尔文进化论具有可证伪性</p>', '08e9ba886d496b6295cfdf611cdfe9e8', '2023-05-11 16:34:22', '2023-05-11 16:34:22', 1);
+INSERT INTO `exam_question` VALUES ('3e814ccc79dcaba8600486c647498db3', 1, '317e751103f654a1631725d6e00355bd', '5', 1, '<p>当前，我国对互联网平台经济创新秉持“包容审慎”的监管原则，然而这并不意味着监管部门可以放任不管。“包容”意在鼓励创新，为各类企业特别是初创型中小企业在发展早期提供更加宽容的营商环境和法治环境，是尊重市场新业态发展规律的体现；“审慎”则是在法治框架和法治原则下开展监管，在触及法治底线和监管红线的问题上必须严格依法监管。因此，.，应合理界定有效创新与有为监管的边界，在鼓励创新与防范风险之间寻求法治框架下的动态平衡。</p><p><br></p><p>填入画横线部分最恰当的一项是：</p>', '<p>面对平台经济创新发展中的风险和挑战</p>', 'aab03434281661244ea7df0c1d9a7404', '2023-05-11 16:35:06', '2023-05-11 16:35:06', 1);
+INSERT INTO `exam_question` VALUES ('6770a7836ee56b0e3d6435a888186a78', 1, '317e751103f654a1631725d6e00355bd', '5', 1, '<p>作为世界上最成功的室内栽培植物之一，绿萝几乎就是盆栽的代名词，_______。绿萝这个物种早在1880年就被确认了，但是你很难想象，直到2004年，它的原产地才被确定为法属波利尼西亚社会群岛的莫雷阿岛。更为神秘的是，绿萝是一种过分矜持的植物，虽然它已经扩散到了全世界的热带地区，却只在1962年有过一次确切的开花记录，直到2016年，人们才发现了它开花的秘密。填入画横线部分最恰当的一句是：</p>', '<p>但它却也是我们最熟悉的陌生人</p>', '3c5db2ee23b4ac27a95fb846bbf85613', '2023-05-11 16:36:21', '2023-05-11 16:36:21', 1);
+INSERT INTO `exam_question` VALUES ('545e96ab4bd601b6a7c0a3d8fe6923cd', 1, '317e751103f654a1631725d6e00355bd', '5', 1, '<p>目前的全球治理体系是现代文明的产物，是经过长时间博弈和磨合后逐渐形成的。当前的全球治理体系存在两方面问题：一是这一体系仍存在许多合理性，对人类和平与发展有十分重要的作用，但随着时代的发展，这一治理体系及其体制机制未能适应新情况，出现了许多问题，亟需进行改革；二是现代化先发国家在这一体系中仍占据主导地位，长期把控国际外交话语权，将以资本为中心的逻辑贯穿于全球治理体系和治理体制机制。因此，要将构建人类命运共同体理念融人既有的全球治理体系及其相应体制机制，就必须正视上述两方面。</p><p><br></p><p>这段文字接下来最可能讲的是：</p>', '<p>我国参与全球治理体系改革的路径</p>', '93f4693d2ad1e186cbe11afeeec2cbc0', '2023-05-11 16:36:59', '2023-05-11 16:36:59', 1);
+INSERT INTO `exam_question` VALUES ('122fb714d1bf3865eec2da3eec182041', 1, '317e751103f654a1631725d6e00355bd', '5', 1, '<p>远古时代，人类一天平均要移动16~22公里，他们走路、奔跑、冲刺、攀爬、游泳、跳跃、举重··他们不得不如此，否则就难以生存。在50万年的进化中，现代人所拥有的思考型的大脑，正是从运动技能的磨炼中进化而来的，人类渐渐有了梦想、计划以及创造的能力，从而创造了现代文明。但讽刺的是，文明的前进速度如此之快，人类的身体和基因却来不及跟上——就基因而言，我们仍然是50万年前的那些狩猎采集者，我们仍然渴望最高热量的食物，但却不再需要运动。最终，久坐不动的现代生活方式成了人类长期生存的重大威胁之一。</p><p><br></p><p>这段文字接下来最可能讲的是：</p>', '<p>运动量少对人类的危害</p>', '25a98216ff61fea544059c4ae779e848', '2023-05-11 16:37:39', '2023-05-11 16:37:39', 1);
+INSERT INTO `exam_question` VALUES ('9c09d3095e288ba20a9b6f5335f1ae0a', 1, '317e751103f654a1631725d6e00355bd', '5', 1, '<p>在文字还不普及的时代，民间故事承担了培养人生观、道德观、伦理观的职能，听故事是人们学习传统文化、自然知识、人生哲学等的重要渠道。然而，飞速发展的现代科技正在深刻改变着人们的生活方式，也极大地影响着人们的接受习惯和审美趣味。当下的年轻人对传统文化的感知和了解，更多的是通过影视作品、网络小说、电子游戏等途径，年轻人对传统民间故事中的一些经典形象越来越陌生，不少专家学者表示，打捞“失落”的民间故事刻不容缓。</p><p><br></p><p>接下来最可能讲的是：</p>', '<p>让民间故事为现代人接受的途径</p>', 'e26ef79e370a745d6c72b655a22eb1f8', '2023-05-11 16:38:19', '2023-05-11 16:38:19', 1);
+INSERT INTO `exam_question` VALUES ('5d98332d95ae0aa1cadf5f7f5215b1fd', 1, '317e751103f654a1631725d6e00355bd', '5', 1, '<p>①各国对于发动机的制造工艺是严格保密的，甚至对一些顶级的发动机严格控制出口</p><p>②发动机可以说是工业的心脏</p><p>③因此，自主研发成为治愈中国工业“心脏病”最为现实的选择</p><p>④发动机制造水平上不去，是中国工业的“心脏病”</p><p>⑤这使得进口高级发动机的生产线成为奢望</p><p>⑥从轮船、汽车、飞机到火箭，都离不开发动机</p><p><br></p><p>将以上6个句子重新排列，语序正确的是：</p>', '<p>②⑥④①⑤③</p>', 'b2e63c6ee7399dd216c338ff920a8d61', '2023-05-11 16:40:51', '2023-05-11 16:40:51', 1);
+INSERT INTO `exam_question` VALUES ('62348a890afab4a530fada3086b257de', 1, '317e751103f654a1631725d6e00355bd', '5', 1, '<p>①中国企业若想出口稀土产品，必须向行业巨头缴纳高额的专利许可费，否则产品无法出口</p><p>②稀土永磁材料领域的研发重点包括提高材料性能、扩大高端领域应用等；稀土发光材料领域的技术创新点集中在光电材料、反光材料等</p><p>③经历了被人“扼住咽喉”的切肤之痛后，我国稀土企业的创新脚步愈加快速</p><p>④然而在很长一段时间内，我国的稀土企业在国际市场处于受制于人的局面</p><p>⑤多年来，在与世界各国的“稀土大战”中，我国凭借世界第一的稀土储量，逐步在开采、分离技术领域确立了全球领先的地位</p><p>⑥目前，我国稀土领域的创新主要集中于产业链上游的稀土材料领域，多家企业重点发展具有超高性能的稀土永磁材料、稀土发光材料等</p><p><br></p><p>将以上6个句子重新排列，语序正确的是：</p>', '<p>⑤④①③⑥②</p>', 'a94d22e2f6998f1e5a1917340d0e5812', '2023-05-11 16:42:13', '2023-05-11 16:42:13', 1);
 
 -- ----------------------------
 -- Table structure for exam_question_item
@@ -408,6 +418,46 @@ INSERT INTO `exam_question_item` VALUES ('4a7a29157e984c8611f835d008933059', '<p
 INSERT INTO `exam_question_item` VALUES ('ad01f84973766164441eec1e008b0e58', '<p>强调高校应在慕课发展中发挥重要作用</p>', 2, '2023-05-11 16:25:24', '2023-05-11 16:25:24', 1);
 INSERT INTO `exam_question_item` VALUES ('2a29db16ed6f8e664f32afaf2ec81a13', '<p>说明高校需重视高级人才的培养和储备</p>', 3, '2023-05-11 16:25:24', '2023-05-11 16:25:24', 1);
 INSERT INTO `exam_question_item` VALUES ('09cfdf5714440ea72cf81bf02a341ba4', '<p>探讨中国慕课突破传统的新思路</p>', 4, '2023-05-11 16:25:24', '2023-05-11 16:25:24', 1);
+INSERT INTO `exam_question_item` VALUES ('0e4c56f8dd58a67c5cbed4b0dd94699b', '<p>城镇化建设</p>', 1, '2023-05-11 16:32:23', '2023-05-11 16:32:23', 1);
+INSERT INTO `exam_question_item` VALUES ('887860aa2c436d4c4f8be10091096972', '<p>全面建成小康社会</p>', 2, '2023-05-11 16:32:23', '2023-05-11 16:32:23', 1);
+INSERT INTO `exam_question_item` VALUES ('8d288d1cb9494f37da73d0da803f46d2', '<p>乡村振兴战略</p>', 3, '2023-05-11 16:32:23', '2023-05-11 16:32:23', 1);
+INSERT INTO `exam_question_item` VALUES ('fe14b2cb6104ac8266cad2942faa9534', '<p>脱贫攻坚</p>', 4, '2023-05-11 16:32:23', '2023-05-11 16:32:23', 1);
+INSERT INTO `exam_question_item` VALUES ('cbfb8c5c761a968b54ed6974b8f527c0', '<p>读书要有怀疑精神</p>', 1, '2023-05-11 16:33:27', '2023-05-11 16:33:27', 1);
+INSERT INTO `exam_question_item` VALUES ('32e598ea84699359837594ff1788b33d', '<p>读书须持谦逊态度</p>', 2, '2023-05-11 16:33:27', '2023-05-11 16:33:27', 1);
+INSERT INTO `exam_question_item` VALUES ('edb528bd0b51c42906bd3995f8420b5d', '<p>读书最忌不求甚解</p>', 3, '2023-05-11 16:33:27', '2023-05-11 16:33:27', 1);
+INSERT INTO `exam_question_item` VALUES ('56733e39c2692e1459df8e2dedf7fc2a', '<p>读书不能人云亦云</p>', 4, '2023-05-11 16:33:27', '2023-05-11 16:33:27', 1);
+INSERT INTO `exam_question_item` VALUES ('08e9ba886d496b6295cfdf611cdfe9e8', '<p>说明达尔文进化论具有可证伪性</p>', 1, '2023-05-11 16:34:22', '2023-05-11 16:34:22', 1);
+INSERT INTO `exam_question_item` VALUES ('e5b45732e6fecb42460afddb9aacb27c', '<p>证明达尔文进化论具有预测能力</p>', 2, '2023-05-11 16:34:22', '2023-05-11 16:34:22', 1);
+INSERT INTO `exam_question_item` VALUES ('cbff849723dcaddf0db5234befc43ed4', '<p>提出“种系渐变论”的事实例证</p>', 3, '2023-05-11 16:34:22', '2023-05-11 16:34:22', 1);
+INSERT INTO `exam_question_item` VALUES ('9b77beae4e1176d455806e9e6328fd1e', '<p>加深人们对生物进化机制的认识</p>', 4, '2023-05-11 16:34:22', '2023-05-11 16:34:22', 1);
+INSERT INTO `exam_question_item` VALUES ('e60b90dd02599081d0a7e0f3d6e29674', '<p>保障平台经济在创新发展与监管内运行</p>', 1, '2023-05-11 16:35:06', '2023-05-11 16:35:06', 1);
+INSERT INTO `exam_question_item` VALUES ('aab03434281661244ea7df0c1d9a7404', '<p>面对平台经济创新发展中的风险和挑战</p>', 2, '2023-05-11 16:35:06', '2023-05-11 16:35:06', 1);
+INSERT INTO `exam_question_item` VALUES ('b31e66fa20162fca94f398fc96119ecf', '<p>平台风险控制和危机管理容易陷入困境</p>', 3, '2023-05-11 16:35:06', '2023-05-11 16:35:06', 1);
+INSERT INTO `exam_question_item` VALUES ('39aff8eb39fc2fd423d77679b293d706', '<p>正确甄别平台的经济创新和发展的能力</p>', 4, '2023-05-11 16:35:06', '2023-05-11 16:35:06', 1);
+INSERT INTO `exam_question_item` VALUES ('aaededc4612da4c61b6d34d5051ab9d8', '<p>唯一的遗憾就是绿萝从来不开花</p>', 1, '2023-05-11 16:36:21', '2023-05-11 16:36:21', 1);
+INSERT INTO `exam_question_item` VALUES ('dfb599c27a5d6b13392c4125e8eb7234', '<p>因为它非常适合人类的居住环境</p>', 2, '2023-05-11 16:36:21', '2023-05-11 16:36:21', 1);
+INSERT INTO `exam_question_item` VALUES ('3c5db2ee23b4ac27a95fb846bbf85613', '<p>但它却也是我们最熟悉的陌生人</p>', 3, '2023-05-11 16:36:21', '2023-05-11 16:36:21', 1);
+INSERT INTO `exam_question_item` VALUES ('9b0d5e094a501cb44532009ad2f19e23', '<p>是一种不可多得的室内观叶植物</p>', 4, '2023-05-11 16:36:21', '2023-05-11 16:36:21', 1);
+INSERT INTO `exam_question_item` VALUES ('93f4693d2ad1e186cbe11afeeec2cbc0', '<p>我国参与全球治理体系改革的路径</p>', 1, '2023-05-11 16:36:59', '2023-05-11 16:36:59', 1);
+INSERT INTO `exam_question_item` VALUES ('1d408e1ceb1d97be000c6b623c5fef9f', '<p>人类命运共同体理念的形成与发展</p>', 2, '2023-05-11 16:36:59', '2023-05-11 16:36:59', 1);
+INSERT INTO `exam_question_item` VALUES ('659d81440c3c8c92803cad0bfe0df492', '<p>全球治理体系所面临的机遇与挑战</p>', 3, '2023-05-11 16:36:59', '2023-05-11 16:36:59', 1);
+INSERT INTO `exam_question_item` VALUES ('4b89a7dc93905470cc0b441182042560', '<p>当前全球治理体系存在的制度缺陷</p>', 4, '2023-05-11 16:36:59', '2023-05-11 16:36:59', 1);
+INSERT INTO `exam_question_item` VALUES ('aca9fcd3d679d72aac374ff6b6a57812', '<p>热量对人体的重要意义</p>', 1, '2023-05-11 16:37:39', '2023-05-11 16:37:39', 1);
+INSERT INTO `exam_question_item` VALUES ('c556e1ab22efd4f4e74778718e54eaaa', '<p>运动对人类进化的好处</p>', 2, '2023-05-11 16:37:39', '2023-05-11 16:37:39', 1);
+INSERT INTO `exam_question_item` VALUES ('ef2141ce4e825074d3994a0931c6ca4d', '<p>基因与人类健康的关系</p>', 3, '2023-05-11 16:37:39', '2023-05-11 16:37:39', 1);
+INSERT INTO `exam_question_item` VALUES ('25a98216ff61fea544059c4ae779e848', '<p>运动量少对人类的危害</p>', 4, '2023-05-11 16:37:39', '2023-05-11 16:37:39', 1);
+INSERT INTO `exam_question_item` VALUES ('e26ef79e370a745d6c72b655a22eb1f8', '<p>让民间故事为现代人接受的途径</p>', 1, '2023-05-11 16:38:19', '2023-05-11 16:38:19', 1);
+INSERT INTO `exam_question_item` VALUES ('ca36bc8ae3139829c1ab6f56b4788272', '<p>民间故事与传统文化之间的关系</p>', 2, '2023-05-11 16:38:19', '2023-05-11 16:38:19', 1);
+INSERT INTO `exam_question_item` VALUES ('13fb42a98c644c949255374f64629556', '<p>年轻一代对民间故事的了解状况</p>', 3, '2023-05-11 16:38:19', '2023-05-11 16:38:19', 1);
+INSERT INTO `exam_question_item` VALUES ('bc606281e22de51b8ce7197b51add06c', '<p>现代科技对民间故事传播的冲击</p>', 4, '2023-05-11 16:38:19', '2023-05-11 16:38:19', 1);
+INSERT INTO `exam_question_item` VALUES ('b2e63c6ee7399dd216c338ff920a8d61', '<p>②⑥④①⑤③</p>', 1, '2023-05-11 16:40:51', '2023-05-11 16:40:51', 1);
+INSERT INTO `exam_question_item` VALUES ('3783cb6ee8d83adae5474a25f44e46b4', '<p>⑥④②⑤①③</p>', 2, '2023-05-11 16:40:51', '2023-05-11 16:40:51', 1);
+INSERT INTO `exam_question_item` VALUES ('f502e1b28dde521f0162f12a32b87e27', '<p>①③⑤④⑥②</p>', 3, '2023-05-11 16:40:51', '2023-05-11 16:40:51', 1);
+INSERT INTO `exam_question_item` VALUES ('029c584139342d1118a04ced72cf7264', '<p>④②⑥③①⑤</p>', 4, '2023-05-11 16:40:51', '2023-05-11 16:40:51', 1);
+INSERT INTO `exam_question_item` VALUES ('ae1b0f76271baeda966f249189d89e36', '<p>⑥④①③⑤②</p>', 1, '2023-05-11 16:42:13', '2023-05-11 16:42:13', 1);
+INSERT INTO `exam_question_item` VALUES ('a94d22e2f6998f1e5a1917340d0e5812', '<p>⑤④①③⑥②</p>', 2, '2023-05-11 16:42:13', '2023-05-11 16:42:13', 1);
+INSERT INTO `exam_question_item` VALUES ('ba4df8202255a53bfdca58dcd39c0118', '<p>⑤⑥②①④③</p>', 3, '2023-05-11 16:42:13', '2023-05-11 16:42:13', 1);
+INSERT INTO `exam_question_item` VALUES ('79edef69f0f1b737c4502d43faced30b', '<p>⑥②⑤④①③</p>', 4, '2023-05-11 16:42:13', '2023-05-11 16:42:13', 1);
 
 -- ----------------------------
 -- Table structure for exam_question_relation_item
@@ -623,6 +673,46 @@ INSERT INTO `exam_question_relation_item` VALUES ('f816867b26ba0b7b6547ab0ff7b87
 INSERT INTO `exam_question_relation_item` VALUES ('44fd2a1386debdb07961a5f575a64ff4', '427a75e275b21672c2821619b7672770', 'ad01f84973766164441eec1e008b0e58');
 INSERT INTO `exam_question_relation_item` VALUES ('0fe43452ec5b43b8d2f98d293575212e', '427a75e275b21672c2821619b7672770', '2a29db16ed6f8e664f32afaf2ec81a13');
 INSERT INTO `exam_question_relation_item` VALUES ('70df16f7b95a99dd2636167f7006e646', '427a75e275b21672c2821619b7672770', '09cfdf5714440ea72cf81bf02a341ba4');
+INSERT INTO `exam_question_relation_item` VALUES ('330d5dee2e58da7a6b8e155b1e7f0324', '525e951501ff24f1b79f4b552d4519fc', '0e4c56f8dd58a67c5cbed4b0dd94699b');
+INSERT INTO `exam_question_relation_item` VALUES ('b242fac470b9f362bf5a8ecb379f3ae2', '525e951501ff24f1b79f4b552d4519fc', '887860aa2c436d4c4f8be10091096972');
+INSERT INTO `exam_question_relation_item` VALUES ('1a9d3e7e9a02e3b8a17fdb2d6473f118', '525e951501ff24f1b79f4b552d4519fc', '8d288d1cb9494f37da73d0da803f46d2');
+INSERT INTO `exam_question_relation_item` VALUES ('29f16c6bcbb85f6f7a070fca4162e751', '525e951501ff24f1b79f4b552d4519fc', 'fe14b2cb6104ac8266cad2942faa9534');
+INSERT INTO `exam_question_relation_item` VALUES ('0daf8ab51a208e52afd1a544f07ba5d5', 'd3cad9a438a93b6b7943734a6fe274bc', 'cbfb8c5c761a968b54ed6974b8f527c0');
+INSERT INTO `exam_question_relation_item` VALUES ('9fe1f6f05066b85a513f9972d2931a31', 'd3cad9a438a93b6b7943734a6fe274bc', '32e598ea84699359837594ff1788b33d');
+INSERT INTO `exam_question_relation_item` VALUES ('f9f13c8045fec96eb12ec5153540412f', 'd3cad9a438a93b6b7943734a6fe274bc', 'edb528bd0b51c42906bd3995f8420b5d');
+INSERT INTO `exam_question_relation_item` VALUES ('9a98eb8b45d2cca68c78a6d5c6a00451', 'd3cad9a438a93b6b7943734a6fe274bc', '56733e39c2692e1459df8e2dedf7fc2a');
+INSERT INTO `exam_question_relation_item` VALUES ('46ae4b81207a11372f7bb7cd30b9d75a', '45cfb0e1d88384c0d59046035d9573ff', '08e9ba886d496b6295cfdf611cdfe9e8');
+INSERT INTO `exam_question_relation_item` VALUES ('c5af90664b509b2fd0f1127a395a89cb', '45cfb0e1d88384c0d59046035d9573ff', 'e5b45732e6fecb42460afddb9aacb27c');
+INSERT INTO `exam_question_relation_item` VALUES ('80b3457882113be59bab77e28b79f2be', '45cfb0e1d88384c0d59046035d9573ff', 'cbff849723dcaddf0db5234befc43ed4');
+INSERT INTO `exam_question_relation_item` VALUES ('002da5c87564d06657c2abb5dff30fd7', '45cfb0e1d88384c0d59046035d9573ff', '9b77beae4e1176d455806e9e6328fd1e');
+INSERT INTO `exam_question_relation_item` VALUES ('37d938e41cd0c6d73b53a99043893ad9', '3e814ccc79dcaba8600486c647498db3', 'e60b90dd02599081d0a7e0f3d6e29674');
+INSERT INTO `exam_question_relation_item` VALUES ('99ea40104767472ffbbf408cd4a7d4e9', '3e814ccc79dcaba8600486c647498db3', 'aab03434281661244ea7df0c1d9a7404');
+INSERT INTO `exam_question_relation_item` VALUES ('1cc52a265bcf580634f659cd4e1430b6', '3e814ccc79dcaba8600486c647498db3', 'b31e66fa20162fca94f398fc96119ecf');
+INSERT INTO `exam_question_relation_item` VALUES ('3fbda0f79ba374e8ed1ba8334d6f6e5d', '3e814ccc79dcaba8600486c647498db3', '39aff8eb39fc2fd423d77679b293d706');
+INSERT INTO `exam_question_relation_item` VALUES ('5609d4f11a0ea6259c36913335f13249', '6770a7836ee56b0e3d6435a888186a78', 'aaededc4612da4c61b6d34d5051ab9d8');
+INSERT INTO `exam_question_relation_item` VALUES ('92ab143982ed2cd6ace79e623f33ac53', '6770a7836ee56b0e3d6435a888186a78', 'dfb599c27a5d6b13392c4125e8eb7234');
+INSERT INTO `exam_question_relation_item` VALUES ('5591f44f35afe43e28703f7fae7ab85b', '6770a7836ee56b0e3d6435a888186a78', '3c5db2ee23b4ac27a95fb846bbf85613');
+INSERT INTO `exam_question_relation_item` VALUES ('2b2e6de332f8da77484bc42587be9dbb', '6770a7836ee56b0e3d6435a888186a78', '9b0d5e094a501cb44532009ad2f19e23');
+INSERT INTO `exam_question_relation_item` VALUES ('61317e8cca8f2a4c6dd908b702d1f3c5', '545e96ab4bd601b6a7c0a3d8fe6923cd', '93f4693d2ad1e186cbe11afeeec2cbc0');
+INSERT INTO `exam_question_relation_item` VALUES ('4532b61182a4eafad674a223710d2e6e', '545e96ab4bd601b6a7c0a3d8fe6923cd', '1d408e1ceb1d97be000c6b623c5fef9f');
+INSERT INTO `exam_question_relation_item` VALUES ('9fb3589c6904c5fd69aea83882249a31', '545e96ab4bd601b6a7c0a3d8fe6923cd', '659d81440c3c8c92803cad0bfe0df492');
+INSERT INTO `exam_question_relation_item` VALUES ('af64eb5722c8d51d7629258d2583c40c', '545e96ab4bd601b6a7c0a3d8fe6923cd', '4b89a7dc93905470cc0b441182042560');
+INSERT INTO `exam_question_relation_item` VALUES ('fbb9555053f662edcc346f66f8852569', '122fb714d1bf3865eec2da3eec182041', 'aca9fcd3d679d72aac374ff6b6a57812');
+INSERT INTO `exam_question_relation_item` VALUES ('ca9bdd9706d0b512f2bc60517b315c2c', '122fb714d1bf3865eec2da3eec182041', 'c556e1ab22efd4f4e74778718e54eaaa');
+INSERT INTO `exam_question_relation_item` VALUES ('6e35dd5633ad7c7ef39a1bb3f45b5688', '122fb714d1bf3865eec2da3eec182041', 'ef2141ce4e825074d3994a0931c6ca4d');
+INSERT INTO `exam_question_relation_item` VALUES ('44569e5a67f22f9a18f278d2647c1a0e', '122fb714d1bf3865eec2da3eec182041', '25a98216ff61fea544059c4ae779e848');
+INSERT INTO `exam_question_relation_item` VALUES ('b007d94c93fc6fabf5db8e71b202cc8d', '9c09d3095e288ba20a9b6f5335f1ae0a', 'e26ef79e370a745d6c72b655a22eb1f8');
+INSERT INTO `exam_question_relation_item` VALUES ('f5d37fbebf64cc4f9f935fa6ee26c3a6', '9c09d3095e288ba20a9b6f5335f1ae0a', 'ca36bc8ae3139829c1ab6f56b4788272');
+INSERT INTO `exam_question_relation_item` VALUES ('039f4cc916c9d8f63be198c3a96fdd36', '9c09d3095e288ba20a9b6f5335f1ae0a', '13fb42a98c644c949255374f64629556');
+INSERT INTO `exam_question_relation_item` VALUES ('e27f434e6198e97cf8a7636092b28725', '9c09d3095e288ba20a9b6f5335f1ae0a', 'bc606281e22de51b8ce7197b51add06c');
+INSERT INTO `exam_question_relation_item` VALUES ('2e55e3057640550000ec63dfcd59eb8a', '5d98332d95ae0aa1cadf5f7f5215b1fd', 'b2e63c6ee7399dd216c338ff920a8d61');
+INSERT INTO `exam_question_relation_item` VALUES ('737aa9e3bad0d852daede24f2ebe15d5', '5d98332d95ae0aa1cadf5f7f5215b1fd', '3783cb6ee8d83adae5474a25f44e46b4');
+INSERT INTO `exam_question_relation_item` VALUES ('057b988145a2e02440ba182a5b8b899d', '5d98332d95ae0aa1cadf5f7f5215b1fd', 'f502e1b28dde521f0162f12a32b87e27');
+INSERT INTO `exam_question_relation_item` VALUES ('a6dcc3345c825d377cd88917f475fd5e', '5d98332d95ae0aa1cadf5f7f5215b1fd', '029c584139342d1118a04ced72cf7264');
+INSERT INTO `exam_question_relation_item` VALUES ('500c325b1d60d66ce93b295986b4739d', '62348a890afab4a530fada3086b257de', 'ae1b0f76271baeda966f249189d89e36');
+INSERT INTO `exam_question_relation_item` VALUES ('c0eb0de9607a02a1f02a3a7b523b1b31', '62348a890afab4a530fada3086b257de', 'a94d22e2f6998f1e5a1917340d0e5812');
+INSERT INTO `exam_question_relation_item` VALUES ('ec6305ce8a112d8ac9a8b777f5e2ace3', '62348a890afab4a530fada3086b257de', 'ba4df8202255a53bfdca58dcd39c0118');
+INSERT INTO `exam_question_relation_item` VALUES ('f7aa9fcbf679cfe88dcafd7728bfedf5', '62348a890afab4a530fada3086b257de', '79edef69f0f1b737c4502d43faced30b');
 
 -- ----------------------------
 -- Table structure for exam_question_type
