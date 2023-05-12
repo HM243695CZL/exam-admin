@@ -10,6 +10,7 @@ import com.hl.yyx.modules.exam.model.ExamWrongBook;
 import com.hl.yyx.modules.exam.mapper.ExamWrongBookMapper;
 import com.hl.yyx.modules.exam.service.ExamWrongBookService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.hl.yyx.modules.ums.model.UmsAdmin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +33,7 @@ public class ExamWrongBookServiceImpl extends ServiceImpl<ExamWrongBookMapper, E
     @Override
     public Page<ExamWrongBook> pageList(WrongBookDTO params) {
         Page<ExamWrongBook> page = new Page<>(params.getPageIndex(), params.getPageSize());
-        Page<ExamWrongBook> wrongBookPage = wrongBookMapper.pageList(page, params, UserThreadLocalUtil.get().getId());
-        return wrongBookPage;
+        QueryWrapper<ExamWrongBook> wrapper = new QueryWrapper<>();
+        return page(page, wrapper);
     }
 }

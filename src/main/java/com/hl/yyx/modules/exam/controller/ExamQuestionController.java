@@ -5,6 +5,7 @@ import com.hl.yyx.common.api.CommonPage;
 import com.hl.yyx.common.api.CommonResult;
 import com.hl.yyx.common.log.LogAnnotation;
 import com.hl.yyx.modules.exam.dto.QuestionPageDTO;
+import com.hl.yyx.modules.exam.dto.RandomChooseDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,5 +93,12 @@ import java.util.List;
         return CommonResult.success(examQuestionService.view(id));
     }
 
+    // 随机抽题
+    @LogAnnotation()
+    @ApiOperation("随机抽题")
+    @RequestMapping(value = "/randomChoose", method = RequestMethod.POST)
+    public CommonResult randomChooseQuestion(@RequestBody RandomChooseDTO chooseDTO) {
+        return CommonResult.success(examQuestionService.randomChoose(chooseDTO));
+    }
 }
 

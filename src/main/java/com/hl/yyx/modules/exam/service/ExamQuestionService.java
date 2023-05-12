@@ -2,8 +2,11 @@ package com.hl.yyx.modules.exam.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hl.yyx.modules.exam.dto.QuestionPageDTO;
+import com.hl.yyx.modules.exam.dto.RandomChooseDTO;
 import com.hl.yyx.modules.exam.model.ExamQuestion;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * <p>
@@ -24,4 +27,6 @@ public interface ExamQuestionService extends IService<ExamQuestion> {
     Boolean updateQuestion(ExamQuestion examQuestion);
 
     Boolean delete(String id);
+
+    List<ExamQuestion> randomChoose(RandomChooseDTO chooseDTO);
 }

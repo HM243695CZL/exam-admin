@@ -14,19 +14,5 @@
         <result column="update_time" property="updateTime" />
         <result column="deleted" property="deleted" />
     </resultMap>
-    <select id="pageList" resultType="com.hl.yyx.modules.exam.model.ExamWrongBook">
-        SELECT
-            wb.*,
-            eq.question questionName
-        FROM
-            exam_wrong_book wb
-        LEFT JOIN exam_question eq ON eq.id = wb.question_id
-        <where>
-            <if test="params.questionName != '' and params.questionName != null">
-                eq.question link concat('%', #{params.questionName}, '%')
-            </if>
-            and userId = wb.user_id
-        </where>
-    </select>
 
 </mapper>

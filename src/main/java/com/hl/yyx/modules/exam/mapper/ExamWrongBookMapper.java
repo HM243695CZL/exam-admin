@@ -16,7 +16,4 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface ExamWrongBookMapper extends BaseMapper<ExamWrongBook> {
 
-    Page<ExamWrongBook> pageList(Page<ExamWrongBook> page,
-                                 @Param("params") WrongBookDTO params,
-                                 @Param("userId") String userId);
 }

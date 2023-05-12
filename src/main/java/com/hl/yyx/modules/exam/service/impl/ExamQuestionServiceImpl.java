@@ -3,7 +3,9 @@ package com.hl.yyx.modules.exam.service.impl;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hl.yyx.common.util.RandomUtil;
 import com.hl.yyx.modules.exam.dto.QuestionPageDTO;
+import com.hl.yyx.modules.exam.dto.RandomChooseDTO;
 import com.hl.yyx.modules.exam.model.ExamQuestionType;
 import com.hl.yyx.modules.exam.model.ExamQuestion;
 import com.hl.yyx.modules.exam.mapper.ExamQuestionMapper;
@@ -18,9 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -68,18 +68,25 @@ public class ExamQuestionServiceImpl extends ServiceImpl<ExamQuestionMapper, Exa
             ExamQuestionType paperType = paperTypeService.getById(item.getQuestionType());
             item.setQuestionTypeName(paperType.getName());
 
-            // 根据试题id获取选项id
-            List<String> itemIds = relationItemService.list(new QueryWrapper<ExamQuestionRelationItem>()
-                    .eq("q_id", item.getId()).select("i_id")).stream()
-                    .map(ExamQuestionRelationItem::getIId).collect(Collectors.toList());
-            // 根据试题选项表查询对应的选项名称
-            ArrayList<ExamQuestionItem> itemList = new ArrayList<>();
-            for (String itemId: itemIds) {
-                itemList.add(questionItemService.getById(itemId));
-            }
-            item.setQuestionItemList(itemList);
+            List<ExamQuestionItem> itemList = getQuestionItemList(item.getId());
+            // 根据sort_index字段排序
+            List<ExamQuestionItem> sortItemList = itemList.stream().sorted(Comparator.comparing(ExamQuestionItem::getSortIndex)).collect(Collectors.toList());
+            item.setQuestionItemList(sortItemList);
         });
         return pageList;
+    }
+
+    public List<ExamQuestionItem> getQuestionItemList(String questionId) {
+        // 根据试题id获取选项id
+        List<String> itemIds = relationItemService.list(new QueryWrapper<ExamQuestionRelationItem>()
+                .eq("q_id", questionId).select("i_id")).stream()
+                .map(ExamQuestionRelationItem::getIId).collect(Collectors.toList());
+        // 根据试题选项表查询对应的选项名称
+        ArrayList<ExamQuestionItem> itemList = new ArrayList<>();
+        for (String itemId: itemIds) {
+            itemList.add(questionItemService.getById(itemId));
+        }
+        return itemList;
     }
 
     @Override
@@ -118,15 +125,7 @@ public class ExamQuestionServiceImpl extends ServiceImpl<ExamQuestionMapper, Exa
     @Override
     public ExamQuestion view(String id) {
         ExamQuestion examQuestion = getById(id);
-        // 根据试题id获取选项id
-        List<String> itemIds = relationItemService.list(new QueryWrapper<ExamQuestionRelationItem>()
-                .eq("q_id", id).select("i_id")).stream()
-                .map(ExamQuestionRelationItem::getIId).collect(Collectors.toList());
-        // 根据试题选项表查询对应的选项名称
-        ArrayList<ExamQuestionItem> itemList = new ArrayList<>();
-        for (String itemId: itemIds) {
-            itemList.add(questionItemService.getById(itemId));
-        }
+        List<ExamQuestionItem> itemList = getQuestionItemList(id);
         // 根据sort_index字段排序
         List<ExamQuestionItem> sortItemList = itemList.stream().sorted(Comparator.comparing(ExamQuestionItem::getSortIndex)).collect(Collectors.toList());
         examQuestion.setQuestionItemList(sortItemList);
@@ -169,6 +168,33 @@ public class ExamQuestionServiceImpl extends ServiceImpl<ExamQuestionMapper, Exa
         relationItemService.remove(queryWrapper);
         return b;
     }
+
+    /**
+     * 随机抽题
+     * @param chooseDTO
+     * @return
+     */
+    @Override
+    public List<ExamQuestion> randomChoose(RandomChooseDTO chooseDTO) {
+        QueryWrapper<ExamQuestion> wrapper = new QueryWrapper<>();
+        wrapper.lambda().eq(ExamQuestion::getQuestionType, chooseDTO.getQuestionType());
+        List<ExamQuestion> questionList = list(wrapper);
+        for (ExamQuestion question : questionList) {
+            List<ExamQuestionItem> questionItemList = getQuestionItemList(question.getId());
+            question.setQuestionItemList(questionItemList);
+        }
+        // 在questionList中随机抽题
+        if (chooseDTO.getRandomCount() >= questionList.size()) {
+            return questionList;
+        }
+        ArrayList<ExamQuestion> list = new ArrayList<>();
+        int[] randomList = RandomUtil.getNoRepeatRandomList(chooseDTO.getRandomCount(), questionList.size());
+        for (int i : randomList) {
+            list.add(questionList.get(i));
+        }
+        return list;
+    }
+
 
     public void saveQuestionItem(ExamQuestionItem questionItem, String questionId, Integer index) {
         questionItem.setSortIndex(index);
