@@ -8,6 +8,7 @@ import com.hl.yyx.modules.exam.dto.WrongBookDTO;
 import com.hl.yyx.modules.exam.model.ExamQuestion;
 import com.hl.yyx.modules.exam.model.ExamWrongBook;
 import com.hl.yyx.modules.exam.mapper.ExamWrongBookMapper;
+import com.hl.yyx.modules.exam.service.ExamQuestionService;
 import com.hl.yyx.modules.exam.service.ExamWrongBookService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hl.yyx.modules.ums.model.UmsAdmin;
@@ -30,10 +31,18 @@ public class ExamWrongBookServiceImpl extends ServiceImpl<ExamWrongBookMapper, E
     @Autowired
     private ExamWrongBookMapper wrongBookMapper;
 
+    @Autowired
+    private ExamQuestionService questionService;
+
     @Override
     public Page<ExamWrongBook> pageList(WrongBookDTO params) {
         Page<ExamWrongBook> page = new Page<>(params.getPageIndex(), params.getPageSize());
         QueryWrapper<ExamWrongBook> wrapper = new QueryWrapper<>();
-        return page(page, wrapper);
+        Page<ExamWrongBook> bookPage = page(page, wrapper);
+        for (ExamWrongBook record : bookPage.getRecords()) {
+            ExamQuestion question = questionService.getById(record.getQuestionId());
+            record.setQuestionName(question.getQuestion());
+        }
+        return bookPage;
     }
 }

@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 12/05/2023 17:58:31
+ Date: 16/05/2023 19:39:04
 */
 
 SET NAMES utf8mb4;
@@ -33,11 +33,12 @@ CREATE TABLE `exam_paper`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '试卷库' ROW_FORMAT = DYNAMIC;
+) ENGINE = MyISAM CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '试卷库' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of exam_paper
 -- ----------------------------
+INSERT INTO `exam_paper` VALUES ('7b4a00a58211b5960cb7be7488a4e5be', '公务员模拟考试', '50', '10', NULL, '1', '2023-05-13 12:08:57', '2023-05-13 12:08:36', '2023-05-13 12:08:57', 1);
 
 -- ----------------------------
 -- Table structure for exam_paper_big
@@ -53,11 +54,12 @@ CREATE TABLE `exam_paper_big`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '试卷大题表' ROW_FORMAT = DYNAMIC;
+) ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '试卷大题表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of exam_paper_big
 -- ----------------------------
+INSERT INTO `exam_paper_big` VALUES ('baf4798407151dbc97646b5bdc3a2d2b', '7b4a00a58211b5960cb7be7488a4e5be', '一、单选题', '50', '1', '2023-05-13 12:08:36', '2023-05-13 12:08:36', 1);
 
 -- ----------------------------
 -- Table structure for exam_paper_big_relation
@@ -71,11 +73,21 @@ CREATE TABLE `exam_paper_big_relation`  (
   `score` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '当前题的分数',
   `sort_index` int(255) NULL DEFAULT NULL COMMENT '排序',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '试题分数关系表' ROW_FORMAT = DYNAMIC;
+) ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '试题分数关系表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of exam_paper_big_relation
 -- ----------------------------
+INSERT INTO `exam_paper_big_relation` VALUES ('abeb035368ad626c81bd0e70dff1eb33', 'baf4798407151dbc97646b5bdc3a2d2b', '7b4a00a58211b5960cb7be7488a4e5be', '0797a054a51add5ba9ea4c3635275ea7', '5', 1);
+INSERT INTO `exam_paper_big_relation` VALUES ('dbbf1c17e41cdeac01f3b0d6ba365096', 'baf4798407151dbc97646b5bdc3a2d2b', '7b4a00a58211b5960cb7be7488a4e5be', 'b8f282b1a8a4ddea674fd4f96a2104d2', '5', 2);
+INSERT INTO `exam_paper_big_relation` VALUES ('60d137efd52743d0832620fb1b5cd760', 'baf4798407151dbc97646b5bdc3a2d2b', '7b4a00a58211b5960cb7be7488a4e5be', 'ac9fd8a21714eeb94c647d22beb10c06', '5', 3);
+INSERT INTO `exam_paper_big_relation` VALUES ('064e6fa22f480cd4bc71201ecca769b8', 'baf4798407151dbc97646b5bdc3a2d2b', '7b4a00a58211b5960cb7be7488a4e5be', '9a780433037fc196dfc82ba5cba35b16', '5', 4);
+INSERT INTO `exam_paper_big_relation` VALUES ('4570af4a2d3ade0accc1422e1942dc41', 'baf4798407151dbc97646b5bdc3a2d2b', '7b4a00a58211b5960cb7be7488a4e5be', '79f3abc44dc3ea71cdf9d9077951ad6d', '5', 5);
+INSERT INTO `exam_paper_big_relation` VALUES ('20544d05efaf8d831f2885dca2393d42', 'baf4798407151dbc97646b5bdc3a2d2b', '7b4a00a58211b5960cb7be7488a4e5be', 'e4af972a3dc7a31dfbe52812224d58e8', '5', 6);
+INSERT INTO `exam_paper_big_relation` VALUES ('f0d5446e7644d9ff576ebbc554e769fb', 'baf4798407151dbc97646b5bdc3a2d2b', '7b4a00a58211b5960cb7be7488a4e5be', 'cf776809c5e84d8ccad7b622c25ca277', '5', 7);
+INSERT INTO `exam_paper_big_relation` VALUES ('22f9188e08e98de09432769f5e12b475', 'baf4798407151dbc97646b5bdc3a2d2b', '7b4a00a58211b5960cb7be7488a4e5be', '7971e7eda9b6cfc2c6118d3f95004c70', '5', 8);
+INSERT INTO `exam_paper_big_relation` VALUES ('c966456510ac2a8be71cccc6511983cb', 'baf4798407151dbc97646b5bdc3a2d2b', '7b4a00a58211b5960cb7be7488a4e5be', '4fdac40f5c1f24f7cfe747834a92e4c0', '5', 9);
+INSERT INTO `exam_paper_big_relation` VALUES ('6aef29240f6565251dfbcf74d834a490', 'baf4798407151dbc97646b5bdc3a2d2b', '7b4a00a58211b5960cb7be7488a4e5be', 'b467df8074e58019c7eab871de92b5e7', '5', 10);
 
 -- ----------------------------
 -- Table structure for exam_paper_publish
@@ -86,7 +98,7 @@ CREATE TABLE `exam_paper_publish`  (
   `paper_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '试卷id',
   `class_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '班级id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '发布考试表' ROW_FORMAT = DYNAMIC;
+) ENGINE = MyISAM CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '发布考试表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of exam_paper_publish
@@ -98,6 +110,8 @@ INSERT INTO `exam_paper_publish` VALUES ('42ab4a4176b89a438635277153cafd57', 'c4
 INSERT INTO `exam_paper_publish` VALUES ('144410be4707640cad14d47ba6e2126e', 'c44fa5f770c1be9006fa80ac100d4dde', 'f91c97e26871278cd69e28461190d16a');
 INSERT INTO `exam_paper_publish` VALUES ('d9ff8be947ed36909766afe458304c68', 'c44fa5f770c1be9006fa80ac100d4dde', '3b7e8e3c3adb6bb38474eb57fc1a8c9e');
 INSERT INTO `exam_paper_publish` VALUES ('53169e0aa006973f8cbc115f13fc0325', 'fc7f46760f62044ea6e3153e5742298e', '23dc2e3d2c8bfdf98e2b413c1d9659e5');
+INSERT INTO `exam_paper_publish` VALUES ('cb24c0afeb093d8088957ea1eacaf29c', '7b4a00a58211b5960cb7be7488a4e5be', '23dc2e3d2c8bfdf98e2b413c1d9659e5');
+INSERT INTO `exam_paper_publish` VALUES ('b7d5d2f46eaa9328ae16c77f2ce88017', '7b4a00a58211b5960cb7be7488a4e5be', 'f91c97e26871278cd69e28461190d16a');
 
 -- ----------------------------
 -- Table structure for exam_paper_type
@@ -111,7 +125,7 @@ CREATE TABLE `exam_paper_type`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '试题分类表' ROW_FORMAT = DYNAMIC;
+) ENGINE = MyISAM CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '试题分类表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of exam_paper_type
@@ -135,7 +149,7 @@ CREATE TABLE `exam_question`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '试题表' ROW_FORMAT = DYNAMIC;
+) ENGINE = MyISAM CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '试题表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of exam_question
@@ -375,7 +389,7 @@ CREATE TABLE `exam_question_item`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '试题选项' ROW_FORMAT = DYNAMIC;
+) ENGINE = MyISAM CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '试题选项' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of exam_question_item
@@ -1278,7 +1292,7 @@ CREATE TABLE `exam_question_relation_item`  (
   `q_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '试题id',
   `i_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '选项id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '试题和试题选项关系表' ROW_FORMAT = DYNAMIC;
+) ENGINE = MyISAM CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '试题和试题选项关系表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of exam_question_relation_item
@@ -2184,7 +2198,7 @@ CREATE TABLE `exam_question_type`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '试题分类表' ROW_FORMAT = DYNAMIC;
+) ENGINE = MyISAM CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '试题分类表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of exam_question_type
@@ -2210,11 +2224,12 @@ CREATE TABLE `exam_record`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(255) NULL DEFAULT 1 COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '考试记录表' ROW_FORMAT = DYNAMIC;
+) ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '考试记录表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of exam_record
 -- ----------------------------
+INSERT INTO `exam_record` VALUES ('0c79c2db9baa7889da6d9355e563a690', '7b4a00a58211b5960cb7be7488a4e5be', 1, '89fbb441cd41555aa86359c17219e4c3', '2023-05-13 12:19:16', '20', '2023-05-13 12:19:16', '2023-05-13 12:19:16', 1);
 
 -- ----------------------------
 -- Table structure for exam_sub_answer_relation
@@ -2227,11 +2242,21 @@ CREATE TABLE `exam_sub_answer_relation`  (
   `question_id` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '试题id',
   `answer` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '答案',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '试卷答题答案关系表' ROW_FORMAT = DYNAMIC;
+) ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '试卷答题答案关系表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of exam_sub_answer_relation
 -- ----------------------------
+INSERT INTO `exam_sub_answer_relation` VALUES ('2c760cb47fea3e8d7a5953cd788e3083', '89fbb441cd41555aa86359c17219e4c3', '7b4a00a58211b5960cb7be7488a4e5be', '0797a054a51add5ba9ea4c3635275ea7', '6dd56c19f0206a1225d30d1a1f0c519f');
+INSERT INTO `exam_sub_answer_relation` VALUES ('4f12aa7aecdc1a6e4a57c839aeb166c2', '89fbb441cd41555aa86359c17219e4c3', '7b4a00a58211b5960cb7be7488a4e5be', 'b8f282b1a8a4ddea674fd4f96a2104d2', '29e82318cfe4e15deb75bfc2cdaba478');
+INSERT INTO `exam_sub_answer_relation` VALUES ('26d9d85bb57205aaccb454bc8abd4bd5', '89fbb441cd41555aa86359c17219e4c3', '7b4a00a58211b5960cb7be7488a4e5be', 'ac9fd8a21714eeb94c647d22beb10c06', '31d3076856f2d54977beb5deb95216e5');
+INSERT INTO `exam_sub_answer_relation` VALUES ('f7fd96ed56e8fc2e8680e9ebb9c10f98', '89fbb441cd41555aa86359c17219e4c3', '7b4a00a58211b5960cb7be7488a4e5be', '9a780433037fc196dfc82ba5cba35b16', '23a6315d8377f05aa82dda40c3101d3c');
+INSERT INTO `exam_sub_answer_relation` VALUES ('80211aa0f2bdb4ec8cc62e400a48f0b8', '89fbb441cd41555aa86359c17219e4c3', '7b4a00a58211b5960cb7be7488a4e5be', '79f3abc44dc3ea71cdf9d9077951ad6d', 'e6c3d78d234ac92597713c7d20509519');
+INSERT INTO `exam_sub_answer_relation` VALUES ('7a8976650c613ed925deb3348d59e3c6', '89fbb441cd41555aa86359c17219e4c3', '7b4a00a58211b5960cb7be7488a4e5be', 'e4af972a3dc7a31dfbe52812224d58e8', 'ec7a767f16fa1802adc31cbc7ae04f86');
+INSERT INTO `exam_sub_answer_relation` VALUES ('81e893591b610f7ae0da4f959e190e99', '89fbb441cd41555aa86359c17219e4c3', '7b4a00a58211b5960cb7be7488a4e5be', 'cf776809c5e84d8ccad7b622c25ca277', '288302693fe209bbcc7c2a95a15058be');
+INSERT INTO `exam_sub_answer_relation` VALUES ('2fd0403223388664b742c03d2b4e29a5', '89fbb441cd41555aa86359c17219e4c3', '7b4a00a58211b5960cb7be7488a4e5be', '7971e7eda9b6cfc2c6118d3f95004c70', 'ac07a952b2bdb31bfa2886ef5e2f439f');
+INSERT INTO `exam_sub_answer_relation` VALUES ('b171f2c04a23894a836ece3f12cf9196', '89fbb441cd41555aa86359c17219e4c3', '7b4a00a58211b5960cb7be7488a4e5be', '4fdac40f5c1f24f7cfe747834a92e4c0', 'f89a3e8d783c0a7e22cc70a10769a838');
+INSERT INTO `exam_sub_answer_relation` VALUES ('65111700a96b9db07c2f7681cce79310', '89fbb441cd41555aa86359c17219e4c3', '7b4a00a58211b5960cb7be7488a4e5be', 'b467df8074e58019c7eab871de92b5e7', 'c85fd8b7900b89c2f95180925d560b4a');
 
 -- ----------------------------
 -- Table structure for exam_wrong_book
@@ -2248,11 +2273,17 @@ CREATE TABLE `exam_wrong_book`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '错题表' ROW_FORMAT = DYNAMIC;
+) ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '错题表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of exam_wrong_book
 -- ----------------------------
+INSERT INTO `exam_wrong_book` VALUES ('9ce0667b621bcde59e1bd8134d688944', '0797a054a51add5ba9ea4c3635275ea7', '89fbb441cd41555aa86359c17219e4c3', 1, '1df0e5eccdd26aaa11e9b40ab2b0dcb7', '6dd56c19f0206a1225d30d1a1f0c519f', '2023-05-13 12:19:16', '2023-05-13 12:19:16', 1);
+INSERT INTO `exam_wrong_book` VALUES ('97e5d5a9512b3d6094d6c90976f76efe', 'b8f282b1a8a4ddea674fd4f96a2104d2', '89fbb441cd41555aa86359c17219e4c3', 1, '11aa06b0090cbd530de2a2ee859864f3', '29e82318cfe4e15deb75bfc2cdaba478', '2023-05-13 12:19:16', '2023-05-13 12:19:16', 1);
+INSERT INTO `exam_wrong_book` VALUES ('2cebce6c5560d31cf382e0445016fea3', '79f3abc44dc3ea71cdf9d9077951ad6d', '89fbb441cd41555aa86359c17219e4c3', 1, '8203af9c274fdd0c2795e4dff2b12b6c', 'e6c3d78d234ac92597713c7d20509519', '2023-05-13 12:19:16', '2023-05-13 12:19:16', 1);
+INSERT INTO `exam_wrong_book` VALUES ('e8a6f8d712e02e8383b686d58e148601', 'e4af972a3dc7a31dfbe52812224d58e8', '89fbb441cd41555aa86359c17219e4c3', 1, '66bca0a57ca6c9b216adc4453d18753f', 'ec7a767f16fa1802adc31cbc7ae04f86', '2023-05-13 12:19:16', '2023-05-13 12:19:16', 1);
+INSERT INTO `exam_wrong_book` VALUES ('076641d0551c791c635923cad1e0b7f1', 'cf776809c5e84d8ccad7b622c25ca277', '89fbb441cd41555aa86359c17219e4c3', 1, '9d5cc834729020da88dc5ffcd6c6cce4', '288302693fe209bbcc7c2a95a15058be', '2023-05-13 12:19:16', '2023-05-13 12:19:16', 1);
+INSERT INTO `exam_wrong_book` VALUES ('ebc8844b2c1365e725037a28d9fa38f5', 'b467df8074e58019c7eab871de92b5e7', '89fbb441cd41555aa86359c17219e4c3', 1, '14952fd3c772d943747424d156f03e0d', 'c85fd8b7900b89c2f95180925d560b4a', '2023-05-13 12:19:16', '2023-05-13 12:19:16', 1);
 
 -- ----------------------------
 -- Table structure for ums_admin
@@ -2277,14 +2308,14 @@ CREATE TABLE `ums_admin`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '管理员表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '管理员表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of ums_admin
 -- ----------------------------
-INSERT INTO `ums_admin` VALUES ('0965c32d75268459f76ee34a734fb461', 'admin', 1, '123456', 'admin', '', '', '', '', 0, NULL, '0:0:0:0:0:0:0:1', '2023-05-12 15:57:33', 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20230508/lihezong.webp', '2023-05-08 14:52:41', '2023-05-08 14:52:41', 1);
+INSERT INTO `ums_admin` VALUES ('0965c32d75268459f76ee34a734fb461', 'admin', 1, '123456', 'admin', '', '', '', '', 0, NULL, '0:0:0:0:0:0:0:1', '2023-05-16 19:18:51', 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20230508/lihezong.webp', '2023-05-08 14:52:41', '2023-05-08 14:52:41', 1);
 INSERT INTO `ums_admin` VALUES ('48eaba1fe0744f1ba7b656538b37bc8f', '陆老师', 1, '123456', '20230508', '', '', '', '', 1, NULL, '0:0:0:0:0:0:0:1', '2023-05-08 13:41:41', 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20230508/2.png', '2023-05-08 13:38:58', '2023-05-08 13:38:58', 1);
-INSERT INTO `ums_admin` VALUES ('89fbb441cd41555aa86359c17219e4c3', '黄学生', 2, '123456', '20230509', '2f3c2ad0a0cb2792cfba14cd8f3cde41', 'e19df72d1409dec6e3166dd014af81ed', '23dc2e3d2c8bfdf98e2b413c1d9659e5', '', 0, NULL, '0:0:0:0:0:0:0:1', '2023-05-11 11:51:26', 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20230508/hw-logo.png', '2023-05-08 13:40:35', '2023-05-08 16:53:39', 1);
+INSERT INTO `ums_admin` VALUES ('89fbb441cd41555aa86359c17219e4c3', '黄学生', 2, '123456', '20230509', '2f3c2ad0a0cb2792cfba14cd8f3cde41', 'e19df72d1409dec6e3166dd014af81ed', '23dc2e3d2c8bfdf98e2b413c1d9659e5', '', 0, NULL, '0:0:0:0:0:0:0:1', '2023-05-13 12:18:34', 'https://hl-mall-tiny.oss-cn-chengdu.aliyuncs.com/hlmall/images/20230508/hw-logo.png', '2023-05-08 13:40:35', '2023-05-08 16:53:39', 1);
 
 -- ----------------------------
 -- Table structure for ums_admin_role
@@ -2295,7 +2326,7 @@ CREATE TABLE `ums_admin_role`  (
   `admin_id` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '管理员id',
   `role_id` int(20) NULL DEFAULT NULL COMMENT '角色id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 48 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '后台用户和角色关系表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 48 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '后台用户和角色关系表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of ums_admin_role
@@ -2319,7 +2350,7 @@ CREATE TABLE `ums_class`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(255) NULL DEFAULT 1 COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '班级表' ROW_FORMAT = DYNAMIC;
+) ENGINE = MyISAM CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '班级表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of ums_class
@@ -2341,7 +2372,7 @@ CREATE TABLE `ums_college_major`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '学院/专业表' ROW_FORMAT = DYNAMIC;
+) ENGINE = MyISAM CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '学院/专业表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of ums_college_major
@@ -2366,7 +2397,7 @@ CREATE TABLE `ums_dept`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '部门表' ROW_FORMAT = DYNAMIC;
+) ENGINE = MyISAM CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '部门表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of ums_dept
@@ -2392,11 +2423,7 @@ CREATE TABLE `ums_form`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '表单配置表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of ums_form
--- ----------------------------
+) ENGINE = MyISAM AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '表单配置表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for ums_menu
@@ -2417,7 +2444,7 @@ CREATE TABLE `ums_menu`  (
   `icon` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '菜单图标',
   `sort` int(10) NULL DEFAULT NULL COMMENT '排序',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 22 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '菜单表' ROW_FORMAT = DYNAMIC;
+) ENGINE = MyISAM AUTO_INCREMENT = 22 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '菜单表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of ums_menu
@@ -2451,7 +2478,7 @@ CREATE TABLE `ums_role`  (
   `deleted` tinyint(1) NULL DEFAULT 1 COMMENT '逻辑删除',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `name_UNIQUE`(`name`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '角色表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '角色表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of ums_role
@@ -2468,7 +2495,7 @@ CREATE TABLE `ums_role_menu`  (
   `role_id` int(20) NULL DEFAULT NULL COMMENT '角色id',
   `menu_id` int(20) NULL DEFAULT NULL COMMENT '菜单id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 216 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色和菜单关系表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 216 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色和菜单关系表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of ums_role_menu
