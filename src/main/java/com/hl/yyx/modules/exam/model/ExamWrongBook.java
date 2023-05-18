@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.util.Date;
 import java.io.Serializable;
+import java.util.List;
 
 import com.hl.yyx.common.vo.BaseModelDTO;
 import io.swagger.annotations.Api;
@@ -39,6 +40,14 @@ public class ExamWrongBook extends BaseModelDTO implements Serializable {
     @ApiModelProperty(value = "试题名称")
     @TableField(exist = false)
     private String questionName;
+
+    @ApiModelProperty(value = "试题选项")
+    @TableField(exist = false)
+    private List<ExamQuestionItem> questionItemList;
+
+    @ApiModelProperty(value = "解析")
+    @TableField(exist = false)
+    private String analysis;
 
     @ApiModelProperty(value = "用户id")
     private String userId;
