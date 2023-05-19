@@ -28,3 +28,8 @@ aliyun:
     #callback:  # 文件上传成功后的回调地址
     dir:
       prefix: hlmall/images/ # 上传文件夹路径前缀
+
+wxmini:
+  appid: 'wx8bf84902e3987b1c'
+  secret: '024c2cb32b8d4c1f8d146fab17bd0ff5'
+  msgDataFormat: JSON

@@ -1,27 +1,36 @@
 package com.hl.yyx.modules.ums.service.impl;
 
+import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.crypto.digest.BCrypt;
+import cn.hutool.http.HttpUtil;
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.hl.yyx.common.api.RedisKey;
 import com.hl.yyx.common.constants.Constants;
 import com.hl.yyx.common.exception.ApiException;
 import com.hl.yyx.common.exception.Asserts;
 import com.hl.yyx.common.util.IpUtil;
+import com.hl.yyx.common.util.JWTUtils;
 import com.hl.yyx.common.util.JwtTokenUtil;
-import com.hl.yyx.common.vo.PageParamsDTO;
+import com.hl.yyx.common.wx.UserThreadLocal;
 import com.hl.yyx.domain.AdminUserDetails;
 import com.hl.yyx.modules.ums.dto.AdminPageDTO;
 import com.hl.yyx.modules.ums.dto.UpdatePassDTO;
 import com.hl.yyx.modules.ums.mapper.UmsAdminMapper;
 import com.hl.yyx.modules.ums.model.*;
 import com.hl.yyx.modules.ums.service.*;
+import com.hl.yyx.modules.wx.dto.WXAuthDTO;
+import com.hl.yyx.modules.wx.dto.WxUserInfo;
+import com.hl.yyx.modules.wx.service.WxService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -32,7 +41,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -44,8 +55,15 @@ import java.util.stream.Collectors;
  * @since 2022-06-20
  */
 @Service
+@SuppressWarnings("all")
 public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper, UmsAdmin> implements UmsAdminService {
     private static final Logger LOGGER = LoggerFactory.getLogger(UmsAdminServiceImpl.class);
+
+    @Value("${wxmini.appid}")
+    private String appId;
+
+    @Value("${wxmini.secret}")
+    private String secret;
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
@@ -64,6 +82,12 @@ public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper, UmsAdmin> i
 
     @Autowired
     private UmsClassService classService;
+
+    @Autowired
+    private WxService wxService;
+
+    @Autowired
+    private StringRedisTemplate redisTemplate;
 
     /**
      * 分页查询
@@ -246,6 +270,117 @@ public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper, UmsAdmin> i
         updateWrapper.lambda().eq(UmsAdmin::getId, passDTO.getId());
         updateWrapper.set("password", passDTO.getPassword());
         return update(updateWrapper);
+    }
+
+    /**
+     * 微信登录
+     * @param wxAuthDTO
+     * @param request
+     * @return
+     */
+    @Override
+    public Object wxAuthLogin(WXAuthDTO wxAuthDTO, HttpServletRequest request) {
+        /**
+         * 对wxAuthDTO解密
+         * 解密完成， 得到微信用户信息  包含openId， 性别， 昵称 等信息
+         * openId是唯一的，去用户表中查询openId是否存在  存在则登录
+         * 不存在  则注册
+         * 使用jwt技术，生成token，并返回
+         */
+        try {
+            String json = wxService.wxDecrypt(wxAuthDTO.getEncryptedData(), wxAuthDTO.getSessionId(), wxAuthDTO.getIv());
+            WxUserInfo wxUserInfo = JSON.parseObject(json, WxUserInfo.class);
+            String openId = wxUserInfo.getOpenId();
+            QueryWrapper<UmsAdmin> wrapper = new QueryWrapper<>();
+            wrapper.lambda().eq(UmsAdmin::getWxOpenId, openId);
+            UmsAdmin admin = getOne(wrapper);
+            if (admin == null) {
+                // 注册
+                UmsAdmin umsAdmin = wxUserInfoToUser(wxUserInfo, request, wxAuthDTO.getSessionId());
+                save(umsAdmin);
+                return login(umsAdmin);
+            } else {
+                // 登录
+                admin.setLastLoginTime(new Date());
+                admin.setLastLoginIp(IpUtil.getIpAddr(request));
+                admin.setSessionKey(wxAuthDTO.getSessionId());
+                return login(admin);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public Object getSessionId(String code) {
+        /**
+         * 拼接一个url，微信登录凭证校验接口
+         * 发起一个http的调用，获取微信的返回结果，存到redis
+         * 生成一个sessionId，返回给前端，用做当前登录用户的标识
+         */
+        String url = "https://api.weixin.qq.com/sns/jscode2session?appid={0}&secret={1}&js_code={2}&grant_type=authorization_code";
+        String replaceUrl = url.replace("{0}", appId).replace("{1}", secret).replace("{2}", code);
+        String result = HttpUtil.get(replaceUrl);
+        String uuid = UUID.randomUUID().toString();
+        redisTemplate.opsForValue().set(RedisKey.WX_SESSION_ID + uuid, result, 30, TimeUnit.MINUTES);
+        HashMap<String, String> map = new HashMap<>();
+        map.put("sessionId", uuid);
+        return map;
+    }
+
+    /**
+     * 获取微信用户信息
+     * @param refresh
+     * @return
+     */
+    @Override
+    public UmsAdmin getUserInfo(Boolean refresh) {
+        UmsAdmin umsAdmin = UserThreadLocal.get();
+        if (refresh) {
+            String token = JWTUtils.sign(umsAdmin.getId());
+            redisTemplate.opsForValue().set(RedisKey.TOKEN_KEY + token, JSON.toJSONString(umsAdmin), 7, TimeUnit.DAYS);
+        }
+        return umsAdmin;
+    }
+
+    /**
+     * 将wxUserInfo 转为UmsAdmin对象
+     * @param wxUserInfo
+     * @param request
+     * @param sessionId
+     * @return
+     */
+    private UmsAdmin wxUserInfoToUser(WxUserInfo wxUserInfo, HttpServletRequest request, String sessionId) {
+        UmsAdmin umsAdmin = new UmsAdmin();
+        umsAdmin.setUsername(wxUserInfo.getOpenId());
+        umsAdmin.setPassword(wxUserInfo.getOpenId());
+        umsAdmin.setWxOpenId(wxUserInfo.getOpenId());
+        umsAdmin.setAvatar(wxUserInfo.getAvatarUrl());
+        umsAdmin.setNickName(wxUserInfo.getNickName());
+        umsAdmin.setSex(wxUserInfo.getGender());
+        umsAdmin.setLastLoginIp(IpUtil.getIpAddr(request));
+        umsAdmin.setLastLoginTime(new Date());
+        umsAdmin.setSessionKey(sessionId);
+        return umsAdmin;
+    }
+
+    /**
+     * 登录
+     * @param admin
+     * @return
+     */
+    private HashMap<Object, Object> login(UmsAdmin admin) {
+        // token
+        String token = JWTUtils.sign(admin.getId());
+        admin.setPassword(null);
+        admin.setUsername(null);
+        admin.setWxOpenId(null);
+        HashMap<Object, Object> result = new HashMap<>();
+        result.put("token", token);
+        // 将用户信息保存到redis中
+        redisTemplate.opsForValue().set(RedisKey.TOKEN_KEY + token, JSON.toJSONString(admin), 7, TimeUnit.DAYS);
+        return result;
     }
 
     /**

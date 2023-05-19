@@ -7,6 +7,7 @@ import com.hl.yyx.domain.AdminUserDetails;
 import com.hl.yyx.modules.ums.dto.AdminPageDTO;
 import com.hl.yyx.modules.ums.dto.UpdatePassDTO;
 import com.hl.yyx.modules.ums.model.UmsAdmin;
+import com.hl.yyx.modules.wx.dto.WXAuthDTO;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -38,4 +39,12 @@ public interface UmsAdminService extends IService<UmsAdmin> {
     String login(String username, String password, HttpServletRequest request);
 
     boolean updatePass(UpdatePassDTO passDTO);
+
+    // 微信一键登录
+    Object wxAuthLogin(WXAuthDTO wxAuthDTO, HttpServletRequest request);
+
+    // 微信登录获取sessionId
+    Object getSessionId(String code);
+
+    UmsAdmin getUserInfo(Boolean refresh);
 }

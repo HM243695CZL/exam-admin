@@ -39,6 +39,9 @@ public class UmsAdmin extends BaseModelDTO implements Serializable {
     @NotBlank(message = "用户名不能为空")
     private String username;
 
+    @ApiModelProperty(value = "昵称")
+    private String nickName;
+
     @ApiModelProperty(value = "用户类型  1：教师  2：学生")
     private Integer userType;
 
@@ -82,6 +85,9 @@ public class UmsAdmin extends BaseModelDTO implements Serializable {
 
     @ApiModelProperty(value = "openId")
     private String wxOpenId;
+
+    @ApiModelProperty(value = "微信登录会话KEY")
+    private String sessionKey;
 
     @ApiModelProperty(value = "最近一次登录IP地址")
     private String lastLoginIp;
