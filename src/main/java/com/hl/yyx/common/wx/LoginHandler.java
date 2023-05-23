@@ -6,6 +6,7 @@ import com.hl.yyx.common.api.CommonResult;
 import com.hl.yyx.common.api.RedisKey;
 import com.hl.yyx.common.api.ResultCode;
 import com.hl.yyx.common.util.JWTUtils;
+import com.hl.yyx.common.util.UserThreadLocalUtil;
 import com.hl.yyx.modules.ums.model.UmsAdmin;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,7 +75,7 @@ public class LoginHandler implements HandlerInterceptor {
             return false;
         }
         UmsAdmin user = JSON.parseObject(userJson, UmsAdmin.class);
-        UserThreadLocal.put(user);
+        UserThreadLocalUtil.put(user);
         return true;
     }
 }

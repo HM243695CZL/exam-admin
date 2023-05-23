@@ -53,6 +53,8 @@ public class ExamWrongBookServiceImpl extends ServiceImpl<ExamWrongBookMapper, E
     public Page<ExamWrongBook> pageList(WrongBookDTO params) {
         Page<ExamWrongBook> page = new Page<>(params.getPageIndex(), params.getPageSize());
         QueryWrapper<ExamWrongBook> wrapper = new QueryWrapper<>();
+        UmsAdmin umsAdmin = UserThreadLocalUtil.get();
+        wrapper.lambda().eq(ExamWrongBook::getUserId, umsAdmin.getId());
         Page<ExamWrongBook> bookPage = page(page, wrapper);
         for (ExamWrongBook record : bookPage.getRecords()) {
             ExamQuestion question = questionService.getById(record.getQuestionId());

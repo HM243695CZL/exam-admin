@@ -16,6 +16,7 @@ import com.hl.yyx.common.exception.Asserts;
 import com.hl.yyx.common.util.IpUtil;
 import com.hl.yyx.common.util.JWTUtils;
 import com.hl.yyx.common.util.JwtTokenUtil;
+import com.hl.yyx.common.util.UserThreadLocalUtil;
 import com.hl.yyx.common.wx.UserThreadLocal;
 import com.hl.yyx.domain.AdminUserDetails;
 import com.hl.yyx.modules.ums.dto.AdminPageDTO;
@@ -297,6 +298,14 @@ public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper, UmsAdmin> i
             if (admin == null) {
                 // 注册
                 UmsAdmin umsAdmin = wxUserInfoToUser(wxUserInfo, request, wxAuthDTO.getSessionId());
+                // 将注册的新用户分配到“微信1班”
+                QueryWrapper<UmsClass> queryWrapper = new QueryWrapper<>();
+                queryWrapper.lambda().eq(UmsClass::getName, "微信1班");
+                UmsClass umsClass = classService.getOne(queryWrapper);
+                umsAdmin.setUserType(2);
+                umsAdmin.setCollegeId(umsClass.getCollegeId());
+                umsAdmin.setMajorId(umsClass.getMajorId());
+                umsAdmin.setClassId(umsClass.getId());
                 save(umsAdmin);
                 return login(umsAdmin);
             } else {
@@ -336,7 +345,7 @@ public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper, UmsAdmin> i
      */
     @Override
     public UmsAdmin getUserInfo(Boolean refresh) {
-        UmsAdmin umsAdmin = UserThreadLocal.get();
+        UmsAdmin umsAdmin = UserThreadLocalUtil.get();
         if (refresh) {
             String token = JWTUtils.sign(umsAdmin.getId());
             redisTemplate.opsForValue().set(RedisKey.TOKEN_KEY + token, JSON.toJSONString(umsAdmin), 7, TimeUnit.DAYS);

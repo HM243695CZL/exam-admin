@@ -1,8 +1,16 @@
 package com.hl.yyx.modules.wx.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hl.yyx.common.api.CommonPage;
 import com.hl.yyx.common.api.CommonResult;
 import com.hl.yyx.common.log.LogAnnotation;
 import com.hl.yyx.common.wx.NoWeiXinAuth;
+import com.hl.yyx.modules.exam.dto.PaperPageDTO;
+import com.hl.yyx.modules.exam.dto.SubmitPaperDTO;
+import com.hl.yyx.modules.exam.dto.WrongBookDTO;
+import com.hl.yyx.modules.exam.model.ExamWrongBook;
+import com.hl.yyx.modules.exam.service.ExamPaperService;
+import com.hl.yyx.modules.exam.service.ExamWrongBookService;
 import com.hl.yyx.modules.ums.model.UmsAdmin;
 import com.hl.yyx.modules.ums.service.UmsAdminService;
 import com.hl.yyx.modules.wx.dto.WXAuthDTO;
@@ -11,10 +19,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -26,6 +31,12 @@ public class WxController {
 
     @Autowired
     private UmsAdminService adminService;
+
+    @Autowired
+    private ExamPaperService examPaperService;
+
+    @Autowired
+    private ExamWrongBookService examWrongBookService;
 
     // 微信一键登录
     @LogAnnotation()
@@ -57,5 +68,46 @@ public class WxController {
     public CommonResult getUserInfo(@Param("refresh") Boolean refresh) {
         UmsAdmin admin = adminService.getUserInfo(refresh);
         return CommonResult.success(admin);
+    }
+
+    // 获取我的考试
+    @ApiOperation("获取我的考试")
+    @LogAnnotation()
+    @RequestMapping(value = "/getMyExam", method = RequestMethod.POST)
+    public CommonResult getMyExam(@RequestBody PaperPageDTO pageDTO) {
+        return CommonResult.success(CommonPage.restPage(examPaperService.getMyExam(pageDTO)));
+    }
+
+    // 预览试卷
+    @ApiOperation("预览试卷")
+    @LogAnnotation()
+    @RequestMapping(value = "/preview/{id}", method = RequestMethod.GET)
+    public CommonResult preview(@PathVariable String id) {
+        return CommonResult.success(examPaperService.view(id, true));
+    }
+
+    // 交卷
+    @ApiOperation("交卷")
+    @LogAnnotation()
+    @RequestMapping(value = "/submitPaper", method = RequestMethod.POST)
+    public CommonResult submitPaper(@RequestBody SubmitPaperDTO params) {
+        return CommonResult.success(examPaperService.submitPaper(params));
+    }
+
+    // 查看
+    @ApiOperation("查看试卷")
+    @LogAnnotation()
+    @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
+    public CommonResult findOne(@PathVariable String id){
+        return CommonResult.success(examPaperService.view(id, false));
+    }
+
+    // 获取我的错题
+    @ApiOperation("获取我的错题")
+    @LogAnnotation()
+    @RequestMapping(value = "/wrongBookPage", method = RequestMethod.POST)
+    public CommonResult getMyWrongBook(@RequestBody WrongBookDTO params) {
+        Page<ExamWrongBook> wrongBookList = examWrongBookService.pageList(params);
+        return CommonResult.success(CommonPage.restPage(wrongBookList));
     }
 }
