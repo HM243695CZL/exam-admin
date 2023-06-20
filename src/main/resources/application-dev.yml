@@ -16,6 +16,9 @@ logging:
     com.macro.mall: debug
   config: classpath:logback.xml
 
+swagger:
+  enable: false
+
 aliyun:
   oss:
     endpoint: oss-cn-chengdu.aliyuncs.com # oss对外服务的访问域名

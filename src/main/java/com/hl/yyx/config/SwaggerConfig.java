@@ -2,6 +2,8 @@ package com.hl.yyx.config;
 
 import com.hl.yyx.common.config.BaseSwaggerConfig;
 import com.hl.yyx.common.domain.SwaggerProperties;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
@@ -11,6 +13,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  */
 @Configuration
 @EnableSwagger2
+@ConditionalOnProperty(name = "swagger.enable", havingValue = "true")
 public class SwaggerConfig extends BaseSwaggerConfig {
 
     @Override

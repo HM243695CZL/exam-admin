@@ -24,6 +24,9 @@ jwt:
   expiration: 604800 #JWT的超期限时间(60*60*24*7)
   tokenHead: 'Bearer '  #JWT负载中拿到开头
 
+swagger:
+  enable: false
+
 redis:
   database: mall
   key:
