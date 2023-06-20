@@ -24,6 +24,7 @@ import com.hl.yyx.modules.ums.dto.UpdatePassDTO;
 import com.hl.yyx.modules.ums.mapper.UmsAdminMapper;
 import com.hl.yyx.modules.ums.model.*;
 import com.hl.yyx.modules.ums.service.*;
+import com.hl.yyx.modules.wx.dto.UpdateNicknameAndAvatarDTO;
 import com.hl.yyx.modules.wx.dto.WXAuthDTO;
 import com.hl.yyx.modules.wx.dto.WxUserInfo;
 import com.hl.yyx.modules.wx.service.WxService;
@@ -350,7 +351,20 @@ public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper, UmsAdmin> i
             String token = JWTUtils.sign(umsAdmin.getId());
             redisTemplate.opsForValue().set(RedisKey.TOKEN_KEY + token, JSON.toJSONString(umsAdmin), 7, TimeUnit.DAYS);
         }
-        return umsAdmin;
+        return getById(umsAdmin.getId());
+    }
+
+    /**
+     * 修改用户昵称和头像
+     * @param updateDto
+     * @return
+     */
+    @Override
+    public Boolean changeNicknameAndAvatar(UpdateNicknameAndAvatarDTO updateDto) {
+        UmsAdmin currentUser = UserThreadLocalUtil.get();
+        currentUser.setAvatar(updateDto.getAvatar());
+        currentUser.setNickName(updateDto.getNickname());
+        return updateById(currentUser);
     }
 
     /**

@@ -5,6 +5,7 @@ import com.hl.yyx.common.api.CommonPage;
 import com.hl.yyx.common.api.CommonResult;
 import com.hl.yyx.common.log.LogAnnotation;
 import com.hl.yyx.common.wx.NoWeiXinAuth;
+import com.hl.yyx.dto.OssPolicyResult;
 import com.hl.yyx.modules.exam.dto.PaperPageDTO;
 import com.hl.yyx.modules.exam.dto.SubmitPaperDTO;
 import com.hl.yyx.modules.exam.dto.WrongBookDTO;
@@ -13,7 +14,9 @@ import com.hl.yyx.modules.exam.service.ExamPaperService;
 import com.hl.yyx.modules.exam.service.ExamWrongBookService;
 import com.hl.yyx.modules.ums.model.UmsAdmin;
 import com.hl.yyx.modules.ums.service.UmsAdminService;
+import com.hl.yyx.modules.wx.dto.UpdateNicknameAndAvatarDTO;
 import com.hl.yyx.modules.wx.dto.WXAuthDTO;
+import com.hl.yyx.service.OssService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +40,9 @@ public class WxController {
 
     @Autowired
     private ExamWrongBookService examWrongBookService;
+
+    @Autowired
+    private OssService ossService;
 
     // 微信一键登录
     @LogAnnotation()
@@ -109,5 +115,20 @@ public class WxController {
     public CommonResult getMyWrongBook(@RequestBody WrongBookDTO params) {
         Page<ExamWrongBook> wrongBookList = examWrongBookService.pageList(params);
         return CommonResult.success(CommonPage.restPage(wrongBookList));
+    }
+
+    @ApiOperation("修改用户昵称和头像")
+    @LogAnnotation
+    @RequestMapping(value = "changeNicknameAndAvatar", method = RequestMethod.POST)
+    public CommonResult changeNicknameAndAvatar(@RequestBody UpdateNicknameAndAvatarDTO updateDto) {
+        return CommonResult.success(adminService.changeNicknameAndAvatar(updateDto));
+    }
+
+    @ApiOperation(value = "oss上传签名生成")
+    @RequestMapping(value = "/policy", method = RequestMethod.GET)
+    @ResponseBody
+    public CommonResult<OssPolicyResult> policy() {
+        OssPolicyResult result = ossService.policy();
+        return CommonResult.success(result);
     }
 }

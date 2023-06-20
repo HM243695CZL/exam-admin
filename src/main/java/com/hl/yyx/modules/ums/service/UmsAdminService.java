@@ -7,6 +7,7 @@ import com.hl.yyx.domain.AdminUserDetails;
 import com.hl.yyx.modules.ums.dto.AdminPageDTO;
 import com.hl.yyx.modules.ums.dto.UpdatePassDTO;
 import com.hl.yyx.modules.ums.model.UmsAdmin;
+import com.hl.yyx.modules.wx.dto.UpdateNicknameAndAvatarDTO;
 import com.hl.yyx.modules.wx.dto.WXAuthDTO;
 
 import javax.servlet.http.HttpServletRequest;
@@ -47,4 +48,11 @@ public interface UmsAdminService extends IService<UmsAdmin> {
     Object getSessionId(String code);
 
     UmsAdmin getUserInfo(Boolean refresh);
+
+    /**
+     * 修改用户昵称和头像
+     * @param updateDto
+     * @return
+     */
+    Boolean changeNicknameAndAvatar(UpdateNicknameAndAvatarDTO updateDto);
 }
