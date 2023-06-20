@@ -8,6 +8,9 @@ public enum ResultCode implements IErrorCode {
     SUCCESS(200, "操作成功"),
     FAILED(500, "操作失败"),
     VALIDATE_FAILED(501, "参数检验失败"),
+    VERIFY_FALL(502, "token验证失败"),
+    USER_BLANK(503, "userJson为空"),
+    NO_TOKEN(504, "token为空"),
     UNAUTHORIZED(401, "暂未登录或token已经过期"),
     FORBIDDEN(403, "没有相关权限"),
     UN_KNOWN(9999, "未知异常，请联系管理员，或稍后再试!");

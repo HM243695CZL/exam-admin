@@ -56,12 +56,20 @@ public class LoginHandler implements HandlerInterceptor {
          * refresh为false，从redis中取用户信息返回
          */
         token = token.replace("Bearer ", "");
+        if (token.equals("") || token == null) {
+            response.setCharacterEncoding("UTF-8");
+            response.setContentType("application/json");
+            // 响应未登录或已过期信息
+            response.getWriter().println(JSONUtil.parse(CommonResult.failed(ResultCode.NO_TOKEN)));
+            response.getWriter().flush();
+            return false;
+        }
         boolean verify = JWTUtils.verify(token);
         if (!verify) {
             response.setCharacterEncoding("UTF-8");
             response.setContentType("application/json");
             // 响应未登录或已过期信息
-            response.getWriter().println(JSONUtil.parse(CommonResult.failed(ResultCode.UNAUTHORIZED)));
+            response.getWriter().println(JSONUtil.parse(CommonResult.failed(ResultCode.VERIFY_FALL)));
             response.getWriter().flush();
             return false;
         }
@@ -70,7 +78,7 @@ public class LoginHandler implements HandlerInterceptor {
             response.setCharacterEncoding("UTF-8");
             response.setContentType("application/json");
             // 响应未登录或已过期信息
-            response.getWriter().println(JSONUtil.parse(CommonResult.failed(ResultCode.UNAUTHORIZED)));
+            response.getWriter().println(JSONUtil.parse(CommonResult.failed(ResultCode.USER_BLANK)));
             response.getWriter().flush();
             return false;
         }
