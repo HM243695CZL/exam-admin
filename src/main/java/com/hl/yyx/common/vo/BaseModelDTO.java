@@ -2,6 +2,7 @@ package com.hl.yyx.common.vo;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
@@ -21,7 +22,7 @@ public class BaseModelDTO {
     private Date updateTime;
 
     @ApiModelProperty(value = "逻辑删除")
-//    @TableLogic(value = "1", delval = "0")
+    @TableLogic(value = "1", delval = "0")
     @JsonIgnore
     private Boolean deleted;
 }
