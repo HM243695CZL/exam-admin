@@ -3,6 +3,9 @@ package com.hl.yyx.modules.exam.service.impl;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hl.yyx.common.exception.ApiException;
+import com.hl.yyx.common.util.ExcelUtils;
+import com.hl.yyx.common.util.IOExcelUtils;
 import com.hl.yyx.common.util.RandomUtil;
 import com.hl.yyx.modules.exam.dto.QuestionPageDTO;
 import com.hl.yyx.modules.exam.dto.RandomChooseDTO;
@@ -16,10 +19,17 @@ import com.hl.yyx.modules.exam.service.ExamQuestionItemService;
 import com.hl.yyx.modules.exam.service.ExamQuestionRelationItemService;
 import com.hl.yyx.modules.exam.service.ExamQuestionService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -42,6 +52,8 @@ public class ExamQuestionServiceImpl extends ServiceImpl<ExamQuestionMapper, Exa
 
     @Autowired
     private ExamPaperTypeService paperTypeService;
+
+    private static final String EXCEL_TABLE_HEADS = "序号-题目名称-题目分类-题目类型-题目难度-题目分数-题目选项A-题目选项B-题目选项C-题目选项D-题目答案-题目解析";
 
     @Override
     public Page<ExamQuestion> pageList(QuestionPageDTO params) {
@@ -193,6 +205,44 @@ public class ExamQuestionServiceImpl extends ServiceImpl<ExamQuestionMapper, Exa
             list.add(questionList.get(i));
         }
         return list;
+    }
+
+    /**
+     * 下载模板
+     * @param request
+     * @param response
+     */
+    @Override
+    public void downloadModule(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            List<String> titleName = Arrays.asList(EXCEL_TABLE_HEADS.split("-"));
+            Workbook book = ExcelUtils.createWorkBook("试题", (String) null, null, titleName.subList(1, titleName.size()));
+            String fileName = "试题导入模板.xlsx";
+            response.setHeader("content-Type", "application/msexcel");
+            response.setCharacterEncoding("UTF-8");
+            OutputStream os = new BufferedOutputStream(response.getOutputStream());
+            fileName = new String(fileName.getBytes("UTF-8"), "iso-8859-1");
+            response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
+            book.write(os);
+        } catch (Exception e) {
+           e.printStackTrace();
+           throw new ApiException("数据模板下载异常");
+        }
+    }
+
+    /**
+     * 导入试题
+     * @param file
+     */
+    @Override
+    @Transactional
+    public void importExcel(MultipartFile file) {
+        List<String> columnNames = Arrays.asList(EXCEL_TABLE_HEADS.split("-"));
+        IOExcelUtils.SheetData sheetData = IOExcelUtils.validExcel(file, columnNames.subList(1, columnNames.size()));
+        List<List<String>> rowDatas = sheetData.getDatas();
+        System.out.println("===================");
+        System.out.println(rowDatas);
+        System.out.println("===================");
     }
 
 

@@ -3,6 +3,7 @@ package com.hl.yyx.modules.exam.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hl.yyx.common.api.CommonPage;
 import com.hl.yyx.common.api.CommonResult;
+import com.hl.yyx.common.exception.ApiException;
 import com.hl.yyx.common.log.LogAnnotation;
 import com.hl.yyx.modules.exam.dto.QuestionPageDTO;
 import com.hl.yyx.modules.exam.dto.RandomChooseDTO;
@@ -17,7 +18,10 @@ import com.hl.yyx.modules.exam.service.ExamQuestionService;
 import com.hl.yyx.modules.exam.model.ExamQuestion;
 
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -99,6 +103,31 @@ import java.util.List;
     @RequestMapping(value = "/randomChoose", method = RequestMethod.POST)
     public CommonResult randomChooseQuestion(@RequestBody RandomChooseDTO chooseDTO) {
         return CommonResult.success(examQuestionService.randomChoose(chooseDTO));
+    }
+
+    /**
+     * 下载模板
+     */
+    @LogAnnotation
+    @ApiOperation("下载导入模板")
+    @RequestMapping(value = "/downloadModule", method = RequestMethod.GET)
+    public void downloadModule(HttpServletRequest request, HttpServletResponse response) {
+        examQuestionService.downloadModule(request, response);
+    }
+
+    /**
+     * 导入试题
+     * @return
+     */
+    @LogAnnotation
+    @ApiOperation("导入试题")
+    @RequestMapping(value = "/importExcel", method = RequestMethod.POST)
+    public CommonResult importExcel(@RequestParam("file")MultipartFile file) {
+        if (file.isEmpty()) {
+            throw new ApiException("文件不能为空");
+        }
+        examQuestionService.importExcel(file);
+        return CommonResult.success("导入成功");
     }
 }
 

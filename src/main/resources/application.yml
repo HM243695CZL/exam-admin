@@ -53,4 +53,5 @@ secure:
       - /admin/admin/register
       - /admin/admin/info
       - /admin/admin/logout
+      - /admin/exam/question/downloadModule
       - /wx/**

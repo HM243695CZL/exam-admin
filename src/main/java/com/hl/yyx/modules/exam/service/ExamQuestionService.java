@@ -5,7 +5,11 @@ import com.hl.yyx.modules.exam.dto.QuestionPageDTO;
 import com.hl.yyx.modules.exam.dto.RandomChooseDTO;
 import com.hl.yyx.modules.exam.model.ExamQuestion;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -29,4 +33,17 @@ public interface ExamQuestionService extends IService<ExamQuestion> {
     Boolean delete(String id);
 
     List<ExamQuestion> randomChoose(RandomChooseDTO chooseDTO);
+
+    /**
+     * 下载模板
+     * @param request
+     * @param response
+     */
+    void downloadModule(HttpServletRequest request, HttpServletResponse response);
+
+    /**
+     * 导入试题
+     * @param file
+     */
+    void importExcel(MultipartFile file);
 }

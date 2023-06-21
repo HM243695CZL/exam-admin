@@ -33,6 +33,14 @@
         <fastjson.version>1.2.54</fastjson.version>
         <java-jwt.version>3.2.0</java-jwt.version>
         <weixin-java-miniapp.version>4.1.0</weixin-java-miniapp.version>
+        <pdfbox.version>2.0.1</pdfbox.version>
+        <fontbox.version>2.0.0</fontbox.version>
+        <jempbox.version>1.8.11</jempbox.version>
+        <xmpbox.version>2.0.0</xmpbox.version>
+        <preflight.version>2.0.0</preflight.version>
+        <pdfbox-tools.version>2.0.0</pdfbox-tools.version>
+        <poi.version>3.17</poi.version>
+        <collections.version>3.2.2</collections.version>
     </properties>
     <dependencies>
         <!--SpringBoot通用依赖模块-->
@@ -148,7 +156,7 @@
         <dependency>
             <groupId>com.aliyun.oss</groupId>
             <artifactId>aliyun-sdk-oss</artifactId>
-            <version>3.10.2</version>
+            <version>${oss.version}</version>
         </dependency>
         <!--OSS SDK-->
         <dependency>
@@ -171,6 +179,63 @@
             <groupId>com.github.binarywang</groupId>
             <artifactId>weixin-java-miniapp</artifactId>
             <version>${weixin-java-miniapp.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>${pdfbox.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>fontbox</artifactId>
+            <version>${fontbox.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>jempbox</artifactId>
+            <version>${jempbox.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>xmpbox</artifactId>
+            <version>${xmpbox.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>preflight</artifactId>
+            <version>${preflight.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox-tools</artifactId>
+            <version>${pdfbox-tools.version}</version>
+        </dependency>
+        <!--excel导出-->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-scratchpad</artifactId>
+            <version>${poi.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>${poi.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>xml-apis</artifactId>
+                    <groupId>xml-apis</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>${poi.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+            <version>${collections.version}</version>
         </dependency>
     </dependencies>
 
