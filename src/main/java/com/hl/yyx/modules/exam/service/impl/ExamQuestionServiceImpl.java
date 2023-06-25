@@ -242,6 +242,29 @@ public class ExamQuestionServiceImpl extends ServiceImpl<ExamQuestionMapper, Exa
         IOExcelUtils.SheetData sheetData = IOExcelUtils.validExcel(file, columnNames.subList(0, columnNames.size()));
         List<List<String>> rowDatas = sheetData.getDatas();
         List<ExamQuestion> questionList = validateExcelData(rowDatas);
+        List<ExamQuestionItem> questionItemList = validateExcelQuestionItem(rowDatas);
+        for (ExamQuestion examQuestion : questionList) {
+            save(examQuestion);
+            for (ExamQuestionItem item : questionItemList) {
+                questionItemService.save(item);
+                ExamQuestionRelationItem relationItem = new ExamQuestionRelationItem();
+                relationItem.setQId(examQuestion.getId());
+                relationItem.setIId(item.getId());
+                relationItemService.save(relationItem);
+            }
+
+            String currentQuestionAnswer = "";
+            String[] itemArr = new String[]{"A", "B", "C", "D", "E", "F"};
+            for (int i = 0; i < itemArr.length; i++) {
+                if (examQuestion.getAnswer().equals(itemArr[i])) {
+                    currentQuestionAnswer = questionItemList.get(i).getId();
+                    break;
+                }
+            }
+
+            examQuestion.setAnswer(currentQuestionAnswer);
+            updateById(examQuestion);
+        }
     }
 
     /**
@@ -254,15 +277,34 @@ public class ExamQuestionServiceImpl extends ServiceImpl<ExamQuestionMapper, Exa
         List<ExamQuestion> allQuestion = list();
         Set<String> tmpQuestionName = allQuestion.stream().map(ExamQuestion::getQuestion).collect(Collectors.toSet());
         List<ExamQuestionType> questionTypes = paperTypeService.list();
+
         HashMap<String, String> questionTypeMap = new HashMap<>();
         Set<String> questionTypeName = questionTypes.stream().map(ExamQuestionType::getName).collect(Collectors.toSet());
         Set<String> questionTypeId = questionTypes.stream().map(ExamQuestionType::getId).collect(Collectors.toSet());
 
+        HashMap<Integer, String> typeMap = new HashMap<>();
+        ArrayList<String> typeList = new ArrayList<>();
+        typeMap.put(1, "单选题");
+        typeMap.put(2, "多选题");
+        typeMap.put(3, "判断题");
+        typeMap.put(4, "简答题");
+        typeList.add("单选题");
+        typeList.add("多选题");
+        typeList.add("判断题");
+        typeList.add("简答题");
+
+        HashMap<Integer, String> difficultyMap = new HashMap<>();
+        ArrayList<String> difficultyList = new ArrayList<>();
+        difficultyMap.put(1, "简单");
+        difficultyMap.put(2, "一般");
+        difficultyMap.put(3, "困难");
+        difficultyList.add("简单");
+        difficultyList.add("一般");
+        difficultyList.add("困难");
+
         questionTypeName.forEach(item -> {
             questionTypeMap.put(item, questionTypeId.stream().filter(id -> questionTypes.stream().filter(type -> type.getName().equals(item)).findFirst().get().getId().equals(id)).findFirst().get());
         });
-
-        System.out.println(questionTypeMap);
 
         for (List<String> rowData : rowDatas) {
             ExamQuestion question = new ExamQuestion();
@@ -284,8 +326,92 @@ public class ExamQuestionServiceImpl extends ServiceImpl<ExamQuestionMapper, Exa
             if (!questionTypeName.contains(questionCategory)) {
                 throw new ApiException("第" + (rowDatas.indexOf(rowData) + 1) + "行的“题目分类“不存在");
             }
+            question.setQuestionType(questionTypeMap.get(questionCategory));
+            // 题目类型
+            if (StringUtils.isBlank(rowData.get(2).trim())) {
+                throw new ApiException("第" + (rowDatas.indexOf(rowData) + 1) + "行的“题目类型“未填写");
+            }
+            if (!typeList.contains(rowData.get(2).trim())) {
+                throw new ApiException("第" + (rowDatas.indexOf(rowData) + 1) + "行的“题目类型“不存在");
+            }
+            question.setType(typeMap.entrySet().stream().filter(item -> item.getValue().equals(rowData.get(2).trim())).findFirst().get().getKey());
+            // 题目难度
+            if (StringUtils.isBlank(rowData.get(3).trim())) {
+                throw new ApiException("第" + (rowDatas.indexOf(rowData) + 1) + "行的“题目难度“未填写");
+            }
+            if (!difficultyList.contains(rowData.get(3).trim())) {
+                throw new ApiException("第" + (rowDatas.indexOf(rowData) + 1) + "行的“题目难度“不存在");
+            }
+            question.setDifficulty(difficultyMap.entrySet().stream().filter(item -> item.getValue().equals(rowData.get(3).trim())).findFirst().get().getKey());
+            // 题目分数
+            if (StringUtils.isBlank(rowData.get(4).trim())) {
+                throw new ApiException("第" + (rowDatas.indexOf(rowData) + 1) + "行的“题目分数“未填写");
+            }
+            if (!rowData.get(4).trim().matches("^[0-9]*$")) {
+                throw new ApiException("第" + (rowDatas.indexOf(rowData) + 1) + "行的“题目分数“格式不正确");
+            }
+            question.setScore(Integer.parseInt(rowData.get(4).trim()));
+            // 题目答案
+            if (StringUtils.isBlank(rowData.get(9).trim())) {
+                throw new ApiException("第" + (rowDatas.indexOf(rowData) + 1) + "行的“题目答案“未填写");
+            }
+            question.setAnswer(rowData.get(9).trim());
+            // 题目解析
+            if (StringUtils.isBlank(rowData.get(10).trim())) {
+                throw new ApiException("第" + (rowDatas.indexOf(rowData) + 1) + "行的“题目解析“未填写");
+            }
+            question.setAnalysis(rowData.get(10).trim());
+            questionParams.add(question);
         }
         return questionParams;
+    }
+
+    /**
+     * 验证excel数据，构建新增试题选项参数
+     * @param rowDatas
+     * @return
+     */
+    private List<ExamQuestionItem> validateExcelQuestionItem(List<List<String>> rowDatas) {
+        List<ExamQuestionItem> questionItemList = new ArrayList<>();
+        for (List<String> rowData : rowDatas) {
+            ExamQuestionItem questionItemA = new ExamQuestionItem();
+            ExamQuestionItem questionItemB = new ExamQuestionItem();
+            ExamQuestionItem questionItemC = new ExamQuestionItem();
+            ExamQuestionItem questionItemD = new ExamQuestionItem();
+            // 表头： 题目名称-题目分类-题目类型-题目难度-题目分数-题目选项A-题目选项B-题目选项C-题目选项D-题目答案-题目解析
+            // 题目选项A
+            if (StringUtils.isBlank(rowData.get(5).trim())) {
+                throw new ApiException("第" + (rowDatas.indexOf(rowData) + 1) + "行的“题目选项A“未填写");
+            }
+            // 题目选项B
+            if (StringUtils.isBlank(rowData.get(6).trim())) {
+                throw new ApiException("第" + (rowDatas.indexOf(rowData) + 1) + "行的“题目选项B“未填写");
+            }
+            // 题目选项C
+            if (StringUtils.isBlank(rowData.get(7).trim())) {
+                throw new ApiException("第" + (rowDatas.indexOf(rowData) + 1) + "行的“题目选项C“未填写");
+            }
+            // 题目选项D
+            if (StringUtils.isBlank(rowData.get(8).trim())) {
+                throw new ApiException("第" + (rowDatas.indexOf(rowData) + 1) + "行的“题目选项D“未填写");
+            }
+            questionItemA.setSortIndex(1);
+            questionItemA.setName(rowData.get(5).trim());
+            questionItemList.add(questionItemA);
+
+            questionItemB.setSortIndex(2);
+            questionItemB.setName(rowData.get(6).trim());
+            questionItemList.add(questionItemB);
+
+            questionItemC.setSortIndex(3);
+            questionItemC.setName(rowData.get(7).trim());
+            questionItemList.add(questionItemC);
+
+            questionItemD.setSortIndex(4);
+            questionItemD.setName(rowData.get(8).trim());
+            questionItemList.add(questionItemD);
+        }
+        return questionItemList;
     }
 
 
