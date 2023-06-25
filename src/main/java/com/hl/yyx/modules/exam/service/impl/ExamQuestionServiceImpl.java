@@ -2,6 +2,7 @@ package com.hl.yyx.modules.exam.service.impl;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hl.yyx.common.exception.ApiException;
 import com.hl.yyx.common.util.ExcelUtils;
@@ -53,7 +54,7 @@ public class ExamQuestionServiceImpl extends ServiceImpl<ExamQuestionMapper, Exa
     @Autowired
     private ExamPaperTypeService paperTypeService;
 
-    private static final String EXCEL_TABLE_HEADS = "序号-题目名称-题目分类-题目类型-题目难度-题目分数-题目选项A-题目选项B-题目选项C-题目选项D-题目答案-题目解析";
+    private static final String EXCEL_TABLE_HEADS = "题目名称-题目分类-题目类型-题目难度-题目分数-题目选项A-题目选项B-题目选项C-题目选项D-题目答案-题目解析";
 
     @Override
     public Page<ExamQuestion> pageList(QuestionPageDTO params) {
@@ -240,9 +241,41 @@ public class ExamQuestionServiceImpl extends ServiceImpl<ExamQuestionMapper, Exa
         List<String> columnNames = Arrays.asList(EXCEL_TABLE_HEADS.split("-"));
         IOExcelUtils.SheetData sheetData = IOExcelUtils.validExcel(file, columnNames.subList(1, columnNames.size()));
         List<List<String>> rowDatas = sheetData.getDatas();
-        System.out.println("===================");
-        System.out.println(rowDatas);
-        System.out.println("===================");
+        List<ExamQuestion> questionList = validateExcelData(rowDatas);
+    }
+
+    /**
+     * 验证excel数据并构建新增参数
+     * @param rowDatas
+     * @return
+     */
+    private List<ExamQuestion> validateExcelData(List<List<String>> rowDatas) {
+        List<ExamQuestion> questionParams = new ArrayList<>();
+        List<ExamQuestion> allQuestion = list();
+        Set<String> tmpQuestionName = allQuestion.stream().map(ExamQuestion::getQuestion).collect(Collectors.toSet());
+        List<ExamQuestionType> questionTypes = paperTypeService.list();
+        HashMap<String, String> questionTypeMap = new HashMap<>();
+        Set<String> questionTypeName = questionTypes.stream().map(ExamQuestionType::getName).collect(Collectors.toSet());
+        Set<String> questionTypeId = questionTypes.stream().map(ExamQuestionType::getId).collect(Collectors.toSet());
+
+        for (List<String> rowData : rowDatas) {
+            ExamQuestion question = new ExamQuestion();
+            // 表头： 题目名称-题目分类-题目类型-题目难度-题目分数-题目选项A-题目选项B-题目选项C-题目选项D-题目答案-题目解析
+            // 题目名称
+            String questionName = rowData.get(0).trim();
+            if (StringUtils.isBlank(questionName)) {
+                throw new ApiException("第" + (rowDatas.indexOf(rowData) + 1) + "行的“题目名称“未填写");
+            }
+            if (tmpQuestionName.contains(questionName)) {
+                throw new ApiException("第" + (rowDatas.indexOf(rowData) + 1) + "行的“题目名称“已存在");
+            }
+            question.setQuestion(questionName);
+            // 题目分类
+            String questionCategory = rowData.get(1).trim();
+            if (StringUtils.isBlank(questionCategory)) {
+                throw new ApiException("第" + (rowDatas.indexOf(rowData) + 1) + "行的“题目分类“未填写");
+            }
+        }
     }
 
 
