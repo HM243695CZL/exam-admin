@@ -239,7 +239,7 @@ public class ExamQuestionServiceImpl extends ServiceImpl<ExamQuestionMapper, Exa
     @Transactional
     public void importExcel(MultipartFile file) {
         List<String> columnNames = Arrays.asList(EXCEL_TABLE_HEADS.split("-"));
-        IOExcelUtils.SheetData sheetData = IOExcelUtils.validExcel(file, columnNames.subList(1, columnNames.size()));
+        IOExcelUtils.SheetData sheetData = IOExcelUtils.validExcel(file, columnNames.subList(0, columnNames.size()));
         List<List<String>> rowDatas = sheetData.getDatas();
         List<ExamQuestion> questionList = validateExcelData(rowDatas);
     }
@@ -258,6 +258,12 @@ public class ExamQuestionServiceImpl extends ServiceImpl<ExamQuestionMapper, Exa
         Set<String> questionTypeName = questionTypes.stream().map(ExamQuestionType::getName).collect(Collectors.toSet());
         Set<String> questionTypeId = questionTypes.stream().map(ExamQuestionType::getId).collect(Collectors.toSet());
 
+        questionTypeName.forEach(item -> {
+            questionTypeMap.put(item, questionTypeId.stream().filter(id -> questionTypes.stream().filter(type -> type.getName().equals(item)).findFirst().get().getId().equals(id)).findFirst().get());
+        });
+
+        System.out.println(questionTypeMap);
+
         for (List<String> rowData : rowDatas) {
             ExamQuestion question = new ExamQuestion();
             // 表头： 题目名称-题目分类-题目类型-题目难度-题目分数-题目选项A-题目选项B-题目选项C-题目选项D-题目答案-题目解析
@@ -275,7 +281,11 @@ public class ExamQuestionServiceImpl extends ServiceImpl<ExamQuestionMapper, Exa
             if (StringUtils.isBlank(questionCategory)) {
                 throw new ApiException("第" + (rowDatas.indexOf(rowData) + 1) + "行的“题目分类“未填写");
             }
+            if (!questionTypeName.contains(questionCategory)) {
+                throw new ApiException("第" + (rowDatas.indexOf(rowData) + 1) + "行的“题目分类“不存在");
+            }
         }
+        return questionParams;
     }
 
 

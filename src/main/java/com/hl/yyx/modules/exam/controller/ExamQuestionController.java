@@ -119,7 +119,7 @@ import java.util.List;
      * 导入试题
      * @return
      */
-    @LogAnnotation
+//    @LogAnnotation
     @ApiOperation("导入试题")
     @RequestMapping(value = "/importExcel", method = RequestMethod.POST)
     public CommonResult importExcel(@RequestParam("file")MultipartFile file) {
