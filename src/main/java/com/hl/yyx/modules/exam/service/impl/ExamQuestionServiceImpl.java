@@ -243,25 +243,25 @@ public class ExamQuestionServiceImpl extends ServiceImpl<ExamQuestionMapper, Exa
         List<List<String>> rowDatas = sheetData.getDatas();
         List<ExamQuestion> questionList = validateExcelData(rowDatas);
         List<ExamQuestionItem> questionItemList = validateExcelQuestionItem(rowDatas);
+        int questionNumber = 0;
         for (ExamQuestion examQuestion : questionList) {
             save(examQuestion);
-            for (ExamQuestionItem item : questionItemList) {
+            for (ExamQuestionItem item : questionItemList.subList(questionNumber * 4, (questionNumber + 1) * 4)) {
                 questionItemService.save(item);
                 ExamQuestionRelationItem relationItem = new ExamQuestionRelationItem();
                 relationItem.setQId(examQuestion.getId());
                 relationItem.setIId(item.getId());
                 relationItemService.save(relationItem);
             }
-
             String currentQuestionAnswer = "";
             String[] itemArr = new String[]{"A", "B", "C", "D", "E", "F"};
             for (int i = 0; i < itemArr.length; i++) {
                 if (examQuestion.getAnswer().equals(itemArr[i])) {
-                    currentQuestionAnswer = questionItemList.get(i).getId();
+                    currentQuestionAnswer = questionItemList.subList(questionNumber * 4, (questionNumber + 1) * 4).get(i).getId();
                     break;
                 }
             }
-
+            questionNumber += 1;
             examQuestion.setAnswer(currentQuestionAnswer);
             updateById(examQuestion);
         }
@@ -357,9 +357,6 @@ public class ExamQuestionServiceImpl extends ServiceImpl<ExamQuestionMapper, Exa
             }
             question.setAnswer(rowData.get(9).trim());
             // 题目解析
-            if (StringUtils.isBlank(rowData.get(10).trim())) {
-                throw new ApiException("第" + (rowDatas.indexOf(rowData) + 1) + "行的“题目解析“未填写");
-            }
             question.setAnalysis(rowData.get(10).trim());
             questionParams.add(question);
         }
