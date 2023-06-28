@@ -217,7 +217,7 @@ public class ExamQuestionServiceImpl extends ServiceImpl<ExamQuestionMapper, Exa
     public void downloadModule(HttpServletRequest request, HttpServletResponse response) {
         try {
             List<String> titleName = Arrays.asList(EXCEL_TABLE_HEADS.split("-"));
-            Workbook book = ExcelUtils.createWorkBook("试题", (String) null, null, titleName.subList(1, titleName.size()));
+            Workbook book = ExcelUtils.createWorkBook("试题", (String) null, null, titleName.subList(0, titleName.size()));
             String fileName = "试题导入模板.xlsx";
             response.setHeader("content-Type", "application/msexcel");
             response.setCharacterEncoding("UTF-8");
