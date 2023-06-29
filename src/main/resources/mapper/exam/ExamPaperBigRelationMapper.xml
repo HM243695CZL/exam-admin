@@ -10,6 +10,7 @@
         <result column="paper_id" property="paperId" />
         <result column="score" property="score" />
         <result column="sort_index" property="sortIndex" />
+        <result column="deleted" property="deleted" />
     </resultMap>
 
 </mapper>

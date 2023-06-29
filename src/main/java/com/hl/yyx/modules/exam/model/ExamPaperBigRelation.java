@@ -1,10 +1,10 @@
 package com.hl.yyx.modules.exam.model;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -47,6 +47,11 @@ public class ExamPaperBigRelation implements Serializable {
     @ApiModelProperty(value = "试题信息")
     @TableField(exist = false)
     private Object questionInfo;
+
+    @ApiModelProperty(value = "逻辑删除")
+    @TableLogic(value = "1", delval = "0")
+    @JsonIgnore
+    private Boolean deleted;
 
 
 }

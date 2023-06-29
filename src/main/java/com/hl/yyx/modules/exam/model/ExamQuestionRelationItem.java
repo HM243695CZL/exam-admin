@@ -2,8 +2,11 @@ package com.hl.yyx.modules.exam.model;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -33,6 +36,11 @@ public class ExamQuestionRelationItem implements Serializable {
 
     @ApiModelProperty(value = "选项id")
     private String iId;
+
+    @ApiModelProperty(value = "逻辑删除")
+    @TableLogic(value = "1", delval = "0")
+    @JsonIgnore
+    private Boolean deleted;
 
 
 }
