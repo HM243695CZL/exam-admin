@@ -78,7 +78,7 @@ import java.util.List;
     @ApiOperation("批量删除")
     @RequestMapping(value = "/deleteBatch", method = RequestMethod.POST)
     public CommonResult deleteBatch(@RequestBody List<String> ids) {
-        return CommonResult.success(examQuestionService.removeByIds(ids));
+        return CommonResult.success(examQuestionService.batchDelete(ids));
     }
 
     // 获取全部

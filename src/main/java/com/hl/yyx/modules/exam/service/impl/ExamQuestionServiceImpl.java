@@ -268,6 +268,20 @@ public class ExamQuestionServiceImpl extends ServiceImpl<ExamQuestionMapper, Exa
     }
 
     /**
+     * 批量删除
+     * @param ids
+     * @return
+     */
+    @Transactional
+    @Override
+    public Boolean batchDelete(List<String> ids) {
+        for (String id : ids) {
+            delete(id);
+        }
+        return true;
+    }
+
+    /**
      * 验证excel数据并构建新增参数
      * @param rowDatas
      * @return

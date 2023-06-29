@@ -19,7 +19,7 @@ import org.apache.pdfbox.pdmodel.PDResources;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 
 public class PDFReader {
-   static String fileName = "D:\\WeChatFile\\WeChat Files\\wxid_oewx5js7034e22\\FileStorage\\File\\2023-06\\2022.7.9贵州省考《行测》真题完整版答案1.pdf";
+   static String fileName = "C:\\Users\\hm243695czl\\Desktop\\2022.7.9贵州省考《行测》真题完整版答案1.pdf";
     public static void main(String[] args) throws Exception {
 
 //        readFile();
@@ -127,7 +127,7 @@ public class PDFReader {
         // 划定区域
         Rectangle2D rect = new Rectangle(x, y, width, height);
         stripper.addRegion("area", rect);
-        PDPage page = doc.getPage(1);
+        PDPage page = doc.getPage(28);
         stripper.extractRegions(page);
         // 获取区域的text
         String data = stripper.getTextForRegion("area");

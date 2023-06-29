@@ -46,4 +46,6 @@ public interface ExamQuestionService extends IService<ExamQuestion> {
      * @param file
      */
     void importExcel(MultipartFile file);
+
+    Boolean batchDelete(List<String> ids);
 }
