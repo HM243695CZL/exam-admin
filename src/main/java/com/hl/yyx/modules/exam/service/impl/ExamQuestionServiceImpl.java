@@ -163,6 +163,8 @@ public class ExamQuestionServiceImpl extends ServiceImpl<ExamQuestionMapper, Exa
             relationItemService.remove(queryWrapper);
 
             index ++;
+            // 启用逻辑删除时，需要将id设置为null
+            item.setId(null);
             saveQuestionItem(item, examQuestion.getId(), index);
         }
         return update;

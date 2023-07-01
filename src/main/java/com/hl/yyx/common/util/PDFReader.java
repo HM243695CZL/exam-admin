@@ -19,13 +19,14 @@ import org.apache.pdfbox.pdmodel.PDResources;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 
 public class PDFReader {
-   static String fileName = "C:\\Users\\hm243695czl\\Desktop\\2022.7.9贵州省考《行测》真题完整版答案1.pdf";
+//   static String fileName = "C:\\Users\\hm243695czl\\Desktop\\01 常识  上册（192页）.pdf";
+   static String fileName = "C:\\Users\\hm243695czl\\Desktop\\02 常识  下册（424页）.pdf";
     public static void main(String[] args) throws Exception {
 
 //        readFile();
 //        readPage();
-//        readTextImage();
-        readRectangle();
+        readTextImage();
+//        readRectangle();
     }
 
     /**
@@ -81,7 +82,7 @@ public class PDFReader {
         File file = new File(fileName);
         PDDocument doc = PDDocument.load(file);
         PDFTextStripper textStripper = new PDFTextStripper();
-        for (int i = 1; i <= doc.getNumberOfPages(); i++) {
+        for (int i = 20; i <= 28; i++) {
             textStripper.setStartPage(i);
             textStripper.setEndPage(i);
             String s = textStripper.getText(doc);
@@ -127,7 +128,7 @@ public class PDFReader {
         // 划定区域
         Rectangle2D rect = new Rectangle(x, y, width, height);
         stripper.addRegion("area", rect);
-        PDPage page = doc.getPage(28);
+        PDPage page = doc.getPage(5);
         stripper.extractRegions(page);
         // 获取区域的text
         String data = stripper.getTextForRegion("area");
