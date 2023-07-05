@@ -82,7 +82,7 @@ public class PDFReader {
         File file = new File(fileName);
         PDDocument doc = PDDocument.load(file);
         PDFTextStripper textStripper = new PDFTextStripper();
-        for (int i = 20; i <= 28; i++) {
+        for (int i = 41; i <= 60; i++) {
             textStripper.setStartPage(i);
             textStripper.setEndPage(i);
             String s = textStripper.getText(doc);

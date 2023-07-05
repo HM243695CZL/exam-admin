@@ -148,8 +148,6 @@ public class ExamQuestionServiceImpl extends ServiceImpl<ExamQuestionMapper, Exa
     @Override
     @Transactional
     public Boolean updateQuestion(ExamQuestion examQuestion) {
-        examQuestion.setAnswer(updateQuestionAnswer(examQuestion));
-        boolean update = updateById(examQuestion);
         // 根据试题id获取选项id
         List<String> itemIds = relationItemService.list(new QueryWrapper<ExamQuestionRelationItem>()
                 .eq("q_id", examQuestion.getId()).select("i_id")).stream()
@@ -167,7 +165,8 @@ public class ExamQuestionServiceImpl extends ServiceImpl<ExamQuestionMapper, Exa
             item.setId(null);
             saveQuestionItem(item, examQuestion.getId(), index);
         }
-        return update;
+        examQuestion.setAnswer(updateQuestionAnswer(examQuestion));
+        return updateById(examQuestion);
     }
 
     @Override
