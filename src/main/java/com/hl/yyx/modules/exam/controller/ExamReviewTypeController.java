@@ -2,6 +2,7 @@ package com.hl.yyx.modules.exam.controller;
 
 import com.hl.yyx.common.api.CommonResult;
 import com.hl.yyx.common.log.LogAnnotation;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author hl243695czyn
  * @since 2023-10-23
  */
+@Api(tags = "复习资料分类管理", description = "复习资料分类管理")
 @RestController
 @RequestMapping("/admin/exam/review-type")
     public class ExamReviewTypeController {
