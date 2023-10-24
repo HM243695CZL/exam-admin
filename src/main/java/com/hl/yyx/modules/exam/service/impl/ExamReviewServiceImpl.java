@@ -31,7 +31,7 @@ public class ExamReviewServiceImpl extends ServiceImpl<ExamReviewMapper, ExamRev
     public Page<ExamReview> pageList(ExamReviewPageDTO params) {
         Page<ExamReview> page = new Page<>(params.getPageIndex(), params.getPageSize());
         QueryWrapper<ExamReview> queryWrapper = new QueryWrapper<>();
-        if (params.getReviewType() != null) {
+        if (StrUtil.isNotEmpty(params.getReviewType())) {
             queryWrapper.lambda().eq(ExamReview::getReviewType, params.getReviewType());
         }
         if (StrUtil.isNotEmpty(params.getContent())) {
