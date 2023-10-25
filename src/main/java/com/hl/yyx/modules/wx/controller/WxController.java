@@ -6,11 +6,14 @@ import com.hl.yyx.common.api.CommonResult;
 import com.hl.yyx.common.log.LogAnnotation;
 import com.hl.yyx.common.wx.NoWeiXinAuth;
 import com.hl.yyx.dto.OssPolicyResult;
+import com.hl.yyx.modules.exam.dto.ExamReviewPageDTO;
 import com.hl.yyx.modules.exam.dto.PaperPageDTO;
 import com.hl.yyx.modules.exam.dto.SubmitPaperDTO;
 import com.hl.yyx.modules.exam.dto.WrongBookDTO;
 import com.hl.yyx.modules.exam.model.ExamWrongBook;
 import com.hl.yyx.modules.exam.service.ExamPaperService;
+import com.hl.yyx.modules.exam.service.ExamReviewService;
+import com.hl.yyx.modules.exam.service.ExamReviewTypeService;
 import com.hl.yyx.modules.exam.service.ExamWrongBookService;
 import com.hl.yyx.modules.ums.model.UmsAdmin;
 import com.hl.yyx.modules.ums.service.UmsAdminService;
@@ -43,6 +46,12 @@ public class WxController {
 
     @Autowired
     private OssService ossService;
+
+    @Autowired
+    private ExamReviewTypeService examReviewTypeService;
+
+    @Autowired
+    private ExamReviewService examReviewService;
 
     // 微信一键登录
     @LogAnnotation()
@@ -130,5 +139,19 @@ public class WxController {
     public CommonResult<OssPolicyResult> policy() {
         OssPolicyResult result = ossService.policy();
         return CommonResult.success(result);
+    }
+
+    @ApiOperation("获取复习资料分类")
+    @LogAnnotation()
+    @RequestMapping(value = "/getReviewTypeList", method = RequestMethod.GET)
+    public CommonResult getReviewTypeList(){
+        return CommonResult.success(examReviewTypeService.getList());
+    }
+
+    @ApiOperation("获取复习资料")
+    @LogAnnotation()
+    @RequestMapping(value = "/getReviewInfo", method = RequestMethod.POST)
+    public CommonResult getReviewInfo(@RequestBody ExamReviewPageDTO params) {
+        return CommonResult.success(CommonPage.restPage(examReviewService.pageList(params)));
     }
 }
