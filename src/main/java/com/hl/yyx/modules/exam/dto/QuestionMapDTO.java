@@ -12,6 +12,8 @@ public class QuestionMapDTO {
 
     private String question;
 
+    private String questionUrl;
+
     private Integer score;
 
     private String answer;
@@ -19,6 +21,8 @@ public class QuestionMapDTO {
     private String currentUserAnswer;
 
     private String analysis;
+
+    private String analysisUrl;
 
     private Integer sortIndex;
 

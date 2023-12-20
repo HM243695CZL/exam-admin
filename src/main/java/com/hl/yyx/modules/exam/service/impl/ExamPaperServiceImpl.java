@@ -171,10 +171,12 @@ public class ExamPaperServiceImpl extends ServiceImpl<ExamPaperMapper, ExamPaper
                     QuestionMapDTO questionMap = new QuestionMapDTO();
                     questionMap.setId(questionInfo.getId());
                     questionMap.setQuestion(questionInfo.getQuestion());
+                    questionMap.setQuestionUrl(questionInfo.getQuestionUrl());
                     questionMap.setScore(relation.getScore());
                     if (!isPreview) {
                         questionMap.setAnswer(questionInfo.getAnswer());
                         questionMap.setAnalysis(questionInfo.getAnalysis());
+                        questionMap.setAnalysisUrl(questionInfo.getAnalysisUrl());
                         // 获取当前用户的答案
                         QueryWrapper<ExamSubAnswerRelation> currentAnswerQuery = new QueryWrapper<>();
                         currentAnswerQuery.lambda().eq(ExamSubAnswerRelation::getUserId, admin.getId());
