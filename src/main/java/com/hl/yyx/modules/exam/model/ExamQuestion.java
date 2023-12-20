@@ -52,8 +52,14 @@ public class ExamQuestion extends BaseModelDTO implements Serializable {
     @ApiModelProperty(value = "题目")
     private String question;
 
+    @ApiModelProperty(value = "题目图片")
+    private String questionUrl;
+
     @ApiModelProperty(value = "解析")
     private String analysis;
+
+    @ApiModelProperty(value = "解析图片")
+    private String analysisUrl;
 
     @ApiModelProperty(value = "答案")
     private String answer;

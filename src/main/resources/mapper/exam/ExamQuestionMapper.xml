@@ -10,7 +10,9 @@
         <result column="score" property="score" />
         <result column="difficulty" property="difficulty" />
         <result column="question" property="question" />
+        <result column="question_url" property="questionUrl" />
         <result column="analysis" property="analysis" />
+        <result column="analysis_url" property="analysisUrl" />
         <result column="answer" property="answer" />
         <result column="add_time" property="addTime" />
         <result column="update_time" property="updateTime" />
