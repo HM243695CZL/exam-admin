@@ -80,6 +80,14 @@ public class UmsAdminController {
         return CommonResult.success(umsAdminService.create(umsAdmin));
     }
 
+    // 注册
+    @LogAnnotation()
+    @ApiOperation("注册用户")
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public CommonResult register(@RequestBody UmsAdminLoginParam loginParam, HttpServletRequest request) {
+        return CommonResult.success(umsAdminService.register(loginParam, request));
+    }
+
     // 更新
     @LogAnnotation()
     @ApiOperation("更新管理员")

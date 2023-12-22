@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.hl.yyx.common.vo.PageParamsDTO;
 import com.hl.yyx.domain.AdminUserDetails;
 import com.hl.yyx.modules.ums.dto.AdminPageDTO;
+import com.hl.yyx.modules.ums.dto.UmsAdminLoginParam;
 import com.hl.yyx.modules.ums.dto.UpdatePassDTO;
 import com.hl.yyx.modules.ums.model.UmsAdmin;
 import com.hl.yyx.modules.wx.dto.UpdateNicknameAndAvatarDTO;
@@ -55,4 +56,6 @@ public interface UmsAdminService extends IService<UmsAdmin> {
      * @return
      */
     Boolean changeNicknameAndAvatar(UpdateNicknameAndAvatarDTO updateDto);
+
+    Object register(UmsAdminLoginParam loginParam, HttpServletRequest request);
 }

@@ -20,6 +20,7 @@ import com.hl.yyx.common.util.UserThreadLocalUtil;
 import com.hl.yyx.common.wx.UserThreadLocal;
 import com.hl.yyx.domain.AdminUserDetails;
 import com.hl.yyx.modules.ums.dto.AdminPageDTO;
+import com.hl.yyx.modules.ums.dto.UmsAdminLoginParam;
 import com.hl.yyx.modules.ums.dto.UpdatePassDTO;
 import com.hl.yyx.modules.ums.mapper.UmsAdminMapper;
 import com.hl.yyx.modules.ums.model.*;
@@ -365,6 +366,32 @@ public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper, UmsAdmin> i
         currentUser.setAvatar(updateDto.getAvatar());
         currentUser.setNickName(updateDto.getNickname());
         return updateById(currentUser);
+    }
+
+    @Override
+    public Object register(UmsAdminLoginParam loginParam, HttpServletRequest request) {
+        QueryWrapper<UmsAdmin> wrapper = new QueryWrapper<>();
+        wrapper.lambda().eq(UmsAdmin::getUsername, loginParam.getUsername());
+        List<UmsAdmin> list = list(wrapper);
+        if (list.size() > 0) {
+            Asserts.fail("用户名已存在");
+        }
+        // 将注册的新用户分配到“微信1班”
+        QueryWrapper<UmsClass> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(UmsClass::getName, "微信1班");
+        UmsClass umsClass = classService.getOne(queryWrapper);
+        UmsAdmin umsAdmin = new UmsAdmin();
+        umsAdmin.setUsername(loginParam.getUsername());
+        umsAdmin.setPassword(loginParam.getPassword());
+        umsAdmin.setUserType(2);
+        umsAdmin.setCollegeId(umsClass.getCollegeId());
+        umsAdmin.setMajorId(umsClass.getMajorId());
+        umsAdmin.setClassId(umsClass.getId());
+        save(umsAdmin);
+        HashMap<String, Object> map = new HashMap<>();
+        String token = login(umsAdmin.getUsername(), umsAdmin.getPassword(), request);
+        map.put("token", token);
+        return map;
     }
 
     /**
