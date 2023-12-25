@@ -363,32 +363,33 @@ public class ExamPaperServiceImpl extends ServiceImpl<ExamPaperMapper, ExamPaper
             for (QuestionMapDTO mapDTO : bigQuestionDTO.getQuestionList()) {
                 ExamQuestion question = questionService.getById(mapDTO.getId());
                 String answer = params.getAnswerMap().get(mapDTO.getId());
-                if (question.getAnswer().equals(answer)) {
-                    // 获取本题得分
-                    QueryWrapper<ExamPaperBigRelation> wrapper = new QueryWrapper<>();
-                    wrapper.lambda().eq(ExamPaperBigRelation::getBigId, bigQuestionDTO.getBigId());
-                    wrapper.lambda().eq(ExamPaperBigRelation::getPaperId, params.getPaperId());
-                    wrapper.lambda().eq(ExamPaperBigRelation::getQuestionId, mapDTO.getId());
-                    ExamPaperBigRelation bigRelation = relationService.getOne(wrapper);
-                    totalScore += bigRelation.getScore();
+                // 单选题和判断题
+                if (question.getType() == 1 || question.getType() == 3) {
+                    totalScore += judgeQuestion(question.getAnswer(), answer, bigQuestionDTO.getBigId(),
+                            mapDTO, currentUser, params.getPaperId());
                 } else {
-                    // 添加到错题本， 如果当前用户已错过，则增加做错次数
-                    QueryWrapper<ExamWrongBook> wrapper = new QueryWrapper<>();
-                    wrapper.lambda().eq(ExamWrongBook::getUserId, currentUser.getId());
-                    wrapper.lambda().eq(ExamWrongBook::getQuestionId, mapDTO.getId());
-                    ExamWrongBook wrongQuestion = wrongBookService.getOne(wrapper);
-                    if (wrongQuestion != null) {
-                        wrongQuestion.setWrongCount(wrongQuestion.getWrongCount() + 1);
-                        wrongBookService.updateById(wrongQuestion);
+                    // 多选题
+                    String[] correctAnswer = question.getAnswer().split(",");
+                    String[] userAnswer = answer.split(",");
+                    // 完全正确得全部分数, 部分正确得一半分数
+                    if (Arrays.equals(correctAnswer, userAnswer)) {
+                        totalScore += judgeQuestion(question.getAnswer(), answer, bigQuestionDTO.getBigId(),
+                                mapDTO, currentUser, params.getPaperId());
                     } else {
-                        ExamWrongBook wrongBook = new ExamWrongBook();
-                        wrongBook.setQuestionId(mapDTO.getId());
-                        wrongBook.setUserId(currentUser.getId());
-                        wrongBook.setCorrectAnswerId(question.getAnswer());
-                        wrongBook.setSelfAnswerId(answer);
-                        wrongBookService.save(wrongBook);
+                        // 部分正确
+                        int correctCount = 0;
+                        for (String item : userAnswer) {
+                            if (Arrays.asList(correctAnswer).contains(item)) {
+                                correctCount ++;
+                            }
+                        }
+                        if (correctCount != 0) {
+                            totalScore += judgeQuestion(question.getAnswer(), answer, bigQuestionDTO.getBigId(),
+                                    mapDTO, currentUser, params.getPaperId()) / 2;
+                        }
                     }
                 }
+
             }
         }
         record.setScore(totalScore);
@@ -402,5 +403,47 @@ public class ExamPaperServiceImpl extends ServiceImpl<ExamPaperMapper, ExamPaper
             answerRelationService.save(relation);
         }
         return save;
+    }
+
+    /**
+     * 判断题目是否正确
+     * @param questionAnswer 正确答案
+     * @param userAnswer 用户答案
+     * @param bigId 大题id
+     * @param mapDTO 试题信息
+     * @param currentUser 当前用户
+     * @param paperId 试卷id
+     * @return
+     */
+    public Integer judgeQuestion(String questionAnswer, String userAnswer, String bigId,
+                                 QuestionMapDTO mapDTO, UmsAdmin currentUser, String paperId) {
+        Integer totalScore = 0;
+        if (questionAnswer.equals(userAnswer)) {
+            // 获取本题得分
+            QueryWrapper<ExamPaperBigRelation> wrapper = new QueryWrapper<>();
+            wrapper.lambda().eq(ExamPaperBigRelation::getBigId, bigId);
+            wrapper.lambda().eq(ExamPaperBigRelation::getPaperId, paperId);
+            wrapper.lambda().eq(ExamPaperBigRelation::getQuestionId, mapDTO.getId());
+            ExamPaperBigRelation bigRelation = relationService.getOne(wrapper);
+            totalScore += bigRelation.getScore();
+        } else {
+            // 添加到错题本， 如果当前用户已错过，则增加做错次数
+            QueryWrapper<ExamWrongBook> wrapper = new QueryWrapper<>();
+            wrapper.lambda().eq(ExamWrongBook::getUserId, currentUser.getId());
+            wrapper.lambda().eq(ExamWrongBook::getQuestionId, mapDTO.getId());
+            ExamWrongBook wrongQuestion = wrongBookService.getOne(wrapper);
+            if (wrongQuestion != null) {
+                wrongQuestion.setWrongCount(wrongQuestion.getWrongCount() + 1);
+                wrongBookService.updateById(wrongQuestion);
+            } else {
+                ExamWrongBook wrongBook = new ExamWrongBook();
+                wrongBook.setQuestionId(mapDTO.getId());
+                wrongBook.setUserId(currentUser.getId());
+                wrongBook.setCorrectAnswerId(questionAnswer);
+                wrongBook.setSelfAnswerId(userAnswer);
+                wrongBookService.save(wrongBook);
+            }
+        }
+        return totalScore;
     }
 }
