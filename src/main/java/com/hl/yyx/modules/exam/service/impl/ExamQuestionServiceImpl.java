@@ -124,13 +124,25 @@ public class ExamQuestionServiceImpl extends ServiceImpl<ExamQuestionMapper, Exa
      */
     public String updateQuestionAnswer(ExamQuestion examQuestion) {
         String answerId = "";
+        ArrayList<String> answerIdList = new ArrayList<>();
         // 更新试题答案
         String[] itemArr = new String[]{"A", "B", "C", "D", "E", "F"};
         for (int i = 0; i < itemArr.length; i++) {
-            if (examQuestion.getAnswer().equals(itemArr[i])) {
-                answerId = examQuestion.getQuestionItemList().get(i).getId();
-                break;
+            if (examQuestion.getType() == 1 || examQuestion.getType() == 3) {
+                // 单选题或判断题
+                if (examQuestion.getAnswer().equals(itemArr[i])) {
+                    answerId = examQuestion.getQuestionItemList().get(i).getId();
+                    break;
+                }
+            } else if (examQuestion.getType() == 2) {
+                // 多选题
+                if (examQuestion.getAnswer().contains(itemArr[i])) {
+                    answerIdList.add(examQuestion.getQuestionItemList().get(i).getId());
+                }
             }
+        }
+        if (examQuestion.getType() == 2) {
+            answerId = String.join(",", answerIdList);
         }
         return answerId;
     }
