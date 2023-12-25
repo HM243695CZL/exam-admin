@@ -259,25 +259,62 @@ public class ExamQuestionServiceImpl extends ServiceImpl<ExamQuestionMapper, Exa
         List<List<String>> rowDatas = sheetData.getDatas();
         List<ExamQuestion> questionList = validateExcelData(rowDatas);
         List<ExamQuestionItem> questionItemList = validateExcelQuestionItem(rowDatas);
-        int questionNumber = 0;
+        int questionListIndex = 0;
         for (ExamQuestion examQuestion : questionList) {
             save(examQuestion);
-            for (ExamQuestionItem item : questionItemList.subList(questionNumber * 4, (questionNumber + 1) * 4)) {
-                questionItemService.save(item);
-                ExamQuestionRelationItem relationItem = new ExamQuestionRelationItem();
-                relationItem.setQId(examQuestion.getId());
-                relationItem.setIId(item.getId());
-                relationItemService.save(relationItem);
-            }
-            String currentQuestionAnswer = "";
-            String[] itemArr = new String[]{"A", "B", "C", "D", "E", "F"};
-            for (int i = 0; i < itemArr.length; i++) {
-                if (examQuestion.getAnswer().equals(itemArr[i])) {
-                    currentQuestionAnswer = questionItemList.subList(questionNumber * 4, (questionNumber + 1) * 4).get(i).getId();
-                    break;
+            // 单选题和多选题
+            if (examQuestion.getType() == 1 || examQuestion.getType() == 2) {
+                for (ExamQuestionItem item : questionItemList.subList(questionListIndex, questionListIndex + 4)) {
+                    questionItemService.save(item);
+                    ExamQuestionRelationItem relationItem = new ExamQuestionRelationItem();
+                    relationItem.setQId(examQuestion.getId());
+                    relationItem.setIId(item.getId());
+                    relationItemService.save(relationItem);
+                }
+            } else {
+                // 判断题
+                for (ExamQuestionItem item : questionItemList.subList(questionListIndex, questionListIndex + 2)) {
+                    questionItemService.save(item);
+                    ExamQuestionRelationItem relationItem = new ExamQuestionRelationItem();
+                    relationItem.setQId(examQuestion.getId());
+                    relationItem.setIId(item.getId());
+                    relationItemService.save(relationItem);
                 }
             }
-            questionNumber += 1;
+            String currentQuestionAnswer = "";
+            ArrayList<String> currentQAnswerList = new ArrayList<>();
+            String[] itemArr = new String[]{"A", "B", "C", "D", "E", "F"};
+            for (int i = 0; i < itemArr.length; i++) {
+                if (examQuestion.getType() == 1) {
+                    // 单选题
+                    if (examQuestion.getAnswer().equals(itemArr[i])) {
+                        currentQuestionAnswer = questionItemList.subList(questionListIndex, questionListIndex + 4).get(i).getId();
+                        break;
+                    }
+                }
+                if (examQuestion.getType() == 2) {
+                    // 多选题
+                    if (examQuestion.getAnswer().contains(itemArr[i])) {
+                        currentQAnswerList.add(questionItemList.subList(questionListIndex, questionListIndex + 4).get(i).getId());
+                    }
+                }
+                if (examQuestion.getType() == 3) {
+                    // 判断题
+                    if (examQuestion.getAnswer().equals(itemArr[i])) {
+                        currentQuestionAnswer = questionItemList.subList(questionListIndex, questionListIndex + 2).get(i).getId();
+                        break;
+                    }
+                }
+            }
+            if (examQuestion.getType() == 1 || examQuestion.getType() == 2) {
+                questionListIndex += 4;
+            }
+            if (examQuestion.getType() == 3) {
+                questionListIndex += 2;
+            }
+            if (examQuestion.getType() == 2) {
+                currentQuestionAnswer = String.join(",", currentQAnswerList);
+            }
             examQuestion.setAnswer(currentQuestionAnswer);
             updateById(examQuestion);
         }
@@ -414,13 +451,16 @@ public class ExamQuestionServiceImpl extends ServiceImpl<ExamQuestionMapper, Exa
             if (StringUtils.isBlank(rowData.get(6).trim())) {
                 throw new ApiException("第" + (rowDatas.indexOf(rowData) + 1) + "行的“题目选项B“未填写");
             }
-            // 题目选项C
-            if (StringUtils.isBlank(rowData.get(7).trim())) {
-                throw new ApiException("第" + (rowDatas.indexOf(rowData) + 1) + "行的“题目选项C“未填写");
-            }
-            // 题目选项D
-            if (StringUtils.isBlank(rowData.get(8).trim())) {
-                throw new ApiException("第" + (rowDatas.indexOf(rowData) + 1) + "行的“题目选项D“未填写");
+            // 判断题不做选项C和选项D的校验
+            if (!rowData.get(2).trim().equals("判断题")) {
+                // 题目选项C
+                if (StringUtils.isBlank(rowData.get(7).trim())) {
+                    throw new ApiException("第" + (rowDatas.indexOf(rowData) + 1) + "行的“题目选项C“未填写");
+                }
+                // 题目选项D
+                if (StringUtils.isBlank(rowData.get(8).trim())) {
+                    throw new ApiException("第" + (rowDatas.indexOf(rowData) + 1) + "行的“题目选项D“未填写");
+                }
             }
             questionItemA.setSortIndex(1);
             questionItemA.setName(rowData.get(5).trim());
@@ -429,14 +469,15 @@ public class ExamQuestionServiceImpl extends ServiceImpl<ExamQuestionMapper, Exa
             questionItemB.setSortIndex(2);
             questionItemB.setName(rowData.get(6).trim());
             questionItemList.add(questionItemB);
+            if (!rowData.get(2).trim().equals("判断题")) {
+                questionItemC.setSortIndex(3);
+                questionItemC.setName(rowData.get(7).trim());
+                questionItemList.add(questionItemC);
 
-            questionItemC.setSortIndex(3);
-            questionItemC.setName(rowData.get(7).trim());
-            questionItemList.add(questionItemC);
-
-            questionItemD.setSortIndex(4);
-            questionItemD.setName(rowData.get(8).trim());
-            questionItemList.add(questionItemD);
+                questionItemD.setSortIndex(4);
+                questionItemD.setName(rowData.get(8).trim());
+                questionItemList.add(questionItemD);
+            }
         }
         return questionItemList;
     }
