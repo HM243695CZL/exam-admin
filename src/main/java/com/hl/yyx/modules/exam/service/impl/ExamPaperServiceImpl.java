@@ -82,6 +82,8 @@ public class ExamPaperServiceImpl extends ServiceImpl<ExamPaperMapper, ExamPaper
             List<ExamPaperBig> list = paperBigService.list(queryWrapper);
             String paperInfo = "";
             Integer singleCount = 0;
+            Integer multiCount = 0;
+            Integer judgeCount = 0;
             for (ExamPaperBig paperBig : list) {
                 if (paperBig.getType().equals("1")) {
                     // 单选题
@@ -90,9 +92,29 @@ public class ExamPaperServiceImpl extends ServiceImpl<ExamPaperMapper, ExamPaper
                     int relationCount = relationService.count(wrapperRelation);
                     singleCount += relationCount;
                 }
+                if (paperBig.getType().equals("2")) {
+                    // 多选题
+                    QueryWrapper<ExamPaperBigRelation> wrapperRelation = new QueryWrapper<>();
+                    wrapperRelation.lambda().eq(ExamPaperBigRelation::getBigId, paperBig.getId());
+                    int relationCount = relationService.count(wrapperRelation);
+                    multiCount += relationCount;
+                }
+                if (paperBig.getType().equals("3")) {
+                    // 判断题
+                    QueryWrapper<ExamPaperBigRelation> wrapperRelation = new QueryWrapper<>();
+                    wrapperRelation.lambda().eq(ExamPaperBigRelation::getBigId, paperBig.getId());
+                    int relationCount = relationService.count(wrapperRelation);
+                    judgeCount += relationCount;
+                }
             }
             if (!singleCount.equals(0)) {
-                paperInfo = "单选题(" + singleCount + ")";
+                paperInfo = "单选题(" + singleCount + ") ";
+            }
+            if (!multiCount.equals(0)) {
+                paperInfo += "多选题(" + multiCount + ") ";
+            }
+            if (!judgeCount.equals(0)) {
+                paperInfo += "判断题(" + judgeCount + ") ";
             }
             // 是否已有考试记录
             UmsAdmin admin = UserThreadLocalUtil.get();
@@ -158,52 +180,52 @@ public class ExamPaperServiceImpl extends ServiceImpl<ExamPaperMapper, ExamPaper
             bigQuestion.setType(paperBig.getType());
             bigQuestion.setQuestionScore(paperBig.getQuestionScore());
             // 获取大题中的题目
-            if (paperBig.getType().equals("1")) {
-                // 单选题
-                QueryWrapper<ExamPaperBigRelation> queryWrapper = new QueryWrapper<>();
-                queryWrapper.lambda().eq(ExamPaperBigRelation::getBigId, paperBig.getId());
-                List<ExamPaperBigRelation> list = relationService.list(queryWrapper);
-                ArrayList<QuestionMapDTO> questionList = new ArrayList<>();
-                for (ExamPaperBigRelation relation : list) {
-                    // 获取试题名称
-                    ExamQuestion questionInfo = questionService.getById(relation.getQuestionId());
+            QueryWrapper<ExamPaperBigRelation> queryWrapper = new QueryWrapper<>();
+            queryWrapper.lambda().eq(ExamPaperBigRelation::getBigId, paperBig.getId());
+            List<ExamPaperBigRelation> list = relationService.list(queryWrapper);
+            ArrayList<QuestionMapDTO> questionList = new ArrayList<>();
+            for (ExamPaperBigRelation relation : list) {
+                // 获取试题名称
+                ExamQuestion questionInfo = questionService.getById(relation.getQuestionId());
 
-                    QuestionMapDTO questionMap = new QuestionMapDTO();
-                    questionMap.setId(questionInfo.getId());
-                    questionMap.setQuestion(questionInfo.getQuestion());
-                    questionMap.setQuestionUrl(questionInfo.getQuestionUrl());
-                    questionMap.setScore(relation.getScore());
-                    if (!isPreview) {
-                        questionMap.setAnswer(questionInfo.getAnswer());
-                        questionMap.setAnalysis(questionInfo.getAnalysis());
-                        questionMap.setAnalysisUrl(questionInfo.getAnalysisUrl());
-                        // 获取当前用户的答案
-                        QueryWrapper<ExamSubAnswerRelation> currentAnswerQuery = new QueryWrapper<>();
-                        currentAnswerQuery.lambda().eq(ExamSubAnswerRelation::getUserId, admin.getId());
-                        currentAnswerQuery.lambda().eq(ExamSubAnswerRelation::getPaperId, paperId);
-                        currentAnswerQuery.lambda().eq(ExamSubAnswerRelation::getQuestionId, questionInfo.getId());
-                        ExamSubAnswerRelation answerRelation = answerRelationService.getOne(currentAnswerQuery);
+                QuestionMapDTO questionMap = new QuestionMapDTO();
+                questionMap.setId(questionInfo.getId());
+                questionMap.setQuestion(questionInfo.getQuestion());
+                questionMap.setQuestionUrl(questionInfo.getQuestionUrl());
+                questionMap.setScore(relation.getScore());
+                questionMap.setType(questionInfo.getType());
+                if (!isPreview) {
+                    questionMap.setAnswer(questionInfo.getAnswer());
+                    questionMap.setAnalysis(questionInfo.getAnalysis());
+                    questionMap.setAnalysisUrl(questionInfo.getAnalysisUrl());
+                    // 获取当前用户的答案
+                    QueryWrapper<ExamSubAnswerRelation> currentAnswerQuery = new QueryWrapper<>();
+                    currentAnswerQuery.lambda().eq(ExamSubAnswerRelation::getUserId, admin.getId());
+                    currentAnswerQuery.lambda().eq(ExamSubAnswerRelation::getPaperId, paperId);
+                    currentAnswerQuery.lambda().eq(ExamSubAnswerRelation::getQuestionId, questionInfo.getId());
+                    ExamSubAnswerRelation answerRelation = answerRelationService.getOne(currentAnswerQuery);
+                    if (answerRelation != null) {
                         questionMap.setCurrentUserAnswer(answerRelation.getAnswer());
                     }
-                    questionMap.setSortIndex(relation.getSortIndex());
-                    // 根据试题id获取选项id
-                    List<String> itemIds = relationItemService.list(new QueryWrapper<ExamQuestionRelationItem>()
-                            .eq("q_id", relation.getQuestionId()).select("i_id")).stream()
-                            .map(ExamQuestionRelationItem::getIId).collect(Collectors.toList());
-                    // 根据试题选项表查询对应的选项名称
-                    ArrayList<ExamQuestionItem> itemList = new ArrayList<>();
-                    for (String itemId: itemIds) {
-                        itemList.add(questionItemService.getById(itemId));
-                    }
-                    // 根据sort_index字段排序
-                    List<ExamQuestionItem> sortItemList = itemList.stream().sorted(Comparator.comparing(ExamQuestionItem::getSortIndex)).collect(Collectors.toList());
-                    questionMap.setQuestionItemList(sortItemList);
-                    questionList.add(questionMap);
                 }
-                // 排序
-                List<QuestionMapDTO> sortQuestionList = questionList.stream().sorted(Comparator.comparing(QuestionMapDTO::getSortIndex)).collect(Collectors.toList());
-                bigQuestion.setQuestionList(sortQuestionList);
+                questionMap.setSortIndex(relation.getSortIndex());
+                // 根据试题id获取选项id
+                List<String> itemIds = relationItemService.list(new QueryWrapper<ExamQuestionRelationItem>()
+                                .eq("q_id", relation.getQuestionId()).select("i_id")).stream()
+                        .map(ExamQuestionRelationItem::getIId).collect(Collectors.toList());
+                // 根据试题选项表查询对应的选项名称
+                ArrayList<ExamQuestionItem> itemList = new ArrayList<>();
+                for (String itemId: itemIds) {
+                    itemList.add(questionItemService.getById(itemId));
+                }
+                // 根据sort_index字段排序
+                List<ExamQuestionItem> sortItemList = itemList.stream().sorted(Comparator.comparing(ExamQuestionItem::getSortIndex)).collect(Collectors.toList());
+                questionMap.setQuestionItemList(sortItemList);
+                questionList.add(questionMap);
             }
+            // 排序
+            List<QuestionMapDTO> sortQuestionList = questionList.stream().sorted(Comparator.comparing(QuestionMapDTO::getSortIndex)).collect(Collectors.toList());
+            bigQuestion.setQuestionList(sortQuestionList);
             bigQuestionList.add(bigQuestion);
         }
         return bigQuestionList;

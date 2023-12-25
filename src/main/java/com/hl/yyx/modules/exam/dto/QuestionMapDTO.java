@@ -26,5 +26,7 @@ public class QuestionMapDTO {
 
     private Integer sortIndex;
 
+    private Integer type;
+
     private List<ExamQuestionItem> questionItemList;
 }

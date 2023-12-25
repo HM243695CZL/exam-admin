@@ -204,17 +204,20 @@ public class ExamQuestionServiceImpl extends ServiceImpl<ExamQuestionMapper, Exa
     public List<ExamQuestion> randomChoose(RandomChooseDTO chooseDTO) {
         QueryWrapper<ExamQuestion> wrapper = new QueryWrapper<>();
         wrapper.lambda().eq(ExamQuestion::getQuestionType, chooseDTO.getQuestionType());
+        wrapper.lambda().eq(ExamQuestion::getType, chooseDTO.getType());
         List<ExamQuestion> questionList = list(wrapper);
         for (ExamQuestion question : questionList) {
             List<ExamQuestionItem> questionItemList = getQuestionItemList(question.getId());
-            question.setQuestionItemList(questionItemList);
+            // 根据sort_index字段排序
+            List<ExamQuestionItem> sortItemList = questionItemList.stream().sorted(Comparator.comparing(ExamQuestionItem::getSortIndex)).collect(Collectors.toList());
+            question.setQuestionItemList(sortItemList);
         }
         // 在questionList中随机抽题
         if (chooseDTO.getRandomCount() >= questionList.size()) {
             return questionList;
         }
         ArrayList<ExamQuestion> list = new ArrayList<>();
-        int[] randomList = RandomUtil.getNoRepeatRandomList(chooseDTO.getRandomCount(), questionList.size());
+        int[] randomList = RandomUtil.getNoRepeatRandomList(chooseDTO.getRandomCount(), questionList.size() - 1);
         for (int i : randomList) {
             list.add(questionList.get(i));
         }
