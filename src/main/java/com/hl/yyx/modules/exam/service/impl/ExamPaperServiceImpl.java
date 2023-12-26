@@ -376,16 +376,27 @@ public class ExamPaperServiceImpl extends ServiceImpl<ExamPaperMapper, ExamPaper
                         totalScore += judgeQuestion(question.getAnswer(), answer, bigQuestionDTO.getBigId(),
                                 mapDTO, currentUser, params.getPaperId());
                     } else {
-                        // 部分正确
-                        int correctCount = 0;
-                        for (String item : userAnswer) {
-                            if (Arrays.asList(correctAnswer).contains(item)) {
-                                correctCount ++;
+                        // 获取错误选项
+                        ArrayList wrongQuestionIdList = new ArrayList<>();
+                        List<ExamQuestionItem> questionItemList = questionService.getQuestionItemList(question.getId());
+                        for (ExamQuestionItem item : questionItemList) {
+                            if (!question.getAnswer().contains(item.getId())) {
+                                wrongQuestionIdList.add(item.getId());
                             }
                         }
-                        if (correctCount != 0) {
-                            totalScore += judgeQuestion(question.getAnswer(), answer, bigQuestionDTO.getBigId(),
-                                    mapDTO, currentUser, params.getPaperId()) / 2;
+                        Boolean hasWrong = false;
+                        for (Object o : wrongQuestionIdList) {
+                            if (answer.contains(o.toString())) {
+                                hasWrong = true;
+                                break;
+                            }
+                        }
+                        if (!hasWrong) {
+                            // 选择的选项中没有错误选项， 则得一半分数
+                            totalScore += getCurrQuestionScore(bigQuestionDTO.getBigId(), params.getPaperId(), mapDTO.getId()) / 2;
+                        } else {
+                            // 选择的选项中有错误选项，添加到错题本
+                            AddWrongBook(currentUser, mapDTO, question.getAnswer(), answer);
                         }
                     }
                 }
@@ -420,30 +431,38 @@ public class ExamPaperServiceImpl extends ServiceImpl<ExamPaperMapper, ExamPaper
         Integer totalScore = 0;
         if (questionAnswer.equals(userAnswer)) {
             // 获取本题得分
-            QueryWrapper<ExamPaperBigRelation> wrapper = new QueryWrapper<>();
-            wrapper.lambda().eq(ExamPaperBigRelation::getBigId, bigId);
-            wrapper.lambda().eq(ExamPaperBigRelation::getPaperId, paperId);
-            wrapper.lambda().eq(ExamPaperBigRelation::getQuestionId, mapDTO.getId());
-            ExamPaperBigRelation bigRelation = relationService.getOne(wrapper);
-            totalScore += bigRelation.getScore();
+            totalScore += getCurrQuestionScore(bigId, paperId, mapDTO.getId());
         } else {
-            // 添加到错题本， 如果当前用户已错过，则增加做错次数
-            QueryWrapper<ExamWrongBook> wrapper = new QueryWrapper<>();
-            wrapper.lambda().eq(ExamWrongBook::getUserId, currentUser.getId());
-            wrapper.lambda().eq(ExamWrongBook::getQuestionId, mapDTO.getId());
-            ExamWrongBook wrongQuestion = wrongBookService.getOne(wrapper);
-            if (wrongQuestion != null) {
-                wrongQuestion.setWrongCount(wrongQuestion.getWrongCount() + 1);
-                wrongBookService.updateById(wrongQuestion);
-            } else {
-                ExamWrongBook wrongBook = new ExamWrongBook();
-                wrongBook.setQuestionId(mapDTO.getId());
-                wrongBook.setUserId(currentUser.getId());
-                wrongBook.setCorrectAnswerId(questionAnswer);
-                wrongBook.setSelfAnswerId(userAnswer);
-                wrongBookService.save(wrongBook);
-            }
+            AddWrongBook(currentUser, mapDTO, questionAnswer, userAnswer);
         }
         return totalScore;
+    }
+
+    public Integer getCurrQuestionScore(String bigId, String paperId, String questionId) {
+        QueryWrapper<ExamPaperBigRelation> wrapper = new QueryWrapper<>();
+        wrapper.lambda().eq(ExamPaperBigRelation::getBigId, bigId);
+        wrapper.lambda().eq(ExamPaperBigRelation::getPaperId, paperId);
+        wrapper.lambda().eq(ExamPaperBigRelation::getQuestionId, questionId);
+        ExamPaperBigRelation bigRelation = relationService.getOne(wrapper);
+        return bigRelation.getScore();
+    }
+
+    public void AddWrongBook(UmsAdmin currentUser, QuestionMapDTO mapDTO, String questionAnswer, String userAnswer) {
+        // 添加到错题本， 如果当前用户已错过，则增加做错次数
+        QueryWrapper<ExamWrongBook> wrapper = new QueryWrapper<>();
+        wrapper.lambda().eq(ExamWrongBook::getUserId, currentUser.getId());
+        wrapper.lambda().eq(ExamWrongBook::getQuestionId, mapDTO.getId());
+        ExamWrongBook wrongQuestion = wrongBookService.getOne(wrapper);
+        if (wrongQuestion != null) {
+            wrongQuestion.setWrongCount(wrongQuestion.getWrongCount() + 1);
+            wrongBookService.updateById(wrongQuestion);
+        } else {
+            ExamWrongBook wrongBook = new ExamWrongBook();
+            wrongBook.setQuestionId(mapDTO.getId());
+            wrongBook.setUserId(currentUser.getId());
+            wrongBook.setCorrectAnswerId(questionAnswer);
+            wrongBook.setSelfAnswerId(userAnswer);
+            wrongBookService.save(wrongBook);
+        }
     }
 }

@@ -13,7 +13,8 @@ public enum ResultCode implements IErrorCode {
     NO_TOKEN(504, "token为空"),
     UNAUTHORIZED(401, "暂未登录或token已经过期"),
     FORBIDDEN(403, "没有相关权限"),
-    UN_KNOWN(9999, "未知异常，请联系管理员，或稍后再试!");
+    UN_KNOWN(9999, "未知异常，请联系管理员，或稍后再试!"),
+    NullPointer(505, "空指针异常");
     private long code;
     private String message;
 

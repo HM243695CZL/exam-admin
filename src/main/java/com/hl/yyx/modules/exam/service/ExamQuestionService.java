@@ -5,6 +5,7 @@ import com.hl.yyx.modules.exam.dto.QuestionPageDTO;
 import com.hl.yyx.modules.exam.dto.RandomChooseDTO;
 import com.hl.yyx.modules.exam.model.ExamQuestion;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.hl.yyx.modules.exam.model.ExamQuestionItem;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -48,4 +49,6 @@ public interface ExamQuestionService extends IService<ExamQuestion> {
     void importExcel(MultipartFile file);
 
     Boolean batchDelete(List<String> ids);
+
+    List<ExamQuestionItem> getQuestionItemList(String questionId);
 }
