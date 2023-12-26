@@ -356,7 +356,7 @@ public class ExamPaperServiceImpl extends ServiceImpl<ExamPaperMapper, ExamPaper
         record.setSubmitTime(new Date());
 
         // 计算试卷得分
-        Integer totalScore = 0;
+        Double totalScore = 0.0;
         // 获取试卷信息
         ExamPaper paperInfo = getById(params.getPaperId());
         for (BigQuestionDTO bigQuestionDTO : getBigQuestionList(params.getPaperId(), true)) {
@@ -366,7 +366,7 @@ public class ExamPaperServiceImpl extends ServiceImpl<ExamPaperMapper, ExamPaper
                 // 单选题和判断题
                 if (question.getType() == 1 || question.getType() == 3) {
                     totalScore += judgeQuestion(question.getAnswer(), answer, bigQuestionDTO.getBigId(),
-                            mapDTO, currentUser, params.getPaperId());
+                            mapDTO, currentUser, params.getPaperId()).doubleValue();
                 } else {
                     // 多选题
                     String[] correctAnswer = question.getAnswer().split(",");
@@ -374,7 +374,7 @@ public class ExamPaperServiceImpl extends ServiceImpl<ExamPaperMapper, ExamPaper
                     // 完全正确得全部分数, 部分正确得一半分数
                     if (Arrays.equals(correctAnswer, userAnswer)) {
                         totalScore += judgeQuestion(question.getAnswer(), answer, bigQuestionDTO.getBigId(),
-                                mapDTO, currentUser, params.getPaperId());
+                                mapDTO, currentUser, params.getPaperId()).doubleValue();
                     } else {
                         // 获取错误选项
                         ArrayList wrongQuestionIdList = new ArrayList<>();
@@ -393,7 +393,7 @@ public class ExamPaperServiceImpl extends ServiceImpl<ExamPaperMapper, ExamPaper
                         }
                         if (!hasWrong) {
                             // 选择的选项中没有错误选项， 则得一半分数
-                            totalScore += getCurrQuestionScore(bigQuestionDTO.getBigId(), params.getPaperId(), mapDTO.getId()) / 2;
+                            totalScore += getCurrQuestionScore(bigQuestionDTO.getBigId(), params.getPaperId(), mapDTO.getId()) / 2.0;
                         } else {
                             // 选择的选项中有错误选项，添加到错题本
                             AddWrongBook(currentUser, mapDTO, question.getAnswer(), answer);
@@ -403,7 +403,7 @@ public class ExamPaperServiceImpl extends ServiceImpl<ExamPaperMapper, ExamPaper
 
             }
         }
-        record.setScore(totalScore);
+        record.setScore(totalScore.toString());
         boolean save = recordService.save(record);
         for (String questionId: params.getAnswerMap().keySet()) {
             ExamSubAnswerRelation relation = new ExamSubAnswerRelation();

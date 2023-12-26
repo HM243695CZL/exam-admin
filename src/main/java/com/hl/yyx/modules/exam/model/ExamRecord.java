@@ -51,7 +51,7 @@ public class ExamRecord extends BaseModelDTO implements Serializable {
     private Date submitTime;
 
     @ApiModelProperty(value = "得分")
-    private Integer score;
+    private String score;
 
     @ApiModelProperty(value = "试卷总分")
     @TableField(exist = false)

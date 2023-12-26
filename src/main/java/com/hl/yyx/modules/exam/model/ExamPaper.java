@@ -49,7 +49,7 @@ public class ExamPaper extends BaseModelDTO implements Serializable {
 
     @ApiModelProperty(value = "考试得分")
     @TableField(exist = false)
-    private Integer examScore;
+    private String examScore;
 
     @ApiModelProperty(value = "交卷时间")
     @TableField(exist = false)
